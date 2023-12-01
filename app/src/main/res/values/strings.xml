@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Sacoco</string>
+
+    <!-- Activity main string literals-->
+    <string name="main_activity_menu_home">Home</string>
+    <string name="main_activity_menu_clothes_list">Clothes list</string>
+    <string name="main_activity_menu_settings">Settings</string>
+    <string name="main_activity_menu_email">Mail</string>
+    <string name="main_activity_title_base">Sacoco - </string>
+
+    <!-- Card string literals-->
+    <string name="card_icon">Card icon</string>
+    <string name="card_check_icon">Card check icon</string>
+    <string name="card_base_text">23/10/2023 - 29/10/2023</string>
+
+    <!-- Add bag dialog string literals -->
+    <string name="dialog_add_bag_title">Ajouter un sac pour la semaine</string>
+    <string name="dialog_date_hint">Date</string>
+    <string name="dialog_add_clothes_to_bag">Ajouter des vêtements</string>
+    <string name="dialog_confirm_add_bag">Ajouter</string>
+    <string name="dialog_confirm_cancel_add_bag">Annuler</string>
+
+    <!-- Bag content fragment string literals -->
+    <string name="fragment_bag_content_check_bag">Vérifier le sac</string>
+
+    <!-- Base fragment string literals-->
+    <string name="fragment_base_add_description">Add</string>
+</resources>
