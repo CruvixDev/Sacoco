@@ -11,15 +11,38 @@
     <!-- Card string literals-->
     <string name="card_icon">Card icon</string>
     <string name="card_check_icon">Card check icon</string>
+    <string name="card_bag_name_title">Nom du sac</string>
     <string name="card_base_text">23/10/2023 - 29/10/2023</string>
+    <string name="card_consult_button_text">Consulter</string>
+    <string name="card_remove_button_text">Supprimer</string>
 
     <!-- Add bag dialog string literals -->
     <string name="dialog_add_bag_title">Ajouter un sac pour la semaine</string>
-    <string name="dialog_date_hint">Date</string>
+    <string name="dialog_date_start_hint">Start ate</string>
+    <string name="dialog_date_end_hint">End date</string>
     <string name="dialog_add_clothes_to_bag">Ajouter des vêtements</string>
     <string name="dialog_confirm_add_bag">Ajouter</string>
     <string name="dialog_confirm_cancel_add_bag">Annuler</string>
-
+    
+    <!-- Add cloth dialog string literals-->
+    <string name="dialog_add_cloth_identifier_title">Identifiant du vêtement</string>
+    <string name="dialog_add_cloth_identifier_hint">Identifiant</string>
+    <string name="dialog_add_cloth_cloth_image_title">Photo du vêtement</string>
+    <string name="dialog_add_cloth_cloth_name_title">Nom du vêtement</string>
+    <string name="dialog_add_cloth_cloth_name_hint">Nom</string>
+    <string name="dialog_add_cloth_cloth_type_title">Type du vêtement</string>
+    <string name="dialog_add_cloth_cloth_type_hint">Type</string>
+    
+    <!-- Show cloth details dialog string literals -->
+    <string name="dialog_show_cloth_details_cloth_image_title">Photo du vêtement</string>
+    <string name="dialog_show_cloth_details_modify_image_button">Modifier</string>
+    <string name="dialog_show_cloth_details_cloth_name_title">Nom du vêtement</string>
+    <string name="dialog_show_cloth_details_cloth_name_hint">Nom</string>
+    <string name="dialog_show_cloth_details_cloth_type_title">Type du vêtement</string>
+    <string name="dialog_show_cloth_details_cloth_type_hint">Type</string>
+    <string name="dialog_show_cloth_details_save_button">Enregistrer</string>
+    <string name="dialog_show_cloth_details_cancel_button">Annuler</string>
+    
     <!-- Bag content fragment string literals -->
     <string name="fragment_bag_content_check_bag">Vérifier le sac</string>
 
