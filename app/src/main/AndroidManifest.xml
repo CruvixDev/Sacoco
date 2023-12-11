@@ -3,9 +3,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/sacoco_icon"
+        android:icon="@drawable/luggage_icon"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/sacoco_icon"
+        android:roundIcon="@drawable/luggage_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sacoco">
         <activity
