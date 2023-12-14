@@ -11,7 +11,7 @@
     <!-- Card string literals-->
     <string name="card_icon">Card icon</string>
     <string name="card_check_icon">Card check icon</string>
-    <string name="card_bag_name_title">Nom du sac</string>
+    <string name="card_bag_name_title">Sac de la semaine :</string>
     <string name="card_base_text">23/10/2023 - 29/10/2023</string>
     <string name="card_consult_button_text">Consulter</string>
     <string name="card_remove_button_text">Supprimer</string>
