@@ -44,7 +44,8 @@
     <string name="dialog_show_cloth_details_cancel_button">Annuler</string>
     
     <!-- Bag content fragment string literals -->
-    <string name="fragment_bag_content_check_bag">Vérifier le sac</string>
+    <string name="fragment_bag_content_check_bag">Vérifier</string>
+    <string name="fragment_bag_content_modify">Modifier</string>
 
     <!-- Base fragment string literals-->
     <string name="fragment_base_add_description">Add</string>
