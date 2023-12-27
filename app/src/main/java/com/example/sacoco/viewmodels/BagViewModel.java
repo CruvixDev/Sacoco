@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -50,10 +51,11 @@ public class BagViewModel extends ViewModel {
      * @param clothIdentifier the UUID of cloth
      * @param clothName
      * @param clothType
+     * @param imagePath
      * @return true if the cloth has been created and added to the list of clothes false if it
      * already exists
      */
-    public boolean addCloth(UUID clothIdentifier, String clothName, String clothType) {
+    public boolean addCloth(UUID clothIdentifier, String clothName, String clothType, URI imagePath) {
         return true;
     }
 
