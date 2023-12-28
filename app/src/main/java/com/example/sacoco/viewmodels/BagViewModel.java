@@ -3,6 +3,7 @@ package com.example.sacoco.viewmodels;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.sacoco.data.AppRepository;
 import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
 import com.example.sacoco.models.ClothTypeEnum;
@@ -17,12 +18,14 @@ public class BagViewModel extends ViewModel {
     private MutableLiveData<Cloth> selectedClothLiveData;
     private MutableLiveData<ArrayList<Cloth>> clothesLiveData;
     private MutableLiveData<ArrayList<Bag>> bagsLiveData;
+    private AppRepository appRepositoryInstance;
 
     public BagViewModel() {
         selectedBagLiveData = new MutableLiveData<>();
         selectedClothLiveData = new MutableLiveData<>();
         clothesLiveData = new MutableLiveData<>();
         bagsLiveData = new MutableLiveData<>();
+        appRepositoryInstance = AppRepository.getInstance();
     }
 
     /**
