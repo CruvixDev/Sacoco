@@ -50,6 +50,8 @@
     <!-- Add cloth to bag string literals -->
     <string name="dialog_add_cloth_to_bag_title">Ajouter des vêtements au sac</string>
     <string name="dialog_add_cloth_to_bag_add_button">Ajouter</string>
+    <string name="dialog_add_cloth_to_bag_cloth_name">Nom du vêtement</string>
+    <string name="dialog_add_cloth_to_bag_cloth_uuid">123e4567-e89b-12d3-a456-426614174000</string>
 
     <!-- Base fragment string literals -->
     <string name="fragment_base_add_description">Add</string>
