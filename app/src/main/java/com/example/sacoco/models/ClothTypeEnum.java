@@ -1,6 +1,6 @@
 package com.example.sacoco.models;
 
-enum ClothTypeEnum {
+public enum ClothTypeEnum {
     SHIRT,
     PANT,
     SOCK,
