@@ -23,10 +23,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main_layout);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        String activityBaseTitle = getString(R.string.main_activity_title_base);
         activityTitle = findViewById(R.id.mainActivityBaseTitle);
+        activityTitle.setText(activityBaseTitle + getString(R.string.main_activity_menu_home));
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
 
         bagViewModel = new ViewModelProvider(this).get(BagViewModel.class);
