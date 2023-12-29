@@ -6,7 +6,7 @@
     <string name="main_activity_menu_clothes_list">Vêtements</string>
     <string name="main_activity_menu_settings">Paramètres</string>
     <string name="main_activity_menu_email">Mail</string>
-    <string name="main_activity_title_base">Sacoco -\u0020</string>
+    <string name="main_activity_title_base">Sacoco -\u0020%1$s</string>
 
     <!-- Card string literals-->
     <string name="card_icon">Card icon</string>
