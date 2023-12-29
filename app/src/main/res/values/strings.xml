@@ -2,11 +2,11 @@
     <string name="app_name">Sacoco</string>
 
     <!-- Activity main string literals-->
-    <string name="main_activity_menu_home">Home</string>
-    <string name="main_activity_menu_clothes_list">Clothes list</string>
-    <string name="main_activity_menu_settings">Settings</string>
+    <string name="main_activity_menu_home">Accueil</string>
+    <string name="main_activity_menu_clothes_list">Vêtements</string>
+    <string name="main_activity_menu_settings">Paramètres</string>
     <string name="main_activity_menu_email">Mail</string>
-    <string name="main_activity_title_base">Sacoco - </string>
+    <string name="main_activity_title_base">Sacoco -\u0020</string>
 
     <!-- Card string literals-->
     <string name="card_icon">Card icon</string>
