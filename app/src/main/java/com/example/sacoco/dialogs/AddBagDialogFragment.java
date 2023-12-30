@@ -15,7 +15,7 @@ import com.example.sacoco.R;
 public class AddBagDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_add_cloth_layout, container, false);
+        return inflater.inflate(R.layout.dialog_add_bag_layout, container, false);
     }
 
     @NonNull
