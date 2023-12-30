@@ -13,6 +13,7 @@ import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.BagAdapter;
 import com.example.sacoco.cominterface.CardAction;
+import com.example.sacoco.dialogs.AddBagDialogFragment;
 import com.example.sacoco.viewmodels.BagViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -42,7 +43,7 @@ public class HomeFragment extends Fragment implements CardAction {
     }
 
     private final View.OnClickListener addBagButtonClickedListener = view -> {
-        //TODO open dialog fragment here
+        new AddBagDialogFragment().show(getChildFragmentManager(), "Lol");
     };
 
     @Override
