@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.sacoco.R;
@@ -17,6 +18,7 @@ public class AddBagDialogFragment extends DialogFragment {
         return inflater.inflate(R.layout.dialog_add_cloth_layout, container, false);
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
