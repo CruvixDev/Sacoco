@@ -3,7 +3,6 @@ package com.example.sacoco;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -12,13 +11,10 @@ import com.example.sacoco.fragments.ClothesListFragment;
 import com.example.sacoco.fragments.EmailFragment;
 import com.example.sacoco.fragments.HomeFragment;
 import com.example.sacoco.fragments.MenuFragment;
-import com.example.sacoco.viewmodels.BagViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
-    private BagViewModel bagViewModel;
-    private BottomNavigationView bottomNavigationView;
     private TextView activityTitle;
 
     @Override
@@ -30,10 +26,8 @@ public class MainActivity extends AppCompatActivity {
         activityTitle = findViewById(R.id.mainActivityBaseTitle);
         activityTitle.setText(String.format(activityBaseTitle, getString(R.string.main_activity_menu_home)));
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
-
-        bagViewModel = new ViewModelProvider(this).get(BagViewModel.class);
     }
 
     private final NavigationBarView.OnItemSelectedListener onItemSelectedListener = item -> {
@@ -60,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     };
 
-    private void loadFragment(Class<? extends Fragment> fragmentClass) {
+    public void loadFragment(Class<? extends Fragment> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.
                 beginTransaction().
