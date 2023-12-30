@@ -19,17 +19,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment implements CardAction {
-    private final BagViewModel bagViewModel;
+    private BagViewModel bagViewModel;
     private RecyclerView bagsRecyclerView;
 
     public HomeFragment() {
         super(R.layout.fragment_base_layout);
-        bagViewModel = new ViewModelProvider(requireActivity()).get(BagViewModel.class);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bagViewModel = new ViewModelProvider(requireActivity()).get(BagViewModel.class);
 
         bagsRecyclerView = view.findViewById(R.id.contentListView);
         bagsRecyclerView.setAdapter(new BagAdapter(bagViewModel.getBagsLiveData().getValue(), this));
