@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sacoco.MainActivity;
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment implements CardAction {
 
         bagsRecyclerView = view.findViewById(R.id.contentListView);
         bagsRecyclerView.setAdapter(new BagAdapter(bagViewModel.getBagsLiveData().getValue(), this));
+        bagsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         bagViewModel.getBagsLiveData().observe(this.getViewLifecycleOwner(),
                 bagArrayList -> Objects.requireNonNull(bagsRecyclerView.getAdapter()).notifyItemInserted(bagArrayList.size()));
