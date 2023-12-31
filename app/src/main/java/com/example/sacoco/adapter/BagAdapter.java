@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
 import com.example.sacoco.cominterface.CardAction;
 import com.example.sacoco.models.Bag;
