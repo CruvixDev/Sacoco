@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +44,13 @@ public class HomeFragment extends Fragment implements CardAction {
     }
 
     private final View.OnClickListener addBagButtonClickedListener = view -> {
-        new AddBagDialogFragment().show(getChildFragmentManager(), null);
+        AddBagDialogFragment addBagDialogFragment = new AddBagDialogFragment();
+        getChildFragmentManager().
+                beginTransaction().
+                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                setReorderingAllowed(true).
+                add(addBagDialogFragment, null).
+                commit();
     };
 
     @Override
