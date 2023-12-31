@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment implements CardAction {
     }
 
     private final View.OnClickListener addBagButtonClickedListener = view -> {
-        new AddBagDialogFragment().show(getChildFragmentManager(), "Lol");
+        new AddBagDialogFragment().show(getChildFragmentManager(), null);
     };
 
     @Override
