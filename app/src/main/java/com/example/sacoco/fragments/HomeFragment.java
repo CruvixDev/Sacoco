@@ -47,11 +47,12 @@ public class HomeFragment extends Fragment implements CardAction {
 
     private final View.OnClickListener addBagButtonClickedListener = view -> {
         AddBagDialogFragment addBagDialogFragment = new AddBagDialogFragment();
-        getChildFragmentManager().
+        requireActivity().getSupportFragmentManager().
                 beginTransaction().
                 setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                 setReorderingAllowed(true).
-                add(addBagDialogFragment, null).
+                add(R.id.fragmentContainerView, addBagDialogFragment).
+                addToBackStack(null).
                 commit();
     };
 
