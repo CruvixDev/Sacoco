@@ -23,7 +23,7 @@
     <string name="dialog_add_clothes_to_bag">Ajouter des vêtements</string>
     <string name="dialog_confirm_add_bag">Ajouter</string>
     <string name="dialog_confirm_cancel_add_bag">Annuler</string>
-    
+
     <!-- Add cloth dialog string literals-->
     <string name="dialog_add_cloth_identifier_title">Identifiant du vêtement</string>
     <string name="dialog_add_cloth_identifier_hint">Identifiant</string>
