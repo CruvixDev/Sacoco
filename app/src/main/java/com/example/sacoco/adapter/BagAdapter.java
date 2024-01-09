@@ -15,6 +15,7 @@ import com.example.sacoco.cominterface.CardAction;
 import com.example.sacoco.models.Bag;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
@@ -86,10 +87,13 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull BagAdapter.ViewHolder holder, int position) {
         String dateText = holder.itemView.getContext().getString(R.string.card_base_text);
         Bag bag = bagsArrayList.get(position);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String startDate = dateFormat.format(bag.getStartDate());
+        String endDate = dateFormat.format(bag.getEndDate());
 
         holder.getBagCardIcon().setImageDrawable(AppCompatResources.getDrawable(holder.itemView.getContext(), R.drawable.luggage_icon));
         holder.getBagCardTitle().setText(holder.itemView.getContext().getString(R.string.card_bag_name_title));
-        holder.getBagCardDateText().setText(String.format(dateText, bag.getStartDate(), bag.getEndDate()));
+        holder.getBagCardDateText().setText(String.format(dateText, startDate, endDate));
     }
 
     @Override
