@@ -14,21 +14,21 @@
 
     <ImageButton
         android:id="@+id/closeAddBagDialog"
+        style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
         android:contentDescription="@string/dialog_confirm_cancel_add_bag"
-        android:padding="16dp"
         android:src="@drawable/close"
-        app:tint="?attr/colorOnSurface"
         app:layout_constraintBottom_toTopOf="@+id/guideline1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline1" />
+        app:layout_constraintTop_toTopOf="@+id/guideline1"
+        app:tint="?attr/colorOnSurface" />
 
     <TextView
         android:id="@+id/addBagDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="@string/dialog_add_bag_title"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -38,10 +38,10 @@
 
     <Button
         android:id="@+id/addBagButton"
-        style="?attr/borderlessButtonStyle"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:layout_marginEnd="8dp"
         android:text="@string/dialog_confirm_add_bag"
         app:layout_constraintBottom_toTopOf="@+id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
