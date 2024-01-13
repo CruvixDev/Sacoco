@@ -19,6 +19,7 @@ import com.example.sacoco.dialogs.AddBagDialogFragment;
 import com.example.sacoco.viewmodels.BagViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment implements CardAction {
@@ -58,10 +59,11 @@ public class HomeFragment extends Fragment implements CardAction {
 
     @Override
     public void onCardConsultButtonClicked(int bagSelectedIndex) {
-        bagViewModel.setSelectedBagLiveData(
-                Objects.requireNonNull(bagViewModel.getBagsLiveData().getValue()).get(bagSelectedIndex).getStartDate(),
-                bagViewModel.getBagsLiveData().getValue().get(bagSelectedIndex).getEndDate()
-        );
+        Date startDate = Objects.requireNonNull(bagViewModel.getBagsLiveData().getValue()).
+                get(bagSelectedIndex).getStartDate();
+        Date endDate = bagViewModel.getBagsLiveData().getValue().get(bagSelectedIndex).getEndDate();
+
+        bagViewModel.setSelectedBagLiveData(startDate, endDate);
 
         MainActivity mainActivityInstance = (MainActivity) requireActivity();
         mainActivityInstance.loadFragment(BagDetailsFragment.class);
@@ -69,9 +71,10 @@ public class HomeFragment extends Fragment implements CardAction {
 
     @Override
     public void onCardRemoveButtonClicked(int bagSelectedIndex) {
-        bagViewModel.removeBag(
-                Objects.requireNonNull(bagViewModel.getBagsLiveData().getValue()).get(bagSelectedIndex).getStartDate(),
-                bagViewModel.getBagsLiveData().getValue().get(bagSelectedIndex).getEndDate()
-        );
+        Date startDate = Objects.requireNonNull(bagViewModel.getBagsLiveData().getValue()).
+                get(bagSelectedIndex).getStartDate();
+        Date endDate = bagViewModel.getBagsLiveData().getValue().get(bagSelectedIndex).getEndDate();
+
+        bagViewModel.removeBag(startDate, endDate);
     }
 }
