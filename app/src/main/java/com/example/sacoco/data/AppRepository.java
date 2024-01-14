@@ -9,13 +9,13 @@ public class AppRepository {
     private static AppRepository appRepositoryInstance;
     private DatabaseManager databaseManagerInstance;
 
-    private AppRepository() {
-        databaseManagerInstance = DatabaseManager.getInstance();
+    private AppRepository(DatabaseManager databaseManagerInstance) {
+        this.databaseManagerInstance = databaseManagerInstance;
     }
 
     public static AppRepository getInstance() {
         if (appRepositoryInstance == null) {
-            appRepositoryInstance = new AppRepository();
+            appRepositoryInstance = new AppRepository(DatabaseManager.getInstance());
         }
         return appRepositoryInstance;
     }
