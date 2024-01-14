@@ -33,7 +33,9 @@ public class HomeFragment extends Fragment implements CardAction {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bagViewModel = new ViewModelProvider(requireActivity()).get(BagViewModel.class);
+
+        bagViewModel = new ViewModelProvider(requireActivity(), ViewModelProvider.Factory.
+                from(BagViewModel.bagViewModelViewModelInitializer)).get(BagViewModel.class);
 
         bagsRecyclerView = view.findViewById(R.id.contentListView);
         bagsRecyclerView.setAdapter(new BagAdapter(bagViewModel.getBagsLiveData().getValue(), this));
