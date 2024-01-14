@@ -22,7 +22,7 @@ public class AppRepository {
 
     /**
      * Save a new bag into the app's storage
-     * @param bagToSave
+     * @param bagToSave the bag to save on device
      * @return true if the bag has been successfully saved in the app's storage
      */
     public boolean saveBag(Bag bagToSave) {
@@ -31,7 +31,7 @@ public class AppRepository {
 
     /**
      * Remove a bag into the app's storage
-     * @param bagToRemove
+     * @param bagToRemove the bag to remove from device
      * @return true if the bag has been successfully removed in the app's storage
      */
     public boolean removeBag(Bag bagToRemove) {
@@ -40,7 +40,7 @@ public class AppRepository {
 
     /**
      * Save a new cloth in the app's storage
-     * @param clothToSave
+     * @param clothToSave the cloth to save on device
      * @return true if the cloth has been successfully saved in the app's storage
      */
     public boolean saveCloth(Cloth clothToSave) {
@@ -49,7 +49,7 @@ public class AppRepository {
 
     /**
      * Remove a cloth in app's storage
-     * @param clothToRemove
+     * @param clothToRemove the cloth to remove from device
      * @return true if th cloth has been successfully removed in the app's storage
      */
     public boolean removeCloth(Cloth clothToRemove) {
