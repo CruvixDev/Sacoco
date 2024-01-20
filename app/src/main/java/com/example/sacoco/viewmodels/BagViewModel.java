@@ -50,7 +50,7 @@ public class BagViewModel extends ViewModel {
      * @param endDate            the end date of the bag
      * @param clothesIdentifiers the UUID of the cloth
      * @return true if the bag has been created and added to the list of bags false if already
-     * exists
+     * exists or parameters invalid
      */
     public boolean addBag(Date startDate, Date endDate, ArrayList<UUID> clothesIdentifiers) {
         boolean isBagExists = getBagByDates(startDate, endDate) == null;
