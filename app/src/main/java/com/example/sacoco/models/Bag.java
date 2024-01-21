@@ -5,21 +5,18 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Bag {
-    private final Date startDate;
-    private final Date endDate;
+    private final int weekNumber;
     private boolean checked;
     private ArrayList<Cloth> clothesList;
 
-    public Bag(Date startDate, Date endDate, boolean checked) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public Bag(int weekNumber, boolean checked) {
+        this.weekNumber = weekNumber;
         this.checked = checked;
         this.clothesList = new ArrayList<>();
     }
 
-    public Bag(Date startDate, Date endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public Bag(int weekNumber) {
+        this.weekNumber = weekNumber;
     }
 
     /**
@@ -55,12 +52,8 @@ public class Bag {
         return this.clothesList.contains(cloth);
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
+    public int getWeekNumber() {
+        return this.weekNumber;
     }
 
     /**
@@ -80,6 +73,6 @@ public class Bag {
         if (this == o) return true;
         if (!(o instanceof Bag)) return false;
         Bag bag = (Bag) o;
-        return Objects.equals(startDate, bag.startDate) && Objects.equals(endDate, bag.endDate);
+        return Objects.equals(weekNumber, bag.weekNumber);
     }
 }

@@ -17,10 +17,12 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
-    private ArrayList<Bag> bagsArrayList;
-    private CardAction cardAction;
+    private final ArrayList<Bag> bagsArrayList;
+    private final CardAction cardAction;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ShapeableImageView bagCardIcon;
@@ -42,13 +44,11 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
             bagRemoveButton.setOnClickListener(onRemoveBag);
         }
 
-        private final View.OnClickListener onConsultBag = view -> {
-            cardAction.onCardConsultButtonClicked(getAdapterPosition());
-        };
+        private final View.OnClickListener onConsultBag =
+                view -> cardAction.onCardConsultButtonClicked(getAdapterPosition());
 
-        private final View.OnClickListener onRemoveBag = view -> {
-            cardAction.onCardRemoveButtonClicked(getAdapterPosition());
-        };
+        private final View.OnClickListener onRemoveBag =
+                view -> cardAction.onCardRemoveButtonClicked(getAdapterPosition());
 
         public ShapeableImageView getBagCardIcon() {
             return bagCardIcon;
@@ -85,15 +85,27 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull BagAdapter.ViewHolder holder, int position) {
-        String dateText = holder.itemView.getContext().getString(R.string.card_base_text);
         Bag bag = bagsArrayList.get(position);
+        int bagWeekNumber = bag.getWeekNumber();
+        String dateText = holder.itemView.getContext().getString(R.string.card_base_text);
+        String startDateString;
+        String endDateString;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String startDate = dateFormat.format(bag.getStartDate());
-        String endDate = dateFormat.format(bag.getEndDate());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.WEEK_OF_YEAR, bagWeekNumber);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        Date startDate = calendar.getTime();
+
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        Date endDate = calendar.getTime();
+
+        startDateString = dateFormat.format(startDate);
+        endDateString = dateFormat.format(endDate);
 
         holder.getBagCardIcon().setImageDrawable(AppCompatResources.getDrawable(holder.itemView.getContext(), R.drawable.luggage_icon));
         holder.getBagCardTitle().setText(holder.itemView.getContext().getString(R.string.card_bag_name_title));
-        holder.getBagCardDateText().setText(String.format(dateText, startDate, endDate));
+        holder.getBagCardDateText().setText(String.format(dateText, startDateString, endDateString));
     }
 
     @Override

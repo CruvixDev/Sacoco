@@ -7,19 +7,20 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.sacoco.data.AppRepository;
+import com.example.sacoco.data.DatabaseManager;
 import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
 import com.example.sacoco.models.ClothTypeEnum;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
 public class BagViewModel extends ViewModel {
     private final int MAX_STRING_LENGTH = 50;
+    private final int FIRST_WEEK_NUMBER = 1;
+    private final int LAST_WEEK_NUMBER = 52;
     private final MutableLiveData<Bag> selectedBagLiveData;
     private final MutableLiveData<Cloth> selectedClothLiveData;
     private final MutableLiveData<ArrayList<Cloth>> clothesLiveData;
@@ -28,7 +29,7 @@ public class BagViewModel extends ViewModel {
     public static final ViewModelInitializer<BagViewModel> bagViewModelViewModelInitializer =
             new ViewModelInitializer<>(
                     BagViewModel.class,
-                    creationExtras -> new BagViewModel(AppRepository.getInstance())
+                    creationExtras -> new BagViewModel(new AppRepository(new DatabaseManager()))
             );
 
     public BagViewModel(AppRepository appRepositoryInstance) {
@@ -46,19 +47,18 @@ public class BagViewModel extends ViewModel {
     /**
      * Create and add a new bag to the list of bags
      *
-     * @param startDate          the start date of the bag
-     * @param endDate            the end date of the bag
+     * @param weekNumber the number of the week in the year
      * @param clothesIdentifiers the UUID of the cloth
      * @return true if the bag has been created and added to the list of bags false if already
      * exists or parameters invalid
      */
-    public boolean addBag(Date startDate, Date endDate, ArrayList<UUID> clothesIdentifiers) {
-        boolean isBagExists = getBagByDates(startDate, endDate) == null;
+    public boolean addBag(int weekNumber, ArrayList<UUID> clothesIdentifiers) {
+        boolean isBagExists = getBagByWeekNumber(weekNumber) == null;
         boolean isBagAdded = false;
-        boolean isWeekValid = checkWeekValidity(startDate, endDate);
+        boolean isWeekValid = checkWeekValidity(weekNumber);
 
         if (isBagExists && isWeekValid) {
-            Bag newBagToAdd = new Bag(startDate, endDate);
+            Bag newBagToAdd = new Bag(weekNumber);
             Cloth clothToAdd;
             //Get the wrapped data
             ArrayList<Bag> bagsList = this.bagsLiveData.getValue();
@@ -84,12 +84,11 @@ public class BagViewModel extends ViewModel {
     /**
      * Remove a bag into the list of bags
      *
-     * @param startDate the start date of the bag
-     * @param endDate   the end date of the bag
+     * @param weekNumber the number of the week in the year
      * @return true if the bag has been removed from bags list false if it does not exists
      */
-    public boolean removeBag(Date startDate, Date endDate) {
-        Bag bagToRemove = getBagByDates(startDate, endDate);
+    public boolean removeBag(int weekNumber) {
+        Bag bagToRemove = getBagByWeekNumber(weekNumber);
         //Get the wrapped data
         ArrayList<Bag> bagsList = this.bagsLiveData.getValue();
         boolean isBagRemoved = false;
@@ -111,7 +110,7 @@ public class BagViewModel extends ViewModel {
      * @param clothType       the cloth type
      * @param imagePath       the cloth image path on the system
      * @return true if the cloth has been created and added to the list of clothes false if it
-     * already exists
+     * already exists or parameters invalid
      */
     public boolean addCloth(UUID clothIdentifier, String clothName, ClothTypeEnum clothType,
                             URI imagePath) {
@@ -161,7 +160,6 @@ public class BagViewModel extends ViewModel {
      *
      * @param clothesIdentifiers the UUID of clothes
      * @return true if a bag is selected false otherwise
-     * exist
      */
     public boolean addClothesToBag(ArrayList<UUID> clothesIdentifiers) {
         boolean isBagSelected = this.selectedBagLiveData.isInitialized();
@@ -214,11 +212,10 @@ public class BagViewModel extends ViewModel {
     /**
      * Set the selected bag livedata to be observed
      *
-     * @param startDate the start date of the bag
-     * @param endDate   the end date of the bag
+     * @param weekNumber the number of the week in the year
      */
-    public void setSelectedBagLiveData(Date startDate, Date endDate) {
-        Bag selectedBag = getBagByDates(startDate, endDate);
+    public void setSelectedBagLiveData(int weekNumber) {
+        Bag selectedBag = getBagByWeekNumber(weekNumber);
 
         if (selectedBag != null) {
             this.selectedBagLiveData.setValue(selectedBag);
@@ -276,13 +273,12 @@ public class BagViewModel extends ViewModel {
     /**
      * Get bag in the bags list by its start date and end date
      *
-     * @param startDate the start date
-     * @param endDate   the end date
+     * @param weekNumber the number of the week in the year
      * @return the bag matching the start and end date
      */
     @Nullable
-    private Bag getBagByDates(Date startDate, Date endDate) {
-        Bag bagToGet = new Bag(startDate, endDate);
+    private Bag getBagByWeekNumber(int weekNumber) {
+        Bag bagToGet = new Bag(weekNumber);
         int bagMatchingIndex = Objects.requireNonNull(this.bagsLiveData.getValue()).
                 indexOf(bagToGet);
 
@@ -297,23 +293,11 @@ public class BagViewModel extends ViewModel {
      * Check that the the start date and the end date are in the same week of the year and start
      * date is a monday and the end date a sunday
      *
-     * @param startDate the start date of the week
-     * @param endDate   the end date of the week
-     * @return true if start date is monday and end date is a sunday and sart date and the end date
+     * @param weekNumber the number of the week in the year
+     * @return true if start date is monday and end date is a sunday and start date and the end date
      * are in the same week of the year
      */
-    private boolean checkWeekValidity(Date startDate, Date endDate) {
-        Calendar startCalendar = Calendar.getInstance();
-        startCalendar.setTime(startDate);
-        Calendar endCalendar = Calendar.getInstance();
-        endCalendar.setTime(endDate);
-
-        boolean isStartDateMonday = startCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY;
-        boolean isEndDateSunday = endCalendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
-
-        boolean areInSameWeek = startCalendar.get(Calendar.WEEK_OF_YEAR) == endCalendar.
-                get(Calendar.WEEK_OF_YEAR);
-
-        return isStartDateMonday && isEndDateSunday && areInSameWeek;
+    private boolean checkWeekValidity(int weekNumber) {
+        return FIRST_WEEK_NUMBER <= weekNumber && weekNumber <= LAST_WEEK_NUMBER;
     }
 }
