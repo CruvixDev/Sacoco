@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.UUID;
 
 public class BagViewModelTest {
-    private BagViewModel bagViewModel = new BagViewModel(AppRepository.getInstance());
+    private BagViewModel bagViewModel = new BagViewModel(null);
 
     @Test
     public void addBag() {
