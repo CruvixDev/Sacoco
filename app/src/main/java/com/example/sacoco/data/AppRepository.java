@@ -6,18 +6,10 @@ import com.example.sacoco.models.Cloth;
 import java.util.ArrayList;
 
 public class AppRepository {
-    private static AppRepository appRepositoryInstance;
-    private DatabaseManager databaseManagerInstance;
+    private final DatabaseManager databaseManagerInstance;
 
-    private AppRepository(DatabaseManager databaseManagerInstance) {
+    public AppRepository(DatabaseManager databaseManagerInstance) {
         this.databaseManagerInstance = databaseManagerInstance;
-    }
-
-    public static AppRepository getInstance() {
-        if (appRepositoryInstance == null) {
-            appRepositoryInstance = new AppRepository(DatabaseManager.getInstance());
-        }
-        return appRepositoryInstance;
     }
 
     /**
