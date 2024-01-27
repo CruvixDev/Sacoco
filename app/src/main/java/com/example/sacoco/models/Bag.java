@@ -17,6 +17,7 @@ public class Bag {
 
     public Bag(int weekNumber) {
         this.weekNumber = weekNumber;
+        this.checked = false;
     }
 
     /**
