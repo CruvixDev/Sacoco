@@ -25,23 +25,23 @@ public class BagViewModel extends ViewModel {
     private final MutableLiveData<Cloth> selectedClothLiveData;
     private final MutableLiveData<ArrayList<Cloth>> clothesLiveData;
     private final MutableLiveData<ArrayList<Bag>> bagsLiveData;
-    private final AppRepository appRepositoryInstance;
+    private final AppRepository appRepository;
     public static final ViewModelInitializer<BagViewModel> bagViewModelViewModelInitializer =
             new ViewModelInitializer<>(
                     BagViewModel.class,
                     creationExtras -> new BagViewModel(new AppRepository(new DatabaseManager()))
             );
 
-    public BagViewModel(AppRepository appRepositoryInstance) {
+    public BagViewModel(AppRepository appRepository) {
         this.selectedBagLiveData = new MutableLiveData<>();
         this.selectedClothLiveData = new MutableLiveData<>();
         this.clothesLiveData = new MutableLiveData<>();
         this.bagsLiveData = new MutableLiveData<>();
-        this.appRepositoryInstance = appRepositoryInstance;
+        this.appRepository = appRepository;
 
         //Init the bags and clothes lists
-        this.bagsLiveData.setValue(new ArrayList<>());
-        this.clothesLiveData.setValue(new ArrayList<>());
+        this.bagsLiveData.setValue(this.getAllBags());
+        this.clothesLiveData.setValue(this.getAllClothes());
     }
 
     /**
@@ -299,5 +299,23 @@ public class BagViewModel extends ViewModel {
      */
     private boolean checkWeekValidity(int weekNumber) {
         return FIRST_WEEK_NUMBER <= weekNumber && weekNumber <= LAST_WEEK_NUMBER;
+    }
+
+    //TODO if room can return directly livedata object, we will return livedata
+    /**
+     * Return all bags store into internal database from app repository
+     * @return the list of all bags store
+     */
+    private ArrayList<Bag> getAllBags() {
+        return this.appRepository.getAllBags();
+    }
+
+    //TODO if room can return directly livedata object, we will return livedata
+    /**
+     * Return all clothes store into internal database from app repository
+     * @return the list of all clothes store
+     */
+    private ArrayList<Cloth> getAllClothes() {
+        return this.appRepository.getAllClothes();
     }
 }

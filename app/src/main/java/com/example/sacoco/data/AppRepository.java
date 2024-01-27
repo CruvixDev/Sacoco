@@ -53,7 +53,7 @@ public class AppRepository {
      * @return a list of all bags in the app's storage
      */
     public ArrayList<Bag> getAllBags() {
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -61,6 +61,6 @@ public class AppRepository {
      * @return a list of all clothes in the app's storage
      */
     public ArrayList<Cloth> getAllClothes() {
-        return null;
+        return new ArrayList<>();
     }
 }
