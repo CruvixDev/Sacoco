@@ -12,6 +12,7 @@ public class BagTest {
     private final int WEEK_NUMBER_1 = 1;
     private final int WEEK_NUMBER_52 = 52;
     private Bag bagToTest;
+    private Bag bagToTestChecked;
     private Cloth redPant;
     private Cloth blueShirt;
     private Cloth brownShoe;
@@ -20,6 +21,7 @@ public class BagTest {
     @Before
     public void initBagTest() {
         bagToTest = new Bag(WEEK_NUMBER_1);
+        bagToTestChecked = new Bag(WEEK_NUMBER_1, true);
 
         redPant = new Cloth(UUID.randomUUID(), "Red pant",
                 ClothTypeEnum.PANT, URI.create("/"));
@@ -80,14 +82,14 @@ public class BagTest {
 
     @Test
     public void isChecked() {
-        assertTrue(bagToTest.addClothToBag(redPant));
-        assertTrue(bagToTest.addClothToBag(blueShirt));
-        assertTrue(bagToTest.addClothToBag(brownShoe));
-        assertTrue(bagToTest.addClothToBag(greySocks));
+        assertTrue(bagToTestChecked.addClothToBag(redPant));
+        assertTrue(bagToTestChecked.addClothToBag(blueShirt));
+        assertTrue(bagToTestChecked.addClothToBag(brownShoe));
+        assertTrue(bagToTestChecked.addClothToBag(greySocks));
 
-        assertFalse(bagToTest.isChecked());
-        bagToTest.setChecked(true);
-        assertTrue(bagToTest.isChecked());
+        assertTrue(bagToTestChecked.isChecked());
+        bagToTestChecked.setChecked(false);
+        assertFalse(bagToTestChecked.isChecked());
     }
 
     @Test
