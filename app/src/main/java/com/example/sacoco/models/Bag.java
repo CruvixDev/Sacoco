@@ -3,6 +3,7 @@ package com.example.sacoco.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Bag {
     private final int weekNumber;
@@ -18,6 +19,7 @@ public class Bag {
     public Bag(int weekNumber) {
         this.weekNumber = weekNumber;
         this.checked = false;
+        this.clothesList = new ArrayList<>();
     }
 
     /**
@@ -26,7 +28,7 @@ public class Bag {
      * @return true if the cloth does not already exists in the bag false otherwise
      */
     public boolean addClothToBag(Cloth cloth) {
-        boolean clothExists = this.clothesList.contains(cloth);
+        boolean clothExists = !this.clothesList.contains(cloth);
 
         if (clothExists) {
             this.clothesList.add(cloth);
@@ -53,8 +55,20 @@ public class Bag {
         return this.clothesList.contains(cloth);
     }
 
+    /**
+     * Get the week number of the Bag
+     * @return the week number
+     */
     public int getWeekNumber() {
         return this.weekNumber;
+    }
+
+    /**
+     * Get all clothes into this bag
+     * @return the list of all clothes
+     */
+    public ArrayList<Cloth> getClothesList() {
+        return this.clothesList;
     }
 
     /**
@@ -65,6 +79,10 @@ public class Bag {
         return checked;
     }
 
+    /**
+     * Set the checked state of the bag
+     * @param checked true if the bag is checked false else
+     */
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
