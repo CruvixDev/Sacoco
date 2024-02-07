@@ -30,6 +30,7 @@ public class BagViewModelTest {
 
         assertEquals(bagViewModel.getBagsLiveData().getValue().size(), previousSize);
     }
+    
     @Test
     public void addBagWithInvalidWeekNumberAndExistingClothes() {
         int previousSize = bagViewModel.getBagsLiveData().getValue().size();
