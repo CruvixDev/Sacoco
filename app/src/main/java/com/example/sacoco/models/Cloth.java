@@ -1,27 +1,37 @@
 package com.example.sacoco.models;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.net.URI;
 
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
 public class Cloth {
-    private UUID clothUUID;
+    @NonNull
+    @PrimaryKey
+    private final UUID clothUUID;
     private String clothName;
     private ClothTypeEnum clothType;
     private URI imagePath;
 
-    public Cloth(UUID clothUUID, String clothName, ClothTypeEnum clothType, URI imagePath) {
+    public Cloth(@NonNull UUID clothUUID, String clothName, ClothTypeEnum clothType, URI imagePath) {
         this.clothUUID = clothUUID;
         this.clothName = clothName;
         this.clothType = clothType;
         this.imagePath = imagePath;
     }
 
-    public Cloth(UUID clothUUID) {
+    @Ignore
+    public Cloth(@NonNull UUID clothUUID) {
         this.clothUUID = clothUUID;
     }
 
+    @NonNull
     public UUID getClothUUID() {
         return clothUUID;
     }

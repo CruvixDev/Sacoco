@@ -1,24 +1,30 @@
 package com.example.sacoco.models;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
+@Entity
 public class Bag {
+    @PrimaryKey
     private final int weekNumber;
-    private boolean checked;
-    private ArrayList<Cloth> clothesList;
+    private boolean isChecked;
+    @Ignore
+    private final ArrayList<Cloth> clothesList;
 
     public Bag(int weekNumber, boolean checked) {
         this.weekNumber = weekNumber;
-        this.checked = checked;
+        this.isChecked = checked;
         this.clothesList = new ArrayList<>();
     }
 
+    @Ignore
     public Bag(int weekNumber) {
         this.weekNumber = weekNumber;
-        this.checked = false;
+        this.isChecked = false;
         this.clothesList = new ArrayList<>();
     }
 
@@ -76,7 +82,7 @@ public class Bag {
      * @return the checked status of the bag
      */
     public boolean isChecked() {
-        return checked;
+        return isChecked;
     }
 
     /**
@@ -84,7 +90,7 @@ public class Bag {
      * @param checked true if the bag is checked false else
      */
     public void setChecked(boolean checked) {
-        this.checked = checked;
+        this.isChecked = checked;
     }
 
     @Override

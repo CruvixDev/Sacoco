@@ -1,0 +1,138 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "7bd605fd10dab0eda927ccab93bf4051",
+    "entities": [
+      {
+        "tableName": "Bag",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`weekNumber` INTEGER NOT NULL, `isChecked` INTEGER NOT NULL, PRIMARY KEY(`weekNumber`))",
+        "fields": [
+          {
+            "fieldPath": "weekNumber",
+            "columnName": "weekNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isChecked",
+            "columnName": "isChecked",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "weekNumber"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Cloth",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`clothUUID` TEXT NOT NULL, `clothName` TEXT, `clothType` TEXT, `imagePath` TEXT, PRIMARY KEY(`clothUUID`))",
+        "fields": [
+          {
+            "fieldPath": "clothUUID",
+            "columnName": "clothUUID",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clothName",
+            "columnName": "clothName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clothType",
+            "columnName": "clothType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imagePath",
+            "columnName": "imagePath",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "clothUUID"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BagClothCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`weekNumber` INTEGER NOT NULL, `clothUUID` TEXT NOT NULL, PRIMARY KEY(`weekNumber`, `clothUUID`), FOREIGN KEY(`weekNumber`) REFERENCES `Bag`(`weekNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`clothUUID`) REFERENCES `Cloth`(`clothUUID`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "weekNumber",
+            "columnName": "weekNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clothUUID",
+            "columnName": "clothUUID",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "weekNumber",
+            "clothUUID"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_BagClothCrossRef_clothUUID",
+            "unique": false,
+            "columnNames": [
+              "clothUUID"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_BagClothCrossRef_clothUUID` ON `${TABLE_NAME}` (`clothUUID`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Bag",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "weekNumber"
+            ],
+            "referencedColumns": [
+              "weekNumber"
+            ]
+          },
+          {
+            "table": "Cloth",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "clothUUID"
+            ],
+            "referencedColumns": [
+              "clothUUID"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7bd605fd10dab0eda927ccab93bf4051')"
+    ]
+  }
+}

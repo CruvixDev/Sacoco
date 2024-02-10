@@ -6,6 +6,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
+import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
+
+import android.app.Application;
+
 import com.example.sacoco.data.AppRepository;
 import com.example.sacoco.data.DatabaseManager;
 import com.example.sacoco.models.Bag;
@@ -29,7 +33,13 @@ public class BagViewModel extends ViewModel {
     public static final ViewModelInitializer<BagViewModel> bagViewModelViewModelInitializer =
             new ViewModelInitializer<>(
                     BagViewModel.class,
-                    creationExtras -> new BagViewModel(new AppRepository(new DatabaseManager()))
+                    creationExtras -> {
+                        Application application = creationExtras.get(APPLICATION_KEY);
+                        DatabaseManager databaseManager = DatabaseManager.getInstance(application);
+                        AppRepository repository = new AppRepository(databaseManager);
+
+                        return new BagViewModel(repository);
+                    }
             );
 
     public BagViewModel(AppRepository appRepository) {
