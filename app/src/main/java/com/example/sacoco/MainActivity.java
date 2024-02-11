@@ -10,7 +10,7 @@ import android.os.Bundle;
 import com.example.sacoco.fragments.ClothesListFragment;
 import com.example.sacoco.fragments.EmailFragment;
 import com.example.sacoco.fragments.HomeFragment;
-import com.example.sacoco.fragments.MenuFragment;
+import com.example.sacoco.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_clothes_list)));
         }
         else if (itemId == R.id.settings) {
-            loadFragment(MenuFragment.class);
+            loadFragment(SettingsFragment.class);
             this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_settings)));
         }
         else if (itemId == R.id.email) {

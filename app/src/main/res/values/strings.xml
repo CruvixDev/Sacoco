@@ -63,4 +63,12 @@
 
     <!-- Camera fragment string literals -->
     <string name="fragment_camera_take_picture">Capturer</string>
+
+    <!-- Preferences string literals -->
+    <string name="preferences_category_appearance">Apparence de l\'application</string>
+    <string name="preferences_theme">Thème sombre / Thème clair</string>
+    <string name="preferences_category_version">Versionnage</string>
+    <string name="preferences_app_version">Version de l\'application</string>
+    <string name="preferences_category_about_app">A propos de l\'application</string>
+    <string name="preferences_cgu">Conditions générales d\'utilisation</string>
 </resources>
