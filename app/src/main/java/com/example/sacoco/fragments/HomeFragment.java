@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment implements CardAction {
         addBagButton.setOnClickListener(addBagButtonClickedListener);
     }
 
+    //TODO don't open more than twice the dialog
     private final View.OnClickListener addBagButtonClickedListener = view -> {
         AddBagDialogFragment addBagDialogFragment = new AddBagDialogFragment();
         requireActivity().getSupportFragmentManager().
