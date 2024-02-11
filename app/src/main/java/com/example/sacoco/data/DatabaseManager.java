@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.example.sacoco.data.converters.Converters;
+import com.example.sacoco.data.dao.BagClothCrossRefDAO;
 import com.example.sacoco.data.dao.BagDAO;
 import com.example.sacoco.data.dao.ClothDAO;
 import com.example.sacoco.models.Bag;
@@ -30,4 +31,5 @@ public abstract class DatabaseManager extends RoomDatabase {
 
     public abstract BagDAO bagDAO();
     public abstract ClothDAO clothDAO();
+    public abstract BagClothCrossRefDAO bagClothCrossRefDAO();
 }

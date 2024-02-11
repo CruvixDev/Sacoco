@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7bd605fd10dab0eda927ccab93bf4051",
+    "identityHash": "889baa52e60b2848caad6495c3a85f0f",
     "entities": [
       {
         "tableName": "Bag",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "Cloth",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`clothUUID` TEXT NOT NULL, `clothName` TEXT, `clothType` TEXT, `imagePath` TEXT, PRIMARY KEY(`clothUUID`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`clothUUID` TEXT NOT NULL, `clothName` TEXT, `clothType` INTEGER, `imagePath` TEXT, PRIMARY KEY(`clothUUID`))",
         "fields": [
           {
             "fieldPath": "clothUUID",
@@ -49,7 +49,7 @@
           {
             "fieldPath": "clothType",
             "columnName": "clothType",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": false
           },
           {
@@ -70,7 +70,7 @@
       },
       {
         "tableName": "BagClothCrossRef",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`weekNumber` INTEGER NOT NULL, `clothUUID` TEXT NOT NULL, PRIMARY KEY(`weekNumber`, `clothUUID`), FOREIGN KEY(`weekNumber`) REFERENCES `Bag`(`weekNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`clothUUID`) REFERENCES `Cloth`(`clothUUID`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`weekNumber` INTEGER NOT NULL, `clothUUID` TEXT, PRIMARY KEY(`weekNumber`, `clothUUID`), FOREIGN KEY(`weekNumber`) REFERENCES `Bag`(`weekNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`clothUUID`) REFERENCES `Cloth`(`clothUUID`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "weekNumber",
@@ -82,7 +82,7 @@
             "fieldPath": "clothUUID",
             "columnName": "clothUUID",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -132,7 +132,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7bd605fd10dab0eda927ccab93bf4051')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '889baa52e60b2848caad6495c3a85f0f')"
     ]
   }
 }
