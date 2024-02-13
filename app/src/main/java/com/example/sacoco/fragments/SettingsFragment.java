@@ -4,7 +4,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.sacoco.R;
@@ -14,7 +14,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
-        EditTextPreference appVersionPreference = findPreference("appVersion");
+        Preference appVersionPreference = findPreference("preferencesAppVersion");
 
         try {
             PackageInfo packageInfo = requireContext().getPackageManager().getPackageInfo(

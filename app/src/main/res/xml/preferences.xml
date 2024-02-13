@@ -2,43 +2,35 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:title="@string/preferences_category_appearance"
         android:icon="@drawable/style">
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="appearance"
+            android:key="preferencesAppearance"
             android:title="@string/preferences_theme" />
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:title="@string/preferences_category_version"
         android:icon="@drawable/phone">
 
-        <EditTextPreference
-            android:defaultValue="Default value"
-            android:key="appVersion"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:enabled="false"
-            android:title="@string/preferences_app_version" />
+        <Preference
+            android:key="preferencesAppVersion"
+            android:title="@string/preferences_app_version"
+            android:selectable="true"
+            android:clickable="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/preferences_category_about_app"
         android:icon="@drawable/info">
 
-        <EditTextPreference
-            android:defaultValue="Default value"
-            android:key="appCGU"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:enabled="false"
-            android:title="@string/preferences_cgu" />
+        <Preference
+            android:key="preferencesAppCGU"
+            android:title="@string/preferences_cgu"
+            android:selectable="true"
+            android:clickable="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -46,7 +38,7 @@
         android:icon="@drawable/qr_code">
 
         <Preference
-            android:key=""
+            android:key="preferencesQRCode"
             android:title="@string/preferences_qrcode_generation"
             android:selectable="true"
             android:clickable="true" />
