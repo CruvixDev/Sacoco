@@ -71,4 +71,6 @@
     <string name="preferences_app_version">Version de l\'application</string>
     <string name="preferences_category_about_app">A propos de l\'application</string>
     <string name="preferences_cgu">Conditions générales d\'utilisation</string>
+    <string name="preferences_category_qrcode">QR code</string>
+    <string name="preferences_qrcode_generation">Générer un QR code</string>
 </resources>

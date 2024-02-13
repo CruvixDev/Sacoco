@@ -4,7 +4,8 @@
     <PreferenceCategory
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/preferences_category_appearance">
+        android:title="@string/preferences_category_appearance"
+        android:icon="@drawable/style">
 
         <SwitchPreference
             android:defaultValue="false"
@@ -15,7 +16,8 @@
     <PreferenceCategory
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="@string/preferences_category_version">
+        android:title="@string/preferences_category_version"
+        android:icon="@drawable/phone">
 
         <EditTextPreference
             android:defaultValue="Default value"
@@ -26,7 +28,9 @@
             android:title="@string/preferences_app_version" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/preferences_category_about_app">
+    <PreferenceCategory
+        android:title="@string/preferences_category_about_app"
+        android:icon="@drawable/info">
 
         <EditTextPreference
             android:defaultValue="Default value"
@@ -35,5 +39,16 @@
             android:singleLine="true"
             android:enabled="false"
             android:title="@string/preferences_cgu" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preferences_category_qrcode"
+        android:icon="@drawable/qr_code">
+
+        <Preference
+            android:key=""
+            android:title="@string/preferences_qrcode_generation"
+            android:selectable="true"
+            android:clickable="true" />
     </PreferenceCategory>
 </PreferenceScreen>
