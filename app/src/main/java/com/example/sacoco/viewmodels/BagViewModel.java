@@ -48,10 +48,6 @@ public class BagViewModel extends ViewModel {
         this.clothesLiveData = new MutableLiveData<>();
         this.bagsLiveData = new MutableLiveData<>();
         this.appRepository = appRepository;
-
-        //Init the bags and clothes lists
-        this.bagsLiveData.setValue(this.getAllBags());
-        this.clothesLiveData.setValue(this.getAllClothes());
     }
 
     /**
@@ -311,21 +307,17 @@ public class BagViewModel extends ViewModel {
         return FIRST_WEEK_NUMBER <= weekNumber && weekNumber <= LAST_WEEK_NUMBER;
     }
 
-    //TODO if room can return directly livedata object, we will return livedata
     /**
-     * Return all bags store into internal database from app repository
-     * @return the list of all bags store
+     * Get all bags store into internal database from app repository
      */
-    private ArrayList<Bag> getAllBags() {
-        return this.appRepository.getAllBags();
+    private void getAllBags() {
+        this.bagsLiveData.setValue(this.appRepository.getAllBags());
     }
 
-    //TODO if room can return directly livedata object, we will return livedata
     /**
-     * Return all clothes store into internal database from app repository
-     * @return the list of all clothes store
+     * Get all clothes store into internal database from app repository
      */
-    private ArrayList<Cloth> getAllClothes() {
-        return this.appRepository.getAllClothes();
+    private void getAllClothes() {
+        this.clothesLiveData.setValue(this.appRepository.getAllClothes());
     }
 }
