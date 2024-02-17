@@ -59,6 +59,9 @@ public class BagViewModel extends ViewModel {
         this.clothesLiveData = new MutableLiveData<>();
         this.bagsLiveData = new MutableLiveData<>();
         this.appRepository = appRepository;
+
+        getAllBags();
+        getAllClothes();
     }
 
     /**
