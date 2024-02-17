@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.example.sacoco.fragments.ClothesListFragment;
 import com.example.sacoco.fragments.EmailFragment;
 import com.example.sacoco.fragments.HomeFragment;
 import com.example.sacoco.fragments.SettingsFragment;
+import com.example.sacoco.viewmodels.BagViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -25,6 +29,20 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
+
+        BagViewModel bagViewModel = new ViewModelProvider(this, ViewModelProvider.Factory.
+                from(BagViewModel.bagViewModelViewModelInitializer)).get(BagViewModel.class);
+
+        PackageInfo packageInfo;
+        try {
+            packageInfo = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        String versionName = packageInfo.versionName;
+        bagViewModel.setAppVersion(versionName);
     }
 
     private final NavigationBarView.OnItemSelectedListener onItemSelectedListener = item -> {

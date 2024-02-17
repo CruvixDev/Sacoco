@@ -1,15 +1,26 @@
 package com.example.sacoco.data;
 
+import androidx.datastore.preferences.core.MutablePreferences;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.preferences.core.PreferencesKeys;
+import androidx.datastore.rxjava3.RxDataStore;
+
 import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
 
 import java.util.ArrayList;
 
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+
 public class AppRepository {
     private final DatabaseManager databaseManagerInstance;
+    private final RxDataStore<Preferences> appPreferencesDataStore;
 
-    public AppRepository(DatabaseManager databaseManagerInstance) {
+    public AppRepository(DatabaseManager databaseManagerInstance,
+                         RxDataStore<Preferences> appPreferencesDataStore) {
         this.databaseManagerInstance = databaseManagerInstance;
+        this.appPreferencesDataStore = appPreferencesDataStore;
     }
 
     /**
@@ -62,5 +73,46 @@ public class AppRepository {
      */
     public ArrayList<Cloth> getAllClothes() {
         return new ArrayList<>();
+    }
+
+    /**
+     * Read a preference String value from a String key
+     * @param key the String key
+     * @return a RxJava Flowable to observe
+     */
+    public Flowable<String> readStringPreference(String key) {
+        Preferences.Key<String> preferenceKey = PreferencesKeys.stringKey(key);
+
+        return appPreferencesDataStore.data().map(
+                preferences -> preferences.get(preferenceKey)
+        );
+    }
+
+    /**
+     * Write a preference String value for a specified String key
+     * @param key the String key
+     * @param value the String value to write
+     */
+    public void writeStringPreference(String key, String value) {
+        Preferences.Key<String> preferenceKey = PreferencesKeys.stringKey(key);
+
+        appPreferencesDataStore.updateDataAsync(preferences -> {
+            MutablePreferences mutablePreferences = preferences.toMutablePreferences();
+            mutablePreferences.set(preferenceKey, value);
+            return Single.just(mutablePreferences);
+        });
+    }
+
+    /**
+     * Read a preference boolean value from a String key
+     * @param key the String key
+     * @return a RxJava Flowable to observe
+     */
+    public Flowable<Boolean> readBooleanPreference(String key) {
+        Preferences.Key<Boolean> preferenceKey = PreferencesKeys.booleanKey(key);
+
+        return appPreferencesDataStore.data().map(
+                preferences -> preferences.get(preferenceKey)
+        );
     }
 }

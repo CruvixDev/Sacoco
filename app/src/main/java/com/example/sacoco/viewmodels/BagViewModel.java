@@ -1,6 +1,9 @@
 package com.example.sacoco.viewmodels;
 
 import androidx.annotation.Nullable;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
+import androidx.datastore.rxjava3.RxDataStore;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -21,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 public class BagViewModel extends ViewModel {
     private final int MAX_STRING_LENGTH = 50;
     private final int FIRST_WEEK_NUMBER = 1;
@@ -36,7 +41,13 @@ public class BagViewModel extends ViewModel {
                     creationExtras -> {
                         Application application = creationExtras.get(APPLICATION_KEY);
                         DatabaseManager databaseManager = DatabaseManager.getInstance(application);
-                        AppRepository repository = new AppRepository(databaseManager);
+
+                        RxDataStore< Preferences> appPreferencesDataStore =
+                                new RxPreferenceDataStoreBuilder(Objects.requireNonNull(application),
+                                        "appSettings").build();
+
+                        AppRepository repository = new AppRepository(databaseManager,
+                                appPreferencesDataStore);
 
                         return new BagViewModel(repository);
                     }
@@ -258,6 +269,38 @@ public class BagViewModel extends ViewModel {
     }
 
     /**
+     * Get the App version from preferences data store
+     * @return a Flowable to observe to get the App version asynchronously
+     */
+    public Flowable<String> getAppVersion() {
+        String appVersionKey = "appVersion";
+        return this.appRepository.readStringPreference(appVersionKey);
+    }
+
+    /**
+     * Write the App version to preferences data store
+     * @param appVersion the App version to write
+     */
+    public void setAppVersion(String appVersion) {
+        String appVersionKey = "appVersion";
+        this.appRepository.writeStringPreference(appVersionKey, appVersion);
+    }
+
+    /**
+     * Get all bags store into internal database from app repository
+     */
+    private void getAllBags() {
+        this.bagsLiveData.setValue(this.appRepository.getAllBags());
+    }
+
+    /**
+     * Get all clothes store into internal database from app repository
+     */
+    private void getAllClothes() {
+        this.clothesLiveData.setValue(this.appRepository.getAllClothes());
+    }
+
+    /**
      * Get cloth in the clothes list by its UUID
      *
      * @param clothIdentifier the UUID of the close to find
@@ -305,19 +348,5 @@ public class BagViewModel extends ViewModel {
      */
     private boolean checkWeekValidity(int weekNumber) {
         return FIRST_WEEK_NUMBER <= weekNumber && weekNumber <= LAST_WEEK_NUMBER;
-    }
-
-    /**
-     * Get all bags store into internal database from app repository
-     */
-    private void getAllBags() {
-        this.bagsLiveData.setValue(this.appRepository.getAllBags());
-    }
-
-    /**
-     * Get all clothes store into internal database from app repository
-     */
-    private void getAllClothes() {
-        this.clothesLiveData.setValue(this.appRepository.getAllClothes());
     }
 }

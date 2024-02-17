@@ -2,19 +2,15 @@ package com.example.sacoco.viewmodels;
 
 import static org.junit.Assert.*;
 
-import com.example.sacoco.data.AppRepository;
-import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
-import com.example.sacoco.models.ClothTypeEnum;
 
 import org.junit.Test;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class BagViewModelTest {
-    private BagViewModel bagViewModel = new BagViewModel(new FakeAppRepository());
+    private final BagViewModel bagViewModel = new BagViewModel(new FakeAppRepository());
 
     @Test
     public void addBagWithInvalidWeekNumberAndNotExistingClothes() {
