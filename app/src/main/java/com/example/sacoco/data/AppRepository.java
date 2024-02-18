@@ -9,6 +9,7 @@ import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
@@ -61,18 +62,18 @@ public class AppRepository {
 
     /**
      * Get all bags saved in the app's storage
-     * @return a list of all bags in the app's storage
+     * @return an observable list of all bags in the app's storage
      */
-    public ArrayList<Bag> getAllBags() {
-        return new ArrayList<>();
+    public Single<List<Bag>> getAllBags() {
+        return databaseManagerInstance.bagDAO().getAllBags();
     }
 
     /**
      * Get all clothes saved in the app's storage
-     * @return a list of all clothes in the app's storage
+     * @return an observable list of all clothes in the app's storage
      */
-    public ArrayList<Cloth> getAllClothes() {
-        return new ArrayList<>();
+    public Single<List<Cloth>> getAllClothes() {
+        return databaseManagerInstance.clothDAO().getAllClothes();
     }
 
     /**

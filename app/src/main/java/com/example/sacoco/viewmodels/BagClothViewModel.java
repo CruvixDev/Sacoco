@@ -24,17 +24,20 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class BagClothViewModel extends ViewModel {
-    private final int MAX_STRING_LENGTH = 50;
-    private final int FIRST_WEEK_NUMBER = 1;
-    private final int LAST_WEEK_NUMBER = 52;
     private final MutableLiveData<Bag> selectedBagLiveData;
     private final MutableLiveData<Cloth> selectedClothLiveData;
     private final MutableLiveData<ArrayList<Cloth>> clothesLiveData;
     private final MutableLiveData<ArrayList<Bag>> bagsLiveData;
     private final AppRepository appRepository;
+
+    private final CompositeDisposable compositeDisposable;
     public static final ViewModelInitializer<BagClothViewModel> bagViewModelViewModelInitializer =
             new ViewModelInitializer<>(
                     BagClothViewModel.class,
@@ -59,9 +62,21 @@ public class BagClothViewModel extends ViewModel {
         this.clothesLiveData = new MutableLiveData<>();
         this.bagsLiveData = new MutableLiveData<>();
         this.appRepository = appRepository;
+        this.compositeDisposable = new CompositeDisposable();
 
+        //Init the array list og Bags and Clothes
+        this.bagsLiveData.setValue(new ArrayList<>());
+        this.clothesLiveData.setValue(new ArrayList<>());
+
+        //Fetch Bags and Clothes into Room database
         getAllBags();
         getAllClothes();
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        this.compositeDisposable.dispose();
     }
 
     /**
@@ -134,6 +149,7 @@ public class BagClothViewModel extends ViewModel {
      */
     public boolean addCloth(UUID clothIdentifier, String clothName, ClothTypeEnum clothType,
                             URI imagePath) {
+        int MAX_STRING_LENGTH = 50;
         boolean isClothExists = getClothByUUID(clothIdentifier) == null;
         boolean isClothAdded = false;
 
@@ -293,14 +309,28 @@ public class BagClothViewModel extends ViewModel {
      * Get all bags store into internal database from app repository
      */
     private void getAllBags() {
-        this.bagsLiveData.setValue(this.appRepository.getAllBags());
+        Disposable disposable = this.appRepository.getAllBags()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        bagsList -> this.bagsLiveData.setValue(new ArrayList<>(bagsList)),
+                        throwable -> this.bagsLiveData.setValue(new ArrayList<>())
+                );
+        this.compositeDisposable.add(disposable);
     }
 
     /**
      * Get all clothes store into internal database from app repository
      */
     private void getAllClothes() {
-        this.clothesLiveData.setValue(this.appRepository.getAllClothes());
+        Disposable disposable = this.appRepository.getAllClothes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        clothesList -> this.clothesLiveData.setValue(new ArrayList<>(clothesList)),
+                        throwable -> this.clothesLiveData.setValue(new ArrayList<>())
+                );
+        this.compositeDisposable.add(disposable);
     }
 
     /**
@@ -350,6 +380,8 @@ public class BagClothViewModel extends ViewModel {
      * are in the same week of the year
      */
     private boolean checkWeekValidity(int weekNumber) {
+        int FIRST_WEEK_NUMBER = 1;
+        int LAST_WEEK_NUMBER = 52;
         return FIRST_WEEK_NUMBER <= weekNumber && weekNumber <= LAST_WEEK_NUMBER;
     }
 }
