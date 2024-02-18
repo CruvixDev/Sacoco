@@ -11,18 +11,21 @@ import com.example.sacoco.models.Bag;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface BagDAO {
     @Insert
-    void insertBag(Bag bagToInsert);
+    Completable insertBag(Bag bagToInsert);
 
     @Delete
-    void deleteBag(Bag bagToDelete);
+    Completable deleteBag(Bag bagToDelete);
 
     @Update
-    void updateBag(Bag bagToUpdate);
+    Completable updateBag(Bag bagToUpdate);
 
     @Transaction
     @Query("SELECT * FROM Bag")
-    List<Bag> getAllBags();
+    Single<List<Bag>> getAllBags();
 }

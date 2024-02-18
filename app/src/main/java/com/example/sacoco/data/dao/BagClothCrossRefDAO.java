@@ -6,11 +6,13 @@ import androidx.room.Insert;
 
 import com.example.sacoco.models.BagClothCrossRef;
 
+import io.reactivex.rxjava3.core.Completable;
+
 @Dao
 public interface BagClothCrossRefDAO {
     @Insert
-    void insertClothInBag(BagClothCrossRef clothToInsertInBag);
+    Completable insertClothInBag(BagClothCrossRef clothToInsertInBag);
 
     @Delete
-    void deleteClothInBag(BagClothCrossRef clothToDeleteInBag);
+    Completable deleteClothInBag(BagClothCrossRef clothToDeleteInBag);
 }

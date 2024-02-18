@@ -10,17 +10,20 @@ import com.example.sacoco.models.Cloth;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface ClothDAO {
     @Insert
-    void insertCloth(Cloth clothToInsert);
+    Completable insertCloth(Cloth clothToInsert);
 
     @Delete
-    void deleteCloth(Cloth clothToDelete);
+    Completable deleteCloth(Cloth clothToDelete);
 
     @Update
-    void updateCloth(Cloth clothToUpdate);
+    Completable updateCloth(Cloth clothToUpdate);
 
     @Query("SELECT * FROM Cloth")
-    List<Cloth> getAllClothes();
+    Single<List<Cloth>> getAllClothes();
 }
