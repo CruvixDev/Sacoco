@@ -26,7 +26,7 @@ import java.util.UUID;
 
 import io.reactivex.rxjava3.core.Flowable;
 
-public class BagViewModel extends ViewModel {
+public class BagClothViewModel extends ViewModel {
     private final int MAX_STRING_LENGTH = 50;
     private final int FIRST_WEEK_NUMBER = 1;
     private final int LAST_WEEK_NUMBER = 52;
@@ -35,9 +35,9 @@ public class BagViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Cloth>> clothesLiveData;
     private final MutableLiveData<ArrayList<Bag>> bagsLiveData;
     private final AppRepository appRepository;
-    public static final ViewModelInitializer<BagViewModel> bagViewModelViewModelInitializer =
+    public static final ViewModelInitializer<BagClothViewModel> bagViewModelViewModelInitializer =
             new ViewModelInitializer<>(
-                    BagViewModel.class,
+                    BagClothViewModel.class,
                     creationExtras -> {
                         Application application = creationExtras.get(APPLICATION_KEY);
                         DatabaseManager databaseManager = DatabaseManager.getInstance(application);
@@ -49,11 +49,11 @@ public class BagViewModel extends ViewModel {
                         AppRepository repository = new AppRepository(databaseManager,
                                 appPreferencesDataStore);
 
-                        return new BagViewModel(repository);
+                        return new BagClothViewModel(repository);
                     }
             );
 
-    public BagViewModel(AppRepository appRepository) {
+    public BagClothViewModel(AppRepository appRepository) {
         this.selectedBagLiveData = new MutableLiveData<>();
         this.selectedClothLiveData = new MutableLiveData<>();
         this.clothesLiveData = new MutableLiveData<>();

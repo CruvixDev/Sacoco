@@ -9,100 +9,100 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class BagViewModelTest {
-    private final BagViewModel bagViewModel = new BagViewModel(new FakeAppRepository());
+public class BagClothViewModelTest {
+    private final BagClothViewModel bagClothViewModel = new BagClothViewModel(new FakeAppRepository());
 
     @Test
     public void addBagWithInvalidWeekNumberAndNotExistingClothes() {
-        int previousSize = bagViewModel.getBagsLiveData().getValue().size();
+        int previousSize = bagClothViewModel.getBagsLiveData().getValue().size();
 
         ArrayList<UUID> notExistingClothesUUID = new ArrayList<>();
         notExistingClothesUUID.add(UUID.randomUUID());
         notExistingClothesUUID.add(UUID.randomUUID());
 
-        bagViewModel.addBag(-1, notExistingClothesUUID);
-        bagViewModel.addBag(53, notExistingClothesUUID);
-        bagViewModel.addBag(0, notExistingClothesUUID);
+        bagClothViewModel.addBag(-1, notExistingClothesUUID);
+        bagClothViewModel.addBag(53, notExistingClothesUUID);
+        bagClothViewModel.addBag(0, notExistingClothesUUID);
 
-        assertEquals(bagViewModel.getBagsLiveData().getValue().size(), previousSize);
+        assertEquals(bagClothViewModel.getBagsLiveData().getValue().size(), previousSize);
     }
     
     @Test
     public void addBagWithInvalidWeekNumberAndExistingClothes() {
-        int previousSize = bagViewModel.getBagsLiveData().getValue().size();
+        int previousSize = bagClothViewModel.getBagsLiveData().getValue().size();
 
         ArrayList<UUID> existingClothesUUID = new ArrayList<>();
-        for (Cloth cloth : bagViewModel.getClothesLiveData().getValue()) {
+        for (Cloth cloth : bagClothViewModel.getClothesLiveData().getValue()) {
             existingClothesUUID.add(cloth.getClothUUID());
         }
 
-        bagViewModel.addBag(-1, existingClothesUUID);
-        bagViewModel.addBag(53, existingClothesUUID);
-        bagViewModel.addBag(0, existingClothesUUID);
+        bagClothViewModel.addBag(-1, existingClothesUUID);
+        bagClothViewModel.addBag(53, existingClothesUUID);
+        bagClothViewModel.addBag(0, existingClothesUUID);
 
-        assertEquals(bagViewModel.getBagsLiveData().getValue().size(), previousSize);
+        assertEquals(bagClothViewModel.getBagsLiveData().getValue().size(), previousSize);
     }
 
     @Test
     public void addBagWithValidWeekNumberAndNotExistingClothes() {
-        int previousSize = bagViewModel.getBagsLiveData().getValue().size();
+        int previousSize = bagClothViewModel.getBagsLiveData().getValue().size();
 
         ArrayList<UUID> notExistingClothesUUID = new ArrayList<>();
         notExistingClothesUUID.add(UUID.randomUUID());
         notExistingClothesUUID.add(UUID.randomUUID());
 
-        bagViewModel.addBag(7, notExistingClothesUUID);
-        bagViewModel.addBag(8, notExistingClothesUUID);
-        bagViewModel.addBag(9, notExistingClothesUUID);
+        bagClothViewModel.addBag(7, notExistingClothesUUID);
+        bagClothViewModel.addBag(8, notExistingClothesUUID);
+        bagClothViewModel.addBag(9, notExistingClothesUUID);
 
-        assertEquals(bagViewModel.getBagsLiveData().getValue().size(), previousSize + 3);
+        assertEquals(bagClothViewModel.getBagsLiveData().getValue().size(), previousSize + 3);
     }
 
     @Test
     public void addBagWithValidWeekNumberAndExistingClothes() {
-        int previousSize = bagViewModel.getBagsLiveData().getValue().size();
+        int previousSize = bagClothViewModel.getBagsLiveData().getValue().size();
 
         ArrayList<UUID> existingClothesUUID = new ArrayList<>();
-        for (Cloth cloth : bagViewModel.getClothesLiveData().getValue()) {
+        for (Cloth cloth : bagClothViewModel.getClothesLiveData().getValue()) {
             existingClothesUUID.add(cloth.getClothUUID());
         }
 
-        bagViewModel.addBag(10, existingClothesUUID);
-        bagViewModel.addBag(11, existingClothesUUID);
-        bagViewModel.addBag(12, existingClothesUUID);
+        bagClothViewModel.addBag(10, existingClothesUUID);
+        bagClothViewModel.addBag(11, existingClothesUUID);
+        bagClothViewModel.addBag(12, existingClothesUUID);
 
-        assertEquals(bagViewModel.getBagsLiveData().getValue().size(), previousSize + 3);
+        assertEquals(bagClothViewModel.getBagsLiveData().getValue().size(), previousSize + 3);
     }
 
     @Test
     public void addBagExistingWithNotExistingClothes() {
-        int previousSize = bagViewModel.getBagsLiveData().getValue().size();
+        int previousSize = bagClothViewModel.getBagsLiveData().getValue().size();
 
         ArrayList<UUID> notExistingClothesUUID = new ArrayList<>();
         notExistingClothesUUID.add(UUID.randomUUID());
         notExistingClothesUUID.add(UUID.randomUUID());
 
-        bagViewModel.addBag(7, notExistingClothesUUID);
-        bagViewModel.addBag(8, notExistingClothesUUID);
-        bagViewModel.addBag(9, notExistingClothesUUID);
+        bagClothViewModel.addBag(7, notExistingClothesUUID);
+        bagClothViewModel.addBag(8, notExistingClothesUUID);
+        bagClothViewModel.addBag(9, notExistingClothesUUID);
 
-        assertEquals(bagViewModel.getBagsLiveData().getValue().size(), previousSize);
+        assertEquals(bagClothViewModel.getBagsLiveData().getValue().size(), previousSize);
     }
 
     @Test
     public void addBagExistingWithExistingClothes() {
-        int previousSize = bagViewModel.getBagsLiveData().getValue().size();
+        int previousSize = bagClothViewModel.getBagsLiveData().getValue().size();
 
         ArrayList<UUID> existingClothesUUID = new ArrayList<>();
-        for (Cloth cloth : bagViewModel.getClothesLiveData().getValue()) {
+        for (Cloth cloth : bagClothViewModel.getClothesLiveData().getValue()) {
             existingClothesUUID.add(cloth.getClothUUID());
         }
 
-        bagViewModel.addBag(10, existingClothesUUID);
-        bagViewModel.addBag(11, existingClothesUUID);
-        bagViewModel.addBag(12, existingClothesUUID);
+        bagClothViewModel.addBag(10, existingClothesUUID);
+        bagClothViewModel.addBag(11, existingClothesUUID);
+        bagClothViewModel.addBag(12, existingClothesUUID);
 
-        assertEquals(bagViewModel.getBagsLiveData().getValue().size(), previousSize);
+        assertEquals(bagClothViewModel.getBagsLiveData().getValue().size(), previousSize);
     }
 
     @Test

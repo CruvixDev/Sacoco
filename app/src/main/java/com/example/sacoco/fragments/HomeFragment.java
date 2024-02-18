@@ -16,13 +16,13 @@ import com.example.sacoco.R;
 import com.example.sacoco.adapter.BagAdapter;
 import com.example.sacoco.cominterface.CardAction;
 import com.example.sacoco.dialogs.AddBagDialogFragment;
-import com.example.sacoco.viewmodels.BagViewModel;
+import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
 public class HomeFragment extends Fragment implements CardAction {
-    private BagViewModel bagViewModel;
+    private BagClothViewModel bagClothViewModel;
     private RecyclerView bagsRecyclerView;
 
     public HomeFragment() {
@@ -33,13 +33,13 @@ public class HomeFragment extends Fragment implements CardAction {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        bagViewModel = new ViewModelProvider(requireActivity()).get(BagViewModel.class);
+        bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
 
         bagsRecyclerView = view.findViewById(R.id.contentListView);
-        bagsRecyclerView.setAdapter(new BagAdapter(bagViewModel.getBagsLiveData().getValue(), this));
+        bagsRecyclerView.setAdapter(new BagAdapter(bagClothViewModel.getBagsLiveData().getValue(), this));
         bagsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        bagViewModel.getBagsLiveData().observe(this.getViewLifecycleOwner(),
+        bagClothViewModel.getBagsLiveData().observe(this.getViewLifecycleOwner(),
                 bagArrayList -> Objects.requireNonNull(bagsRecyclerView.getAdapter()).notifyItemInserted(bagArrayList.size()));
 
         FloatingActionButton addBagButton = view.findViewById(R.id.addContentButton);
@@ -60,10 +60,10 @@ public class HomeFragment extends Fragment implements CardAction {
 
     @Override
     public void onCardConsultButtonClicked(int bagSelectedIndex) {
-        int weekNumber = Objects.requireNonNull(bagViewModel.getBagsLiveData().getValue()).
+        int weekNumber = Objects.requireNonNull(bagClothViewModel.getBagsLiveData().getValue()).
                 get(bagSelectedIndex).getWeekNumber();
 
-        bagViewModel.setSelectedBagLiveData(weekNumber);
+        bagClothViewModel.setSelectedBagLiveData(weekNumber);
 
         MainActivity mainActivityInstance = (MainActivity) requireActivity();
         mainActivityInstance.loadFragment(BagDetailsFragment.class);
@@ -71,9 +71,9 @@ public class HomeFragment extends Fragment implements CardAction {
 
     @Override
     public void onCardRemoveButtonClicked(int bagSelectedIndex) {
-        int weekNumber = Objects.requireNonNull(bagViewModel.getBagsLiveData().getValue()).
+        int weekNumber = Objects.requireNonNull(bagClothViewModel.getBagsLiveData().getValue()).
                 get(bagSelectedIndex).getWeekNumber();
 
-        bagViewModel.removeBag(weekNumber);
+        bagClothViewModel.removeBag(weekNumber);
     }
 }
