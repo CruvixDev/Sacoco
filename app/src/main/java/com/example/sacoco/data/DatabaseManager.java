@@ -22,7 +22,7 @@ public abstract class DatabaseManager extends RoomDatabase {
 
     public static DatabaseManager getInstance(Context context) {
         if (databaseManagerInstance == null) {
-            databaseManagerInstance = Room.databaseBuilder(context,DatabaseManager.class,
+            databaseManagerInstance = Room.databaseBuilder(context, DatabaseManager.class,
                     "App-Database").build();
         }
 
