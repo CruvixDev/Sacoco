@@ -17,7 +17,7 @@
     <string name="card_remove_button_text">Supprimer</string>
 
     <!-- Add bag dialog string literals -->
-    <string name="dialog_add_bag_title">Ajouter un sac pour la semaine</string>
+    <string name="dialog_add_bag_title">Ajouter un sac</string>
     <string name="dialog_date_start_hint">Start date</string>
     <string name="dialog_date_end_hint">End date</string>
     <string name="dialog_add_clothes_to_bag">Ajouter des vêtements</string>
