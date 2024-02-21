@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                 setReorderingAllowed(true).
                 replace(R.id.fragmentContainerView, fragmentClass, null).
+                addToBackStack(null).
                 commit();
     }
 }
