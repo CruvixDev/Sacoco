@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
-    private final ArrayList<Bag> bagsArrayList;
+    private ArrayList<Bag> bagsArrayList;
     private final CardAction cardAction;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -106,6 +106,10 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         holder.getBagCardIcon().setImageDrawable(AppCompatResources.getDrawable(holder.itemView.getContext(), R.drawable.luggage_icon));
         holder.getBagCardTitle().setText(holder.itemView.getContext().getString(R.string.card_bag_name_title));
         holder.getBagCardDateText().setText(String.format(dateText, startDateString, endDateString));
+    }
+
+    public void setBagsArrayList(ArrayList<Bag> bagsArrayList) {
+        this.bagsArrayList = bagsArrayList;
     }
 
     @Override

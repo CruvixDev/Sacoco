@@ -41,8 +41,17 @@ public class HomeFragment extends Fragment implements CardAction {
         bagsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         bagClothViewModel.getBagsLiveData().observe(this.getViewLifecycleOwner(),
-                bagArrayList -> Objects.requireNonNull(bagsRecyclerView.getAdapter()).
-                        notifyItemInserted(bagArrayList.size()));
+                bagArrayList -> {
+                    BagAdapter bagAdapter = (BagAdapter)this.bagsRecyclerView.getAdapter();
+
+                    if (bagAdapter != null) {
+                        bagAdapter.setBagsArrayList(bagClothViewModel.getBagsLiveData().getValue());
+                    }
+
+                    Objects.requireNonNull(bagsRecyclerView.getAdapter()).
+                            notifyItemInserted(bagArrayList.size());
+                }
+        );
 
         FloatingActionButton addBagButton = view.findViewById(R.id.addContentButton);
         addBagButton.setOnClickListener(addBagButtonClickedListener);
