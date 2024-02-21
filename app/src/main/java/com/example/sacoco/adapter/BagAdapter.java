@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
     private ArrayList<Bag> bagsArrayList;
@@ -90,7 +91,7 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         String dateText = holder.itemView.getContext().getString(R.string.card_base_text);
         String startDateString;
         String endDateString;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.WEEK_OF_YEAR, bagWeekNumber);

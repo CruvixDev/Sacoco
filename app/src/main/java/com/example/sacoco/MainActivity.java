@@ -19,9 +19,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
+    private int currentId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.currentId = R.id.home;
         setContentView(R.layout.activity_main_layout);
 
         String activityBaseTitle = getString(R.string.main_activity_title_base);
@@ -49,23 +53,24 @@ public class MainActivity extends AppCompatActivity {
         String activityBaseTitle = getString(R.string.main_activity_title_base);
         int itemId = item.getItemId();
 
-        if (itemId == R.id.home) {
+        if (itemId == R.id.home && this.currentId != R.id.home) {
             loadFragment(HomeFragment.class);
             this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_home)));
         }
-        else if (itemId == R.id.clothes_list) {
+        else if (itemId == R.id.clothes_list && this.currentId != R.id.clothes_list) {
             loadFragment(ClothesListFragment.class);
             this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_clothes_list)));
         }
-        else if (itemId == R.id.settings) {
+        else if (itemId == R.id.settings && this.currentId != R.id.settings) {
             loadFragment(SettingsFragment.class);
             this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_settings)));
         }
-        else if (itemId == R.id.email) {
+        else if (itemId == R.id.email && this.currentId != R.id.email) {
             loadFragment(EmailFragment.class);
             this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_email)));
         }
 
+        this.currentId = itemId;
         return true;
     };
 

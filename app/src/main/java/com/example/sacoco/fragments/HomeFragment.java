@@ -40,6 +40,7 @@ public class HomeFragment extends Fragment implements CardAction {
                 this));
         bagsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //TODO make the update of recycler view with DiffUtils for performances
         bagClothViewModel.getBagsLiveData().observe(this.getViewLifecycleOwner(),
                 bagArrayList -> {
                     BagAdapter bagAdapter = (BagAdapter)this.bagsRecyclerView.getAdapter();
