@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        BagClothViewModel bagClothViewModel = new ViewModelProvider(this, ViewModelProvider.Factory.
+                from(BagClothViewModel.bagViewModelViewModelInitializer)).get(BagClothViewModel.class);
+
         this.currentId = R.id.home;
         setContentView(R.layout.activity_main_layout);
 
@@ -33,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
-
-        BagClothViewModel bagClothViewModel = new ViewModelProvider(this, ViewModelProvider.Factory.
-                from(BagClothViewModel.bagViewModelViewModelInitializer)).get(BagClothViewModel.class);
 
         PackageInfo packageInfo;
         try {

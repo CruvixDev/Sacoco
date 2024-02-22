@@ -2,6 +2,7 @@ package com.example.sacoco.fragments;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,9 +37,13 @@ public class HomeFragment extends Fragment implements CardAction {
         bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
 
         bagsRecyclerView = view.findViewById(R.id.contentListView);
-        bagsRecyclerView.setAdapter(new BagAdapter(bagClothViewModel.getBagsLiveData().getValue(),
-                this));
+        bagsRecyclerView.setAdapter(new BagAdapter(this));
         bagsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        ProgressBar circularProgressBar = view.findViewById(R.id.progressBar);
+        if (!bagClothViewModel.isBagsDataFetched()) {
+            circularProgressBar.setVisibility(View.VISIBLE);
+        }
 
         //TODO make the update of recycler view with DiffUtils for performances
         bagClothViewModel.getBagsLiveData().observe(this.getViewLifecycleOwner(),
@@ -51,6 +56,8 @@ public class HomeFragment extends Fragment implements CardAction {
 
                     Objects.requireNonNull(bagsRecyclerView.getAdapter()).
                             notifyItemInserted(bagArrayList.size());
+
+                    circularProgressBar.setVisibility(View.INVISIBLE);
                 }
         );
 

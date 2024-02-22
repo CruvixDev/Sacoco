@@ -31,12 +31,13 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class BagClothViewModel extends ViewModel {
+    private boolean isBagsDataFetched;
+    private boolean isClothesDataFetched;
     private final MutableLiveData<Bag> selectedBagLiveData;
     private final MutableLiveData<Cloth> selectedClothLiveData;
     private final MutableLiveData<ArrayList<Cloth>> clothesLiveData;
     private final MutableLiveData<ArrayList<Bag>> bagsLiveData;
     private final AppRepository appRepository;
-
     private final CompositeDisposable compositeDisposable;
     public static final ViewModelInitializer<BagClothViewModel> bagViewModelViewModelInitializer =
             new ViewModelInitializer<>(
@@ -63,10 +64,6 @@ public class BagClothViewModel extends ViewModel {
         this.bagsLiveData = new MutableLiveData<>();
         this.appRepository = appRepository;
         this.compositeDisposable = new CompositeDisposable();
-
-        //Init the array list og Bags and Clothes
-        this.bagsLiveData.setValue(new ArrayList<>());
-        this.clothesLiveData.setValue(new ArrayList<>());
 
         //Fetch Bags and Clothes into Room database
         getAllBags();
@@ -287,6 +284,14 @@ public class BagClothViewModel extends ViewModel {
         return bagsLiveData;
     }
 
+    public boolean isBagsDataFetched() {
+        return this.isBagsDataFetched;
+    }
+
+    public boolean isClothesDataFetched() {
+        return this.isClothesDataFetched;
+    }
+
     /**
      * Get the App version from preferences data store
      * @return a Flowable to observe to get the App version asynchronously
@@ -313,7 +318,10 @@ public class BagClothViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        bagsList -> this.bagsLiveData.setValue(new ArrayList<>(bagsList)),
+                        bagsList -> {
+                            this.bagsLiveData.setValue(new ArrayList<>(bagsList));
+                            this.isBagsDataFetched = true;
+                        },
                         throwable -> this.bagsLiveData.setValue(new ArrayList<>())
                 );
         this.compositeDisposable.add(disposable);
@@ -327,7 +335,10 @@ public class BagClothViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        clothesList -> this.clothesLiveData.setValue(new ArrayList<>(clothesList)),
+                        clothesList -> {
+                            this.clothesLiveData.setValue(new ArrayList<>(clothesList));
+                            this.isClothesDataFetched = true;
+                        },
                         throwable -> this.clothesLiveData.setValue(new ArrayList<>())
                 );
         this.compositeDisposable.add(disposable);

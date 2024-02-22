@@ -72,8 +72,8 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         }
     }
 
-    public BagAdapter(ArrayList<Bag> bagArrayList, CardAction cardAction) {
-        this.bagsArrayList = bagArrayList;
+    public BagAdapter(CardAction cardAction) {
+        this.bagsArrayList = new ArrayList<>();
         this.cardAction = cardAction;
     }
 
