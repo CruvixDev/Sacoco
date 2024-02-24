@@ -87,7 +87,7 @@ public class ClothesListFragment extends Fragment implements CardAction {
         bagClothViewModel.setSelectedClothLiveData(clothUUID);
 
         MainActivity mainActivityInstance = (MainActivity) requireActivity();
-        mainActivityInstance.loadFragment(BagDetailsFragment.class);
+        mainActivityInstance.loadFragment(ClothDetailsFragment.class);
     }
 
     @Override
