@@ -32,14 +32,14 @@
             android:padding="8dp">
 
             <TextView
-                android:id="@+id/bagName"
+                android:id="@+id/cardMainTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/card_bag_name_title"
                 android:textAppearance="?attr/textAppearanceTitleMedium" />
 
             <TextView
-                android:id="@+id/bagDate"
+                android:id="@+id/cardSubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

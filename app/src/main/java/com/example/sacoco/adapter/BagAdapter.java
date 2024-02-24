@@ -29,27 +29,21 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         private final ShapeableImageView bagCardIcon;
         private final TextView bagCardTitle;
         private final TextView bagCardDateText;
-        private final Button bagConsultButton;
-        private final Button bagRemoveButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             bagCardIcon = itemView.findViewById(R.id.cardStartIcon);
-            bagCardTitle = itemView.findViewById(R.id.bagName);
-            bagCardDateText = itemView.findViewById(R.id.bagDate);
-            bagConsultButton = itemView.findViewById(R.id.consultButton);
-            bagRemoveButton = itemView.findViewById(R.id.removeButton);
+            bagCardTitle = itemView.findViewById(R.id.cardMainTitle);
+            bagCardDateText = itemView.findViewById(R.id.cardSubTitle);
+            Button bagConsultButton = itemView.findViewById(R.id.consultButton);
+            Button bagRemoveButton = itemView.findViewById(R.id.removeButton);
 
+            View.OnClickListener onConsultBag = view -> cardAction.onCardConsultButtonClicked(getAdapterPosition());
             bagConsultButton.setOnClickListener(onConsultBag);
+            View.OnClickListener onRemoveBag = view -> cardAction.onCardRemoveButtonClicked(getAdapterPosition());
             bagRemoveButton.setOnClickListener(onRemoveBag);
         }
-
-        private final View.OnClickListener onConsultBag =
-                view -> cardAction.onCardConsultButtonClicked(getAdapterPosition());
-
-        private final View.OnClickListener onRemoveBag =
-                view -> cardAction.onCardRemoveButtonClicked(getAdapterPosition());
 
         public ShapeableImageView getBagCardIcon() {
             return bagCardIcon;
@@ -61,14 +55,6 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
 
         public TextView getBagCardDateText() {
             return bagCardDateText;
-        }
-
-        public Button getBagConsultButton() {
-            return bagConsultButton;
-        }
-
-        public Button getBagRemoveButton() {
-            return bagRemoveButton;
         }
     }
 
@@ -109,12 +95,12 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         holder.getBagCardDateText().setText(String.format(dateText, startDateString, endDateString));
     }
 
-    public void setBagsArrayList(ArrayList<Bag> bagsArrayList) {
-        this.bagsArrayList = bagsArrayList;
-    }
-
     @Override
     public int getItemCount() {
         return bagsArrayList.size();
+    }
+
+    public void setBagsArrayList(ArrayList<Bag> bagsArrayList) {
+        this.bagsArrayList = bagsArrayList;
     }
 }

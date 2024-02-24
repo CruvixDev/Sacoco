@@ -78,9 +78,9 @@ public class HomeFragment extends Fragment implements CardAction {
     };
 
     @Override
-    public void onCardConsultButtonClicked(int bagSelectedIndex) {
+    public void onCardConsultButtonClicked(int cardSelectedIndex) {
         int weekNumber = Objects.requireNonNull(bagClothViewModel.getBagsLiveData().getValue()).
-                get(bagSelectedIndex).getWeekNumber();
+                get(cardSelectedIndex).getWeekNumber();
 
         bagClothViewModel.setSelectedBagLiveData(weekNumber);
 
@@ -89,9 +89,9 @@ public class HomeFragment extends Fragment implements CardAction {
     }
 
     @Override
-    public void onCardRemoveButtonClicked(int bagSelectedIndex) {
+    public void onCardRemoveButtonClicked(int cardSelectedIndex) {
         int weekNumber = Objects.requireNonNull(bagClothViewModel.getBagsLiveData().getValue()).
-                get(bagSelectedIndex).getWeekNumber();
+                get(cardSelectedIndex).getWeekNumber();
 
         bagClothViewModel.removeBag(weekNumber);
     }
