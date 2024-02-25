@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.BagAdapter;
-import com.example.sacoco.cominterface.CardAction;
+import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.dialogs.AddBagDialogFragment;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
-public class HomeFragment extends Fragment implements CardAction {
+public class HomeFragment extends Fragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
     private RecyclerView bagsRecyclerView;
 
@@ -78,9 +78,9 @@ public class HomeFragment extends Fragment implements CardAction {
     };
 
     @Override
-    public void onCardConsultButtonClicked(int cardSelectedIndex) {
+    public void onPositiveViewHolderSelected(int viewHolderSelectedIndex) {
         int weekNumber = Objects.requireNonNull(bagClothViewModel.getBagsLiveData().getValue()).
-                get(cardSelectedIndex).getWeekNumber();
+                get(viewHolderSelectedIndex).getWeekNumber();
 
         bagClothViewModel.setSelectedBagLiveData(weekNumber);
 
@@ -89,9 +89,9 @@ public class HomeFragment extends Fragment implements CardAction {
     }
 
     @Override
-    public void onCardRemoveButtonClicked(int cardSelectedIndex) {
+    public void onNegativeViewHolderSelected(int viewHolderSelectedIndex) {
         int weekNumber = Objects.requireNonNull(bagClothViewModel.getBagsLiveData().getValue()).
-                get(cardSelectedIndex).getWeekNumber();
+                get(viewHolderSelectedIndex).getWeekNumber();
 
         bagClothViewModel.removeBag(weekNumber);
     }

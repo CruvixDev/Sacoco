@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.ClothAdapter;
-import com.example.sacoco.cominterface.CardAction;
+import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.dialogs.AddClothDialogFragment;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ClothesListFragment extends Fragment implements CardAction {
+public class ClothesListFragment extends Fragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
     private RecyclerView clothesRecyclerView;
 
@@ -80,9 +80,9 @@ public class ClothesListFragment extends Fragment implements CardAction {
     };
 
     @Override
-    public void onCardConsultButtonClicked(int cardSelectedIndex) {
+    public void onPositiveViewHolderSelected(int viewHolderSelectedIndex) {
         UUID clothUUID = Objects.requireNonNull(bagClothViewModel.getClothesLiveData().getValue()).
-                get(cardSelectedIndex).getClothUUID();
+                get(viewHolderSelectedIndex).getClothUUID();
 
         bagClothViewModel.setSelectedClothLiveData(clothUUID);
 
@@ -91,9 +91,9 @@ public class ClothesListFragment extends Fragment implements CardAction {
     }
 
     @Override
-    public void onCardRemoveButtonClicked(int cardSelectedIndex) {
+    public void onNegativeViewHolderSelected(int viewHolderSelectedIndex) {
         UUID clothUUID = Objects.requireNonNull(bagClothViewModel.getClothesLiveData().getValue()).
-                get(cardSelectedIndex).getClothUUID();
+                get(viewHolderSelectedIndex).getClothUUID();
 
         bagClothViewModel.removeCloth(clothUUID);
     }

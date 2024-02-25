@@ -6,9 +6,9 @@
     android:orientation="horizontal">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView4"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:id="@+id/clothListImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -25,22 +25,33 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/clothListName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_add_cloth_to_bag_cloth_name" />
+            android:text="@string/dialog_add_cloth_to_bag_cloth_name"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/clothListUUID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dialog_add_cloth_to_bag_cloth_uuid"
             android:textSize="12sp" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:color="?android:attr/dividerHorizontal" />
+
+        <!-- MaterialDivider horizontal -->
+
     </LinearLayout>
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/clothListCheckBox"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center" />

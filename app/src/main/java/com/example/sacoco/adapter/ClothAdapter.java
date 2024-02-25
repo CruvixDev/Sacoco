@@ -11,7 +11,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sacoco.R;
-import com.example.sacoco.cominterface.CardAction;
+import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.models.Cloth;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> {
     private ArrayList<Cloth> clothesArrayList;
-    private final CardAction cardAction;
+    private final ViewHolderSelectedCallback viewHolderSelectedCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ShapeableImageView clothCardIcon;
@@ -35,9 +35,12 @@ public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> 
             Button clothConsultButton = itemView.findViewById(R.id.consultButton);
             Button clothRemoveButton = itemView.findViewById(R.id.removeButton);
 
-            View.OnClickListener onConsultBag = view -> cardAction.onCardConsultButtonClicked(getAdapterPosition());
+            View.OnClickListener onConsultBag = view -> viewHolderSelectedCallback.
+                    onPositiveViewHolderSelected(getAdapterPosition());
             clothConsultButton.setOnClickListener(onConsultBag);
-            View.OnClickListener onRemoveBag = view -> cardAction.onCardRemoveButtonClicked(getAdapterPosition());
+
+            View.OnClickListener onRemoveBag = view -> viewHolderSelectedCallback.
+                    onNegativeViewHolderSelected(getAdapterPosition());
             clothRemoveButton.setOnClickListener(onRemoveBag);
         }
 
@@ -54,9 +57,9 @@ public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> 
         }
     }
 
-    public ClothAdapter(CardAction cardAction) {
+    public ClothAdapter(ViewHolderSelectedCallback cardAction) {
         this.clothesArrayList = new ArrayList<>();
-        this.cardAction = cardAction;
+        this.viewHolderSelectedCallback = cardAction;
     }
 
     @NonNull
