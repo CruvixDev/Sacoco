@@ -50,29 +50,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final NavigationBarView.OnItemSelectedListener onItemSelectedListener = item -> {
-        String activityBaseTitle = getString(R.string.main_activity_title_base);
         int itemId = item.getItemId();
 
         if (itemId == R.id.home && this.currentId != R.id.home) {
-            loadFragment(HomeFragment.class);
-            this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_home)));
+            loadFragment(HomeFragment.class, getString(R.string.main_activity_menu_home));
         }
         else if (itemId == R.id.clothes_list && this.currentId != R.id.clothes_list) {
-            loadFragment(ClothesListFragment.class);
-            this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_clothes_list)));
+            loadFragment(ClothesListFragment.class, getString(R.string.main_activity_menu_clothes_list));
         }
         else if (itemId == R.id.settings && this.currentId != R.id.settings) {
-            loadFragment(SettingsFragment.class);
-            this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_settings)));
+            loadFragment(SettingsFragment.class, getString(R.string.main_activity_menu_settings));
         }
         else if (itemId == R.id.email && this.currentId != R.id.email) {
-            loadFragment(EmailFragment.class);
-            this.setTitle(String.format(activityBaseTitle, getString(R.string.main_activity_menu_email)));
+            loadFragment(EmailFragment.class, getString(R.string.main_activity_menu_email));
         }
 
         this.currentId = itemId;
         return true;
     };
+
+    public void loadFragment(Class<? extends Fragment> fragmentClass, String fragmentTitle) {
+        String activityBaseTitle = getString(R.string.main_activity_title_base);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.
+                beginTransaction().
+                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                setReorderingAllowed(true).
+                replace(R.id.fragmentContainerView, fragmentClass, null).
+                addToBackStack(null).
+                commit();
+
+        this.setTitle(String.format(activityBaseTitle, fragmentTitle));
+    }
 
     public void loadFragment(Class<? extends Fragment> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();

@@ -50,6 +50,7 @@
     <!-- Bag content fragment string literals -->
     <string name="fragment_bag_content_check_bag">Vérifier</string>
     <string name="fragment_bag_content_modify">Modifier</string>
+    <string name="fragment_bag_content_title">Sac du\u0020%1$s</string>
 
     <!-- Add cloth to bag string literals -->
     <string name="dialog_add_cloth_to_bag_title">Ajouter des vêtements au sac</string>
