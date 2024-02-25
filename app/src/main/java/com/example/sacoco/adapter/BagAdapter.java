@@ -92,7 +92,8 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         startDateString = dateFormat.format(startDate);
         endDateString = dateFormat.format(endDate);
 
-        holder.getBagCardIcon().setImageDrawable(AppCompatResources.getDrawable(holder.itemView.getContext(), R.drawable.luggage_icon));
+        holder.getBagCardIcon().setImageDrawable(
+                AppCompatResources.getDrawable(holder.itemView.getContext(), R.drawable.bag));
         holder.getBagCardTitle().setText(holder.itemView.getContext().getString(R.string.card_bag_name_title));
         holder.getBagCardDateText().setText(String.format(dateText, startDateString, endDateString));
     }
