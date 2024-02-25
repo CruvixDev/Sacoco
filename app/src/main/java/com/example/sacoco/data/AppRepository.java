@@ -5,10 +5,10 @@ import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava3.RxDataStore;
 
+import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -64,7 +64,7 @@ public class AppRepository {
      * Get all bags saved in the app's storage
      * @return an observable list of all bags in the app's storage
      */
-    public Single<List<Bag>> getAllBags() {
+    public Single<List<BagWithClothesRelation>> getAllBags() {
         return databaseManagerInstance.bagDAO().getAllBags();
     }
 

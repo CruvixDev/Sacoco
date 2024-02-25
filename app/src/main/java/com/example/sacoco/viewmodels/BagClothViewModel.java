@@ -15,6 +15,7 @@ import android.app.Application;
 
 import com.example.sacoco.data.AppRepository;
 import com.example.sacoco.data.DatabaseManager;
+import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
 import com.example.sacoco.models.ClothTypeEnum;
@@ -318,8 +319,19 @@ public class BagClothViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        bagsList -> {
-                            this.bagsLiveData.setValue(new ArrayList<>(bagsList));
+                        bagsWithClothesList -> {
+                            ArrayList<Bag> bagsArrayList = new ArrayList<>();
+
+                            for (BagWithClothesRelation bagWithClothesRelation :
+                                    bagsWithClothesList) {
+
+                                bagWithClothesRelation.bag.addClothesToBag(
+                                        bagWithClothesRelation.clothesList);
+
+                                bagsArrayList.add(bagWithClothesRelation.bag);
+                            }
+
+                            this.bagsLiveData.setValue(bagsArrayList);
                             this.isBagsDataFetched = true;
                         },
                         throwable -> this.bagsLiveData.setValue(new ArrayList<>())

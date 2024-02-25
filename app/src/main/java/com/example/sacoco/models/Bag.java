@@ -2,11 +2,10 @@ package com.example.sacoco.models;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Junction;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,11 +14,6 @@ public class Bag {
     private final int weekNumber;
     private boolean isChecked;
     @Ignore
-    @Relation(
-            parentColumn = "weekNumber",
-            entityColumn = "clothUUID",
-            associateBy = @Junction(BagClothCrossRef.class)
-    )
     private final ArrayList<Cloth> clothesList;
 
     public Bag(int weekNumber, boolean checked) {
@@ -41,13 +35,23 @@ public class Bag {
      * @return true if the cloth does not already exists in the bag false otherwise
      */
     public boolean addClothToBag(Cloth cloth) {
-        boolean clothExists = !this.clothesList.contains(cloth);
+        boolean clothAlreadyExists = !this.clothesList.contains(cloth);
 
-        if (clothExists) {
+        if (clothAlreadyExists) {
             this.clothesList.add(cloth);
         }
 
-        return clothExists;
+        return clothAlreadyExists;
+    }
+
+    /**
+     * Add a set of clothes in the bag
+     * @param clothesList the clothes list to add
+     */
+    public void addClothesToBag(List<Cloth> clothesList) {
+        for (Cloth cloth : clothesList) {
+            this.addClothToBag(cloth);
+        }
     }
 
     /**

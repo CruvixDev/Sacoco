@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
+import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
 
 import java.util.List;
@@ -27,5 +28,5 @@ public interface BagDAO {
 
     @Transaction
     @Query("SELECT * FROM Bag")
-    Single<List<Bag>> getAllBags();
+    Single<List<BagWithClothesRelation>> getAllBags();
 }
