@@ -48,9 +48,9 @@
     <string name="dialog_show_cloth_title">Modifier un vêtement</string>
 
     <!-- Bag content fragment string literals -->
+    <string name="fragment_bag_content_title">Sac semaine %1$d</string>
     <string name="fragment_bag_content_check_bag">Vérifier</string>
     <string name="fragment_bag_content_modify">Modifier</string>
-    <string name="fragment_bag_content_title">Sac du\u0020%1$s</string>
 
     <!-- Add cloth to bag string literals -->
     <string name="dialog_add_cloth_to_bag_title">Ajouter des vêtements au sac</string>

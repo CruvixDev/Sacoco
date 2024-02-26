@@ -37,6 +37,9 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
 
         bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
 
+        MainActivity mainActivity = (MainActivity)requireActivity();
+        mainActivity.setActivityTitle(this.getString(R.string.main_activity_menu_clothes_list));
+
         clothesRecyclerView = view.findViewById(R.id.contentListView);
         clothesRecyclerView.setAdapter(new ClothAdapter(this));
         clothesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

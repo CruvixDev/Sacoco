@@ -36,6 +36,9 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
 
         bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
 
+        MainActivity mainActivity = (MainActivity)requireActivity();
+        mainActivity.setActivityTitle(this.getString(R.string.main_activity_menu_home));
+
         bagsRecyclerView = view.findViewById(R.id.contentListView);
         bagsRecyclerView.setAdapter(new BagAdapter(this));
         bagsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

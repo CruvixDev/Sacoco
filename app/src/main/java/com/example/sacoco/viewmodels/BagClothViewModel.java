@@ -368,7 +368,7 @@ public class BagClothViewModel extends ViewModel {
         int clothMatchingIndex = Objects.requireNonNull(this.clothesLiveData.getValue()).
                 indexOf(clothToGet);
 
-        if (clothMatchingIndex > 0) {
+        if (clothMatchingIndex >= 0) {
             return this.clothesLiveData.getValue().get(clothMatchingIndex);
         } else {
             return null;
