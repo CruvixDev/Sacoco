@@ -294,24 +294,6 @@ public class BagClothViewModel extends ViewModel {
     }
 
     /**
-     * Get the App version from preferences data store
-     * @return a Flowable to observe to get the App version asynchronously
-     */
-    public Flowable<String> getAppVersion() {
-        String appVersionKey = "appVersion";
-        return this.appRepository.readStringPreference(appVersionKey);
-    }
-
-    /**
-     * Write the App version to preferences data store
-     * @param appVersion the App version to write
-     */
-    public void setAppVersion(String appVersion) {
-        String appVersionKey = "appVersion";
-        this.appRepository.writeStringPreference(appVersionKey, appVersion);
-    }
-
-    /**
      * Get all bags store into internal database from app repository
      */
     private void getAllBags() {

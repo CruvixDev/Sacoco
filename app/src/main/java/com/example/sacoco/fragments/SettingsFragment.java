@@ -8,7 +8,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
-import com.example.sacoco.viewmodels.BagClothViewModel;
+import com.example.sacoco.viewmodels.PreferencesViewModel;
 
 import java.util.Objects;
 
@@ -24,13 +24,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.preferences, rootKey);
         Preference appVersionPreference = findPreference("preferencesAppVersion");
 
-        BagClothViewModel bagClothViewModel = new ViewModelProvider(requireActivity()).get(
-                BagClothViewModel.class);
+        PreferencesViewModel preferencesViewModel = new ViewModelProvider(requireActivity()).get(
+                PreferencesViewModel.class);
 
         MainActivity mainActivity = (MainActivity)requireActivity();
         mainActivity.setActivityTitle(this.getString(R.string.main_activity_menu_settings));
 
-        disposable = bagClothViewModel.getAppVersion()
+        disposable = preferencesViewModel.getAppVersion()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(appVersion ->

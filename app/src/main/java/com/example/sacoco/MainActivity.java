@@ -15,20 +15,23 @@ import com.example.sacoco.fragments.EmailFragment;
 import com.example.sacoco.fragments.HomeFragment;
 import com.example.sacoco.fragments.SettingsFragment;
 import com.example.sacoco.viewmodels.BagClothViewModel;
+import com.example.sacoco.viewmodels.PreferencesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
-    private int currentId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        BagClothViewModel bagClothViewModel = new ViewModelProvider(this, ViewModelProvider.Factory.
-                from(BagClothViewModel.bagViewModelViewModelInitializer)).get(BagClothViewModel.class);
+        //Create the first instance of BagClothViewModel
+        new ViewModelProvider(this, ViewModelProvider.Factory.from(
+                BagClothViewModel.bagViewModelViewModelInitializer)).get(BagClothViewModel.class);
 
-        this.currentId = R.id.home;
+        PreferencesViewModel preferencesViewModel =
+                new ViewModelProvider(this, ViewModelProvider.Factory.from(
+                        PreferencesViewModel.preferencesViewModelInitializer)).get(PreferencesViewModel.class);
+
         setContentView(R.layout.activity_main_layout);
 
         String activityBaseTitle = getString(R.string.main_activity_title_base);
@@ -46,29 +49,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String versionName = packageInfo.versionName;
-        bagClothViewModel.setAppVersion(versionName);
+        preferencesViewModel.setAppVersion(versionName);
     }
 
     private final NavigationBarView.OnItemSelectedListener onItemSelectedListener = item -> {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.home && this.currentId != R.id.home) {
+        if (itemId == R.id.home) {
             loadFragment(HomeFragment.class);
         }
-        else if (itemId == R.id.clothes_list && this.currentId != R.id.clothes_list) {
+        else if (itemId == R.id.clothes_list) {
             loadFragment(ClothesListFragment.class);
         }
-        else if (itemId == R.id.settings && this.currentId != R.id.settings) {
+        else if (itemId == R.id.settings) {
             loadFragment(SettingsFragment.class);
         }
-        else if (itemId == R.id.email && this.currentId != R.id.email) {
+        else if (itemId == R.id.email) {
             loadFragment(EmailFragment.class);
         }
 
-        this.currentId = itemId;
         return true;
     };
 
+    /**
+     * Replace a fragment in the fragment container view
+     * @param fragmentClass the class of the fragment to replace
+     */
     public void loadFragment(Class<? extends Fragment> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.
@@ -80,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 commit();
     }
 
+    /**
+     * Modify the activity title
+     * @param activityTitle the activity string title
+     */
     public void setActivityTitle(String activityTitle) {
         String activityBaseTitle = getString(R.string.main_activity_title_base);
         this.setTitle(String.format(activityBaseTitle, activityTitle));
