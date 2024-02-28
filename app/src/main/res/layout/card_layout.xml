@@ -22,7 +22,7 @@
             android:layout_height="43dp"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/luggage_icon"
+            app:srcCompat="@drawable/bag"
             app:tint="?attr/colorPrimary" />
 
         <LinearLayout
