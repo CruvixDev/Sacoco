@@ -7,13 +7,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sacoco.R;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.models.Bag;
-import com.google.android.material.imageview.ShapeableImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,14 +24,12 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
     private final ViewHolderSelectedCallback viewHolderSelectedCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final ShapeableImageView bagCardIcon;
         private final TextView bagCardTitle;
         private final TextView bagCardDateText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            bagCardIcon = itemView.findViewById(R.id.cardStartIcon);
             bagCardTitle = itemView.findViewById(R.id.cardMainTitle);
             bagCardDateText = itemView.findViewById(R.id.cardSubTitle);
             Button bagConsultButton = itemView.findViewById(R.id.consultButton);
@@ -45,10 +41,6 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
             View.OnClickListener onRemoveBag = view -> viewHolderSelectedCallback.
                     onNegativeViewHolderSelected(getAdapterPosition());
             bagRemoveButton.setOnClickListener(onRemoveBag);
-        }
-
-        public ShapeableImageView getBagCardIcon() {
-            return bagCardIcon;
         }
 
         public TextView getBagCardTitle() {
