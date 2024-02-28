@@ -68,7 +68,8 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
     @NonNull
     @Override
     public BagAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.card_layout_constraint, parent, false);
         return new ViewHolder(view);
     }
 

@@ -65,7 +65,8 @@ public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> 
     @NonNull
     @Override
     public ClothAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.card_layout_constraint, parent, false);
         return new ClothAdapter.ViewHolder(view);
     }
 
