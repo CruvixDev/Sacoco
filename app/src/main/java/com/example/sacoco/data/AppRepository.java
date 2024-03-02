@@ -7,8 +7,10 @@ import androidx.datastore.rxjava3.RxDataStore;
 
 import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
+import com.example.sacoco.models.BagClothCrossRef;
 import com.example.sacoco.models.Cloth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -32,6 +34,16 @@ public class AppRepository {
      */
     public Completable saveBag(Bag bagToSave) {
         return this.databaseManagerInstance.bagDAO().insertBag(bagToSave);
+    }
+
+    /**
+     * Save clothes in bag into the app's storage
+     * @param bagClothCrossRefList the clothes of bag to save on device
+     * @return a completable object to subscribe to observe the saving status
+     */
+    public Completable saveClothesIntoBag(ArrayList<BagClothCrossRef> bagClothCrossRefList) {
+        return this.databaseManagerInstance.bagClothCrossRefDAO().
+                insertClothesInBag(bagClothCrossRefList);
     }
 
     /**
