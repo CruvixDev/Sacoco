@@ -28,7 +28,7 @@ public class AppRepository {
     /**
      * Save a new bag into the app's storage
      * @param bagToSave the bag to save on device
-     * @return a completable object to get the status of the saving
+     * @return a completable object to subscribe to observe the saving status
      */
     public Completable saveBag(Bag bagToSave) {
         return this.databaseManagerInstance.bagDAO().insertBag(bagToSave);
@@ -37,28 +37,28 @@ public class AppRepository {
     /**
      * Remove a bag into the app's storage
      * @param bagToRemove the bag to remove from device
-     * @return true if the bag has been successfully removed in the app's storage
+     * @return a completable object to subscribe to observe removing status
      */
-    public boolean removeBag(Bag bagToRemove) {
-        return true;
+    public Completable removeBag(Bag bagToRemove) {
+        return null;
     }
 
     /**
      * Save a new cloth in the app's storage
      * @param clothToSave the cloth to save on device
-     * @return true if the cloth has been successfully saved in the app's storage
+     * @return a completable object to subscribe to observe saving status
      */
-    public boolean saveCloth(Cloth clothToSave) {
-        return true;
+    public Completable saveCloth(Cloth clothToSave) {
+        return null;
     }
 
     /**
      * Remove a cloth in app's storage
      * @param clothToRemove the cloth to remove from device
-     * @return true if th cloth has been successfully removed in the app's storage
+     * @return a completable object to subscribe to observe removing status
      */
-    public boolean removeCloth(Cloth clothToRemove) {
-        return true;
+    public Completable removeCloth(Cloth clothToRemove) {
+        return null;
     }
 
     /**
