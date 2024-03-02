@@ -33,7 +33,20 @@ public class AppRepository {
      * @return a completable object to subscribe to observe the saving status
      */
     public Completable saveBag(Bag bagToSave) {
-        return this.databaseManagerInstance.bagDAO().insertBag(bagToSave);
+        ArrayList<BagClothCrossRef> bagClothCrossRefArrayList = new ArrayList<>();
+        BagClothCrossRef currentBagClothCrossRef;
+
+        for (Cloth cloth : bagToSave.getClothesList()) {
+            currentBagClothCrossRef = new BagClothCrossRef(bagToSave.getWeekNumber(),
+                    cloth.getClothUUID());
+            bagClothCrossRefArrayList.add(currentBagClothCrossRef);
+        }
+
+        return Completable.mergeArray(
+                this.databaseManagerInstance.bagDAO().insertBag(bagToSave),
+                this.databaseManagerInstance.bagClothCrossRefDAO().insertClothesInBag(
+                        bagClothCrossRefArrayList)
+        );
     }
 
     /**

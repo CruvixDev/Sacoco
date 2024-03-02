@@ -27,4 +27,9 @@ public class BagClothCrossRef {
     public int weekNumber;
     @NonNull
     public UUID clothUUID;
+
+    public BagClothCrossRef(int weekNumber, @NonNull UUID clothUUID) {
+        this.weekNumber = weekNumber;
+        this.clothUUID = clothUUID;
+    }
 }

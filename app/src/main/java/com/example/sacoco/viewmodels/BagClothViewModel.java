@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.sacoco.data.AppRepository;
 import com.example.sacoco.data.DatabaseManager;
@@ -26,6 +27,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -80,44 +82,33 @@ public class BagClothViewModel extends ViewModel {
      * Create and add a new bag to the list of bags
      *
      * @param weekNumber the number of the week in the year
-     * @param clothesIdentifiers the UUID of the cloth
-     * @return true if the bag has been created and added to the list of bags false if already
-     * exists or parameters invalid
+     * @param clothesUUID the UUID of the cloth
+     * @return a completable object to observe
      */
-    public boolean addBag(int weekNumber, ArrayList<UUID> clothesIdentifiers) {
-        boolean isBagExists = getBagByWeekNumber(weekNumber) == null;
-        boolean isBagAdded = false;
-        boolean isWeekValid = checkWeekValidity(weekNumber);
+    public Completable addBag(int weekNumber, ArrayList<UUID> clothesUUID) {
+        Bag newBagToAdd = new Bag(weekNumber);
+        Cloth clothToAdd;
 
-        if (isBagExists && isWeekValid) {
-            Bag newBagToAdd = new Bag(weekNumber);
-            Cloth clothToAdd;
-            //Get the wrapped data
-            ArrayList<Bag> bagsList = this.bagsLiveData.getValue();
-
-            for (UUID clothIdentifier : clothesIdentifiers) {
-                clothToAdd = getClothByUUID(clothIdentifier);
-
-                if (clothToAdd != null) {
-                    newBagToAdd.addClothToBag(clothToAdd);
-                }
-            }
-
-            if (bagsList != null) {
-                isBagAdded = bagsList.add(newBagToAdd);
-                //Update the bags live data to update UI
-                this.bagsLiveData.setValue(bagsList);
-
-                if (isBagAdded) {
-                    this.appRepository.saveBag(newBagToAdd)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe();
-                }
-            }
+        for (UUID clothUUID : clothesUUID) {
+            clothToAdd = this.getClothByUUID(clothUUID);
+            newBagToAdd.addClothToBag(clothToAdd);
         }
 
-        return isBagAdded;
+        Completable saveBagCompletable = this.appRepository.saveBag(newBagToAdd);
+        Disposable saveBagDisposable = saveBagCompletable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                            ArrayList<Bag> bagsArrayList = this.bagsLiveData.getValue();
+                            if (bagsArrayList != null) {
+                                bagsArrayList.add(newBagToAdd);
+                            }
+                            this.bagsLiveData.setValue(bagsArrayList);
+                        }, throwable -> Log.e(this.getClass().getName(), "Cannot create bag!")
+                );
+        compositeDisposable.add(saveBagDisposable);
+
+        return saveBagCompletable;
     }
 
     /**
