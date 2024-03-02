@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.CalendarView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,12 +19,18 @@ import com.example.sacoco.adapter.ClothItemAdapter;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Objects;
+import java.util.UUID;
+
 public class AddBagDialogFragment extends DialogFragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
-    private RecyclerView clothesInBagRecyclerView;
+    private final ArrayList<UUID> clothesToAddUUID;
 
     public AddBagDialogFragment() {
         super(R.layout.dialog_add_bag_layout);
+        this.clothesToAddUUID = new ArrayList<>();
     }
 
     @Override
@@ -31,12 +39,26 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
 
         bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
 
-        clothesInBagRecyclerView = view.findViewById(R.id.clothesListView);
+        RecyclerView clothesInBagRecyclerView = view.findViewById(R.id.clothesListView);
         clothesInBagRecyclerView.setAdapter(new ClothItemAdapter(this));
         clothesInBagRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ClothItemAdapter clothItemAdapter = (ClothItemAdapter)clothesInBagRecyclerView.getAdapter();
-        clothItemAdapter.setClothesInBagList(bagClothViewModel.getClothesLiveData().getValue());
+        ClothItemAdapter clothItemAdapter = (ClothItemAdapter) clothesInBagRecyclerView.getAdapter();
+        if (clothItemAdapter != null) {
+            clothItemAdapter.setClothesInBagList(bagClothViewModel.getClothesLiveData().getValue());
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        CalendarView calendarView = view.findViewById(R.id.calendarView);
+        calendarView.setOnDateChangeListener((calendarView1, year, month, day) ->
+                calendar.set(year, month, day));
+
+        Button saveBagButton = view.findViewById(R.id.addBagButton);
+        saveBagButton.setOnClickListener(view1 -> {
+            bagClothViewModel.addBag(calendar.get(Calendar.WEEK_OF_YEAR),
+                    clothesToAddUUID);
+            this.dismiss();
+        });
     }
 
     @NonNull
@@ -49,11 +71,17 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
 
     @Override
     public void onPositiveViewHolderSelected(int viewHolderSelectedIndex) {
+        UUID clothUUID = Objects.requireNonNull(bagClothViewModel.getClothesLiveData().getValue()).
+                get(viewHolderSelectedIndex).getClothUUID();
 
+        this.clothesToAddUUID.add(clothUUID);
     }
 
     @Override
     public void onNegativeViewHolderSelected(int viewHolderSelectedIndex) {
+        UUID clothUUID = Objects.requireNonNull(bagClothViewModel.getClothesLiveData().getValue()).
+                get(viewHolderSelectedIndex).getClothUUID();
 
+        this.clothesToAddUUID.remove(clothUUID);
     }
 }

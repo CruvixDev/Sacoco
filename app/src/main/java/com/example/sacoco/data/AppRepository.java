@@ -11,6 +11,7 @@ import com.example.sacoco.models.Cloth;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 
@@ -27,10 +28,10 @@ public class AppRepository {
     /**
      * Save a new bag into the app's storage
      * @param bagToSave the bag to save on device
-     * @return true if the bag has been successfully saved in the app's storage
+     * @return a completable object to get the status of the saving
      */
-    public boolean saveBag(Bag bagToSave) {
-        return true;
+    public Completable saveBag(Bag bagToSave) {
+        return this.databaseManagerInstance.bagDAO().insertBag(bagToSave);
     }
 
     /**
@@ -65,7 +66,7 @@ public class AppRepository {
      * @return an observable list of all bags in the app's storage
      */
     public Single<List<BagWithClothesRelation>> getAllBags() {
-        return databaseManagerInstance.bagDAO().getAllBags();
+        return this.databaseManagerInstance.bagDAO().getAllBags();
     }
 
     /**
@@ -73,7 +74,7 @@ public class AppRepository {
      * @return an observable list of all clothes in the app's storage
      */
     public Single<List<Cloth>> getAllClothes() {
-        return databaseManagerInstance.clothDAO().getAllClothes();
+        return this.databaseManagerInstance.clothDAO().getAllClothes();
     }
 
     /**

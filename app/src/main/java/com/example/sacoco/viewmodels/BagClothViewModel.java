@@ -26,7 +26,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -108,6 +107,13 @@ public class BagClothViewModel extends ViewModel {
                 isBagAdded = bagsList.add(newBagToAdd);
                 //Update the bags live data to update UI
                 this.bagsLiveData.setValue(bagsList);
+
+                if (isBagAdded) {
+                    this.appRepository.saveBag(newBagToAdd)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe();
+                }
             }
         }
 
