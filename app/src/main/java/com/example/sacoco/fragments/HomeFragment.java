@@ -57,9 +57,6 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
                         bagAdapter.setBagsArrayList(bagClothViewModel.getBagsLiveData().getValue());
                     }
 
-                    Objects.requireNonNull(bagsRecyclerView.getAdapter()).
-                            notifyItemInserted(bagArrayList.size());
-
                     circularProgressBar.setVisibility(View.INVISIBLE);
                 }
         );

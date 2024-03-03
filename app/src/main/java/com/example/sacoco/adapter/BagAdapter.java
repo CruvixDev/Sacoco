@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sacoco.R;
@@ -17,10 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
-    private ArrayList<Bag> bagsArrayList;
+    private final ArrayList<Bag> bagsArrayList;
     private final ViewHolderSelectedCallback viewHolderSelectedCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -94,7 +96,12 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         return bagsArrayList.size();
     }
 
-    public void setBagsArrayList(ArrayList<Bag> bagsArrayList) {
-        this.bagsArrayList = bagsArrayList;
+    public void setBagsArrayList(List<Bag> newBagsList) {
+        BagDiffCallback diffCallback = new BagDiffCallback(this.bagsArrayList, newBagsList);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.bagsArrayList.clear();
+        this.bagsArrayList.addAll(newBagsList);
+        diffResult.dispatchUpdatesTo(this);
     }
 }
