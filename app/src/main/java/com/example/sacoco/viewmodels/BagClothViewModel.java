@@ -83,9 +83,8 @@ public class BagClothViewModel extends ViewModel {
      *
      * @param weekNumber the number of the week in the year
      * @param clothesUUID the UUID of the cloth
-     * @return a completable object to observe
      */
-    public Completable addBag(int weekNumber, ArrayList<UUID> clothesUUID) {
+    public void addBag(int weekNumber, ArrayList<UUID> clothesUUID) {
         Bag newBagToAdd = new Bag(weekNumber);
         Cloth clothToAdd;
 
@@ -107,8 +106,6 @@ public class BagClothViewModel extends ViewModel {
                         }, throwable -> Log.e(this.getClass().getName(), "Cannot create bag!")
                 );
         compositeDisposable.add(saveBagDisposable);
-
-        return saveBagCompletable;
     }
 
     /**
