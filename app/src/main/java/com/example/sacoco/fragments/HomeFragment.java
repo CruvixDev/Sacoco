@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
             circularProgressBar.setVisibility(View.VISIBLE);
         }
 
-        //TODO make the update of recycler view with DiffUtils for performances
         bagClothViewModel.getBagsLiveData().observe(this.getViewLifecycleOwner(),
                 bagArrayList -> {
                     BagAdapter bagAdapter = (BagAdapter)this.bagsRecyclerView.getAdapter();

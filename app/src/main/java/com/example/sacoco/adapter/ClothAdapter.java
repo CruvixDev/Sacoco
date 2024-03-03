@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sacoco.R;
@@ -16,9 +17,10 @@ import com.example.sacoco.models.Cloth;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> {
-    private ArrayList<Cloth> clothesArrayList;
+    private final ArrayList<Cloth> clothesArrayList;
     private final ViewHolderSelectedCallback viewHolderSelectedCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -107,7 +109,12 @@ public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> 
         return clothesArrayList.size();
     }
 
-    public void setClothesArrayList(ArrayList<Cloth> clothesArrayList) {
-        this.clothesArrayList = clothesArrayList;
+    public void setClothesArrayList(List<Cloth> newClothesList) {
+        ClothDiffCallback diffCallback = new ClothDiffCallback(this.clothesArrayList, newClothesList);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.clothesArrayList.clear();
+        this.clothesArrayList.addAll(newClothesList);
+        diffResult.dispatchUpdatesTo(this);
     }
 }

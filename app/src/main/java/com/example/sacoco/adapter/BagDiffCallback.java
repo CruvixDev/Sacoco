@@ -28,7 +28,8 @@ public class BagDiffCallback extends DiffUtil.Callback {
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         return oldBagsList.get(oldItemPosition).getWeekNumber() == newBagsList.get(
-                newItemPosition).getWeekNumber();    }
+                newItemPosition).getWeekNumber();
+    }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {

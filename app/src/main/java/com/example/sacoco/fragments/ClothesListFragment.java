@@ -49,7 +49,6 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
             circularProgressBar.setVisibility(View.VISIBLE);
         }
 
-        //TODO make the update of recycler view with DiffUtils for performances
         bagClothViewModel.getClothesLiveData().observe(this.getViewLifecycleOwner(),
                 clothArrayList -> {
                     ClothAdapter clothAdapter = (ClothAdapter) this.clothesRecyclerView.getAdapter();
@@ -58,9 +57,6 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
                         clothAdapter.setClothesArrayList(bagClothViewModel.getClothesLiveData().
                                 getValue());
                     }
-
-                    Objects.requireNonNull(clothesRecyclerView.getAdapter()).
-                            notifyItemInserted(clothArrayList.size());
 
                     circularProgressBar.setVisibility(View.INVISIBLE);
                 }
