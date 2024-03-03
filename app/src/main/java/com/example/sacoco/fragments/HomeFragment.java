@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -64,16 +65,21 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
         addBagButton.setOnClickListener(addBagButtonClickedListener);
     }
 
-    //TODO don't open more than twice the dialog
     private final View.OnClickListener addBagButtonClickedListener = view -> {
-        AddBagDialogFragment addBagDialogFragment = new AddBagDialogFragment();
-        requireActivity().getSupportFragmentManager().
-                beginTransaction().
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                setReorderingAllowed(true).
-                add(R.id.fragmentContainerView, addBagDialogFragment).
-                addToBackStack(null).
-                commit();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        AddBagDialogFragment existingFragment = (AddBagDialogFragment) fragmentManager.
+                findFragmentByTag("AddBagDialogFragment");
+
+        if (existingFragment == null) {
+            AddBagDialogFragment addBagDialogFragment = new AddBagDialogFragment();
+            fragmentManager
+                    .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragmentContainerView, addBagDialogFragment, "AddBagDialogFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
     };
 
     @Override

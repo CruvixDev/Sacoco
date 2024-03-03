@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -66,16 +67,21 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
         addClothButton.setOnClickListener(addClothButtonClickedListener);
     }
 
-    //TODO don't open more than twice the dialog
     private final View.OnClickListener addClothButtonClickedListener = view -> {
-        AddClothDialogFragment addClothDialogFragment = new AddClothDialogFragment();
-        requireActivity().getSupportFragmentManager().
-                beginTransaction().
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                setReorderingAllowed(true).
-                add(R.id.fragmentContainerView, addClothDialogFragment).
-                addToBackStack(null).
-                commit();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        AddClothDialogFragment existingFragment = (AddClothDialogFragment) fragmentManager.
+                findFragmentByTag("AddClothDialogFragment");
+
+        if (existingFragment == null) {
+            AddClothDialogFragment addClothDialogFragment = new AddClothDialogFragment();
+            fragmentManager
+                    .beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragmentContainerView, addClothDialogFragment, "AddClothDialogFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
     };
 
     @Override
