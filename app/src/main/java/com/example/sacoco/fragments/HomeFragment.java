@@ -30,7 +30,6 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
 
     public HomeFragment() {
         super(R.layout.fragment_base_layout);
-        this.addBagDialogFragment = new AddBagDialogFragment();
     }
 
     @Override
@@ -70,21 +69,23 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.addBagDialogFragment.onDestroy();
+
+        if (this.addBagDialogFragment != null) {
+            this.addBagDialogFragment.onDestroy();
+        }
     }
 
     private final View.OnClickListener addBagButtonClickedListener = view -> {
         FragmentManager fragmentManager = this.requireActivity().getSupportFragmentManager();
+        this.addBagDialogFragment = new AddBagDialogFragment();
 
-        if (this.addBagDialogFragment != null) {
-            fragmentManager
-                    .beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainerView, this.addBagDialogFragment, "AddBagDialogFragment")
-                    .addToBackStack(null)
-                    .commit();
-        }
+        fragmentManager
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setReorderingAllowed(true)
+                .add(R.id.fragmentContainerView, this.addBagDialogFragment, "AddBagDialogFragment")
+                .addToBackStack(null)
+                .commit();
     };
 
     @Override
