@@ -1,5 +1,6 @@
 package com.example.sacoco.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.Locale;
 public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
     private final ArrayList<Bag> bagsArrayList;
     private final ViewHolderSelectedCallback viewHolderSelectedCallback;
+    private final SimpleDateFormat simpleDateFormat;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView bagCardTitle;
@@ -57,6 +59,7 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
     public BagAdapter(ViewHolderSelectedCallback viewHolderSelectedCallback) {
         this.bagsArrayList = new ArrayList<>();
         this.viewHolderSelectedCallback = viewHolderSelectedCallback;
+        this.simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
     }
 
     @NonNull
@@ -71,10 +74,6 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull BagAdapter.ViewHolder holder, int position) {
         Bag bag = bagsArrayList.get(position);
         int bagWeekNumber = bag.getWeekNumber();
-        String dateText = holder.itemView.getContext().getString(R.string.card_base_text);
-        String startDateString;
-        String endDateString;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.WEEK_OF_YEAR, bagWeekNumber);
@@ -84,11 +83,13 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         Date endDate = calendar.getTime();
 
-        startDateString = dateFormat.format(startDate);
-        endDateString = dateFormat.format(endDate);
+        String startDateString = this.simpleDateFormat.format(startDate);
+        String endDateString = this.simpleDateFormat.format(endDate);
 
-        holder.getBagCardTitle().setText(holder.itemView.getContext().getString(R.string.card_bag_name_title));
-        holder.getBagCardDateText().setText(String.format(dateText, startDateString, endDateString));
+        Context context = holder.itemView.getContext();
+        holder.getBagCardTitle().setText(context.getString(R.string.card_bag_name_title));
+        holder.getBagCardDateText().setText(context.getString(R.string.card_base_text,
+                startDateString, endDateString));
     }
 
     @Override
