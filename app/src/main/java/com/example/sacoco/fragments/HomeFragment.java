@@ -26,9 +26,11 @@ import java.util.Objects;
 public class HomeFragment extends Fragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
     private RecyclerView bagsRecyclerView;
+    private AddBagDialogFragment addBagDialogFragment;
 
     public HomeFragment() {
         super(R.layout.fragment_base_layout);
+        this.addBagDialogFragment = new AddBagDialogFragment();
     }
 
     @Override
@@ -65,18 +67,21 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
         addBagButton.setOnClickListener(addBagButtonClickedListener);
     }
 
-    private final View.OnClickListener addBagButtonClickedListener = view -> {
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        AddBagDialogFragment existingFragment = (AddBagDialogFragment) fragmentManager.
-                findFragmentByTag("AddBagDialogFragment");
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.addBagDialogFragment.onDestroy();
+    }
 
-        if (existingFragment == null) {
-            AddBagDialogFragment addBagDialogFragment = new AddBagDialogFragment();
+    private final View.OnClickListener addBagButtonClickedListener = view -> {
+        FragmentManager fragmentManager = this.requireActivity().getSupportFragmentManager();
+
+        if (this.addBagDialogFragment != null) {
             fragmentManager
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainerView, addBagDialogFragment, "AddBagDialogFragment")
+                    .add(R.id.fragmentContainerView, this.addBagDialogFragment, "AddBagDialogFragment")
                     .addToBackStack(null)
                     .commit();
         }
