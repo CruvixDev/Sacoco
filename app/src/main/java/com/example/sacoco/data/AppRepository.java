@@ -49,6 +49,10 @@ public class AppRepository {
         );
     }
 
+    public Completable deleteBag(Bag bagToRemove) {
+        return this.databaseManagerInstance.bagDAO().deleteBag(bagToRemove);
+    }
+
     /**
      * Save clothes in bag into the app's storage
      * @param bagClothCrossRefList the clothes of bag to save on device

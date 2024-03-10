@@ -13,7 +13,8 @@ import java.util.UUID;
                 @ForeignKey(
                 entity = Bag.class,
                 parentColumns = "weekNumber",
-                childColumns = "weekNumber"
+                childColumns = "weekNumber",
+                onDelete = ForeignKey.CASCADE
                 ),
                 @ForeignKey(
                         entity = Cloth.class,

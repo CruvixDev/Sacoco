@@ -83,7 +83,7 @@ public class BagClothViewModel extends ViewModel {
      *
      * @param weekNumber the number of the week in the year
      * @param clothesUUID the UUID of the clothes
-     * @return a completable observable to subscribe
+     * @return a completable observable to subscribe to check the adding status
      */
     public Completable addBag(int weekNumber, ArrayList<UUID> clothesUUID) {
         Bag newBagToAdd = new Bag(weekNumber);
@@ -117,21 +117,28 @@ public class BagClothViewModel extends ViewModel {
      * Remove a bag into the list of bags
      *
      * @param weekNumber the number of the week in the year
-     * @return true if the bag has been removed from bags list false if it does not exists
+     * @return a completable to subscribe to check the removing status
      */
-    public boolean removeBag(int weekNumber) {
+    public Completable removeBag(int weekNumber) {
         Bag bagToRemove = getBagByWeekNumber(weekNumber);
-        //Get the wrapped data
-        ArrayList<Bag> bagsList = this.bagsLiveData.getValue();
-        boolean isBagRemoved = false;
 
-        if (bagToRemove != null && bagsList != null) {
-            isBagRemoved = bagsList.remove(bagToRemove);
+        if (bagToRemove != null) {
             //Update the bags live data to update UI
-            this.bagsLiveData.setValue(bagsList);
+            return this.appRepository.deleteBag(bagToRemove)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete(() -> {
+                        ArrayList<Bag> bagsArrayList = this.bagsLiveData.getValue();
+                        if (bagsArrayList != null) {
+                            bagsArrayList.remove(bagToRemove);
+                            this.bagsLiveData.setValue(bagsArrayList);
+                        }
+                    })
+                    .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot remove bag!"))
+                    .subscribeOn(Schedulers.io());
         }
-
-        return isBagRemoved;
+        else {
+            return Completable.error(new IllegalStateException("Invalid bag"));
+        }
     }
 
     /**
