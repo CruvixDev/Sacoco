@@ -82,30 +82,35 @@ public class BagClothViewModel extends ViewModel {
      * Create and add a new bag to the list of bags
      *
      * @param weekNumber the number of the week in the year
-     * @param clothesUUID the UUID of the cloth
+     * @param clothesUUID the UUID of the clothes
+     * @return a completable observable to subscribe
      */
-    public void addBag(int weekNumber, ArrayList<UUID> clothesUUID) {
+    public Completable addBag(int weekNumber, ArrayList<UUID> clothesUUID) {
         Bag newBagToAdd = new Bag(weekNumber);
-        Cloth clothToAdd;
 
-        for (UUID clothUUID : clothesUUID) {
-            clothToAdd = this.getClothByUUID(clothUUID);
-            newBagToAdd.addClothToBag(clothToAdd);
-        }
+        if (checkWeekValidity(weekNumber)) {
+            Cloth clothToAdd;
 
-        Completable saveBagCompletable = this.appRepository.saveBag(newBagToAdd);
-        Disposable saveBagDisposable = saveBagCompletable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                            ArrayList<Bag> bagsArrayList = this.bagsLiveData.getValue();
-                            if (bagsArrayList != null) {
-                                bagsArrayList.add(newBagToAdd);
-                            }
+            for (UUID clothUUID : clothesUUID) {
+                clothToAdd = this.getClothByUUID(clothUUID);
+                newBagToAdd.addClothToBag(clothToAdd);
+            }
+
+            return this.appRepository.saveBag(newBagToAdd)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete(() -> {
+                        ArrayList<Bag> bagsArrayList = this.bagsLiveData.getValue();
+                        if (bagsArrayList != null) {
+                            bagsArrayList.add(newBagToAdd);
                             this.bagsLiveData.setValue(bagsArrayList);
-                        }, throwable -> Log.e(this.getClass().getName(), "Cannot create bag!")
-                );
-        compositeDisposable.add(saveBagDisposable);
+                        }
+                    })
+                    .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot create bag!"))
+                    .subscribeOn(Schedulers.io());
+        }
+        else {
+            return Completable.error(new IllegalStateException("Invalid week number"));
+        }
     }
 
     /**

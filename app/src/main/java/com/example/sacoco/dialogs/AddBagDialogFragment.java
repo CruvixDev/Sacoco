@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,13 +25,18 @@ import java.util.Calendar;
 import java.util.Objects;
 import java.util.UUID;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 public class AddBagDialogFragment extends DialogFragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
     private final ArrayList<UUID> clothesToAddUUID;
+    private final CompositeDisposable compositeDisposable;
 
     public AddBagDialogFragment() {
         super(R.layout.dialog_add_bag_layout);
         this.clothesToAddUUID = new ArrayList<>();
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -55,8 +61,15 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
 
         Button saveBagButton = view.findViewById(R.id.addBagButton);
         saveBagButton.setOnClickListener(view1 -> {
-            bagClothViewModel.addBag(calendar.get(Calendar.WEEK_OF_YEAR),
-                    clothesToAddUUID);
+            Disposable disposable =
+                    bagClothViewModel.addBag(calendar.get(Calendar.WEEK_OF_YEAR), clothesToAddUUID)
+                            .subscribe(
+                                    () -> Toast.makeText(this.getContext(),
+                                            "Sac créé avec succès !", Toast.LENGTH_SHORT).show(),
+                                    throwable -> Toast.makeText(this.getContext(),
+                                            "Impossible de créer le sac", Toast.LENGTH_SHORT).show()
+                            );
+            this.compositeDisposable.add(disposable);
             this.dismiss();
         });
     }
@@ -67,6 +80,13 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        this.compositeDisposable.dispose();
     }
 
     @Override
