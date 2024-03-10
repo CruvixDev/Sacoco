@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "06a64648c8cea7e6ca30ca59d357b11c",
+    "identityHash": "0c1f45c60cd63d27ded43d9e3f5d6075",
     "entities": [
       {
         "tableName": "Bag",
@@ -70,7 +70,7 @@
       },
       {
         "tableName": "BagClothCrossRef",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`weekNumber` INTEGER NOT NULL, `clothUUID` TEXT NOT NULL, PRIMARY KEY(`weekNumber`, `clothUUID`), FOREIGN KEY(`weekNumber`) REFERENCES `Bag`(`weekNumber`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`clothUUID`) REFERENCES `Cloth`(`clothUUID`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`weekNumber` INTEGER NOT NULL, `clothUUID` TEXT NOT NULL, PRIMARY KEY(`weekNumber`, `clothUUID`), FOREIGN KEY(`weekNumber`) REFERENCES `Bag`(`weekNumber`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`clothUUID`) REFERENCES `Cloth`(`clothUUID`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "weekNumber",
@@ -106,7 +106,7 @@
         "foreignKeys": [
           {
             "table": "Bag",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
               "weekNumber"
@@ -132,7 +132,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '06a64648c8cea7e6ca30ca59d357b11c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0c1f45c60cd63d27ded43d9e3f5d6075')"
     ]
   }
 }
