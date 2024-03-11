@@ -37,13 +37,13 @@ public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> 
             Button clothConsultButton = itemView.findViewById(R.id.consultButton);
             Button clothRemoveButton = itemView.findViewById(R.id.removeButton);
 
-            View.OnClickListener onConsultBag = view -> viewHolderSelectedCallback.
+            View.OnClickListener onConsultCloth = view -> viewHolderSelectedCallback.
                     onPositiveViewHolderSelected(getAdapterPosition());
-            clothConsultButton.setOnClickListener(onConsultBag);
+            clothConsultButton.setOnClickListener(onConsultCloth);
 
-            View.OnClickListener onRemoveBag = view -> viewHolderSelectedCallback.
+            View.OnClickListener onRemoveCloth = view -> viewHolderSelectedCallback.
                     onNegativeViewHolderSelected(getAdapterPosition());
-            clothRemoveButton.setOnClickListener(onRemoveBag);
+            clothRemoveButton.setOnClickListener(onRemoveCloth);
         }
 
         public ShapeableImageView getClothCardIcon() {
