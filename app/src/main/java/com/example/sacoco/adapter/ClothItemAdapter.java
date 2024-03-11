@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sacoco.R;
@@ -85,7 +86,12 @@ public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.View
         return this.clothesInBagList.size();
     }
 
-    public void setClothesInBagList(ArrayList<Cloth> clothesInBagList) {
-        this.clothesInBagList = clothesInBagList;
+    public void setClothesInBagList(ArrayList<Cloth> newClothesInBagList) {
+        ClothDiffCallback diffCallback = new ClothDiffCallback(this.clothesInBagList, newClothesInBagList);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.clothesInBagList.clear();
+        this.clothesInBagList.addAll(newClothesInBagList);
+        diffResult.dispatchUpdatesTo(this);
     }
 }
