@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
+        this.bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
 
         MainActivity mainActivity = (MainActivity)requireActivity();
         mainActivity.setActivityTitle(this.getString(R.string.main_activity_menu_home));

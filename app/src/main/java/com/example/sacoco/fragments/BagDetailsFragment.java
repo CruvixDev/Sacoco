@@ -6,6 +6,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,13 +16,16 @@ import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.ClothItemAdapter;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
+import com.example.sacoco.dialogs.AddClothToBagDialogFragment;
 import com.example.sacoco.viewmodels.BagClothViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
 public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
     private RecyclerView clothesInBagRecyclerView;
+    private AddClothToBagDialogFragment addClothToBagDialogFragment;
 
     public BagDetailsFragment() {
         super(R.layout.fragment_bag_content_layout);
@@ -30,7 +35,7 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
+        this.bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
 
         int bagWeekNumber = Objects.requireNonNull(bagClothViewModel.getSelectedBagLiveData().
                 getValue()).getWeekNumber();
@@ -45,7 +50,23 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
         ClothItemAdapter clothItemAdapter = (ClothItemAdapter)clothesInBagRecyclerView.getAdapter();
         Objects.requireNonNull(clothItemAdapter).setClothesInBagList(bagClothViewModel.
                 getSelectedBagLiveData().getValue().getClothesList());
+
+        FloatingActionButton addBagButton = view.findViewById(R.id.addClothToBagButton);
+        addBagButton.setOnClickListener(this.addClothToBagButtonListener);
     }
+
+    private final View.OnClickListener addClothToBagButtonListener = view -> {
+        FragmentManager fragmentManager = this.requireActivity().getSupportFragmentManager();
+        this.addClothToBagDialogFragment = new AddClothToBagDialogFragment();
+
+        fragmentManager
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setReorderingAllowed(true)
+                .add(R.id.fragmentContainerView, this.addClothToBagDialogFragment, "AddBagDialogFragment")
+                .addToBackStack(null)
+                .commit();
+    };
 
     @Override
     public void onPositiveViewHolderSelected(int viewHolderSelectedIndex) {
