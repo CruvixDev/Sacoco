@@ -13,7 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.ClothItemAdapter;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
+import com.example.sacoco.models.Cloth;
 import com.example.sacoco.viewmodels.BagClothViewModel;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class AddClothToBagDialogFragment extends DialogFragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
@@ -34,7 +38,13 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
 
         ClothItemAdapter clothItemAdapter = (ClothItemAdapter)addClothesToBagRecyclerView.getAdapter();
         if (clothItemAdapter != null) {
-            clothItemAdapter.setClothesInBagList(bagClothViewModel.getClothesLiveData().getValue());
+            ArrayList<Cloth> clothesArrayList = new ArrayList<>(
+                    Objects.requireNonNull(this.bagClothViewModel.getClothesLiveData().getValue()));
+
+            clothesArrayList.removeAll(Objects.requireNonNull(
+                    this.bagClothViewModel.getSelectedBagLiveData().getValue()).getClothesList());
+
+            clothItemAdapter.setClothesInBagList(clothesArrayList);
         }
     }
 
