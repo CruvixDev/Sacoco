@@ -47,12 +47,29 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
         clothesInBagRecyclerView.setAdapter(new ClothItemAdapter(this));
         clothesInBagRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ClothItemAdapter clothItemAdapter = (ClothItemAdapter)clothesInBagRecyclerView.getAdapter();
-        Objects.requireNonNull(clothItemAdapter).setClothesInBagList(bagClothViewModel.
-                getSelectedBagLiveData().getValue().getClothesList());
+        this.bagClothViewModel.getSelectedBagLiveData().observe(this.getViewLifecycleOwner(),
+                bag -> {
+                    ClothItemAdapter clothItemAdapter =
+                            (ClothItemAdapter)this.clothesInBagRecyclerView.getAdapter();
+
+                    if (clothItemAdapter != null) {
+                        clothItemAdapter.setClothesInBagList(
+                                this.bagClothViewModel.getSelectedBagLiveData().getValue().getClothesList());
+                    }
+                }
+        );
 
         FloatingActionButton addBagButton = view.findViewById(R.id.addClothToBagButton);
         addBagButton.setOnClickListener(this.addClothToBagButtonListener);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (this.addClothToBagDialogFragment != null) {
+            this.addClothToBagDialogFragment.onDestroy();
+        }
     }
 
     private final View.OnClickListener addClothToBagButtonListener = view -> {

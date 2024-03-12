@@ -25,9 +25,9 @@ import java.util.UUID;
         indices = {@Index(value = {"clothUUID"})}
 )
 public class BagClothCrossRef {
-    public int weekNumber;
+    public final int weekNumber;
     @NonNull
-    public UUID clothUUID;
+    public final UUID clothUUID;
 
     public BagClothCrossRef(int weekNumber, @NonNull UUID clothUUID) {
         this.weekNumber = weekNumber;

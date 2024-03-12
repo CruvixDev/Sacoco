@@ -55,12 +55,22 @@ public class AppRepository {
 
     /**
      * Save clothes in bag into the app's storage
-     * @param bagClothCrossRefList the clothes of bag to save on device
+     * @param bag the bag where to add clothes
+     * @param clothesToAdd the clothes to add into the bag
      * @return a completable object to subscribe to observe the saving status
      */
-    public Completable saveClothesIntoBag(ArrayList<BagClothCrossRef> bagClothCrossRefList) {
+    public Completable saveClothesIntoBag(Bag bag, ArrayList<Cloth> clothesToAdd) {
+        ArrayList<BagClothCrossRef> bagClothCrossRefArrayList = new ArrayList<>();
+
+        BagClothCrossRef currentBagClothCrossRef;
+        for (Cloth clothToAdd : clothesToAdd) {
+            currentBagClothCrossRef = new BagClothCrossRef(bag.getWeekNumber(),
+                    clothToAdd.getClothUUID());
+            bagClothCrossRefArrayList.add(currentBagClothCrossRef);
+        }
+
         return this.databaseManagerInstance.bagClothCrossRefDAO().
-                insertClothesInBag(bagClothCrossRefList);
+                insertClothesInBag(bagClothCrossRefArrayList);
     }
 
     /**

@@ -19,7 +19,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import java.util.ArrayList;
 
 public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.ViewHolder> {
-    private ArrayList<Cloth> clothesInBagList;
+    private final ArrayList<Cloth> clothesInBagList;
     private final ViewHolderSelectedCallback viewHolderSelectedCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {

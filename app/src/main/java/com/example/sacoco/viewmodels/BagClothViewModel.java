@@ -199,28 +199,40 @@ public class BagClothViewModel extends ViewModel {
      * Add existing clothes to the selected bag into the bags list
      *
      * @param clothesIdentifiers the UUID of clothes
-     * @return true if a bag is selected false otherwise
+     * @return a completable to observe to check the status of saving clothes into the selected bag
      */
-    public boolean addClothesToBag(ArrayList<UUID> clothesIdentifiers) {
+    public Completable addClothesToBag(ArrayList<UUID> clothesIdentifiers) {
         boolean isBagSelected = this.selectedBagLiveData.isInitialized();
 
         if (isBagSelected) {
             Bag bagToAddClothes = this.selectedBagLiveData.getValue();
+            ArrayList<Cloth> clothesToAdd = new ArrayList<>();
+
             Cloth clothToAdd;
-
-            for (UUID clothIdentifier : clothesIdentifiers) {
-                clothToAdd = getClothByUUID(clothIdentifier);
-
-                if (clothToAdd != null && bagToAddClothes != null) {
-                    bagToAddClothes.addClothToBag(clothToAdd);
-                }
+            for (UUID clothUUID : clothesIdentifiers) {
+                clothToAdd = this.getClothByUUID(clothUUID);
+                clothesToAdd.add(clothToAdd);
             }
 
-            //Update the selected bag livedata to update the UI
-            this.selectedBagLiveData.setValue(bagToAddClothes);
-        }
+            return this.appRepository.saveClothesIntoBag(bagToAddClothes, clothesToAdd)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete(
+                            () -> {
+                                if (bagToAddClothes != null) {
+                                    bagToAddClothes.addClothesToBag(clothesToAdd);
+                                }
 
-        return isBagSelected;
+                                this.selectedBagLiveData.setValue(bagToAddClothes);
+                            }
+                    )
+                    .doOnError(throwable -> Log.e(this.getClass().getName(),
+                            "Cannot insert clothes into the selected bag!")
+                    )
+                    .subscribeOn(Schedulers.io());
+        }
+        else {
+            return Completable.error(new IllegalStateException("No bag selected"));
+        }
     }
 
     /**

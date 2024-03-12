@@ -85,7 +85,6 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         this.compositeDisposable.dispose();
     }
 
