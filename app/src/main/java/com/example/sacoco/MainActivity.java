@@ -77,13 +77,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public void loadFragment(Class<? extends Fragment> fragmentClass) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.
-                beginTransaction().
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                setReorderingAllowed(true).
-                replace(R.id.fragmentContainerView, fragmentClass, null).
-                addToBackStack(null).
-                commit();
+        fragmentManager
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setReorderingAllowed(true)
+                .replace(R.id.fragmentContainerView, fragmentClass, null)
+                .addToBackStack(null)
+                .commit();
     }
 
     /**
