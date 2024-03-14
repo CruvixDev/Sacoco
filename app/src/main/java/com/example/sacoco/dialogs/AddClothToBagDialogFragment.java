@@ -57,10 +57,16 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
         insertClothIntoBagButton.setOnClickListener(view1 -> {
             Disposable disposable = this.bagClothViewModel.addClothesToBag(this.clothesToAddUUID)
                     .subscribe(
-                            () -> Toast.makeText(this.getContext(),
-                                    "Vêtements ajoutés avec succès !", Toast.LENGTH_SHORT).show(),
-                            throwable -> Toast.makeText(this.getContext(),
-                                    "Impossible d'ajouter les vêtements", Toast.LENGTH_SHORT).show()
+                            () -> {
+                                Toast.makeText(this.getContext(),
+                                        "Vêtements ajoutés avec succès !", Toast.LENGTH_SHORT).show();
+                                this.requireActivity().getSupportFragmentManager().popBackStack();
+                            },
+                            throwable -> {
+                                Toast.makeText(this.getContext(),
+                                    "Impossible d'ajouter les vêtements", Toast.LENGTH_SHORT).show();
+                                this.requireActivity().getSupportFragmentManager().popBackStack();
+                            }
                     );
             compositeDisposable.add(disposable);
             this.dismiss();
