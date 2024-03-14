@@ -27,6 +27,7 @@ import java.util.UUID;
 public class ClothesListFragment extends Fragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
     private RecyclerView clothesRecyclerView;
+    private AddClothDialogFragment addClothDialogFragment;
 
     public ClothesListFragment() {
         super(R.layout.fragment_base_layout);
@@ -68,17 +69,15 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
     }
 
     private final View.OnClickListener addClothButtonClickedListener = view -> {
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        AddClothDialogFragment existingFragment = (AddClothDialogFragment) fragmentManager.
-                findFragmentByTag("AddClothDialogFragment");
+        if (this.addClothDialogFragment == null || !this.addClothDialogFragment.isVisible()) {
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            this.addClothDialogFragment = new AddClothDialogFragment();
 
-        if (existingFragment == null) {
-            AddClothDialogFragment addClothDialogFragment = new AddClothDialogFragment();
             fragmentManager
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainerView, addClothDialogFragment, "AddClothDialogFragment")
+                    .add(R.id.fragmentContainerView, this.addClothDialogFragment, "AddClothDialogFragment")
                     .addToBackStack(null)
                     .commit();
         }
