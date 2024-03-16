@@ -38,7 +38,7 @@ public class AppRepository {
 
         for (Cloth cloth : bagToSave.getClothesList()) {
             currentBagClothCrossRef = new BagClothCrossRef(bagToSave.getWeekNumber(),
-                    cloth.getClothUUID());
+                    cloth.getClothUUID(), false);
             bagClothCrossRefArrayList.add(currentBagClothCrossRef);
         }
 
@@ -65,7 +65,7 @@ public class AppRepository {
         BagClothCrossRef currentBagClothCrossRef;
         for (Cloth clothToAdd : clothesToAdd) {
             currentBagClothCrossRef = new BagClothCrossRef(bag.getWeekNumber(),
-                    clothToAdd.getClothUUID());
+                    clothToAdd.getClothUUID(), false);
             bagClothCrossRefArrayList.add(currentBagClothCrossRef);
         }
 

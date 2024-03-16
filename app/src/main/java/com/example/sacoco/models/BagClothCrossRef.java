@@ -28,9 +28,11 @@ public class BagClothCrossRef {
     public final int weekNumber;
     @NonNull
     public final UUID clothUUID;
+    public final boolean isClothPresent;
 
-    public BagClothCrossRef(int weekNumber, @NonNull UUID clothUUID) {
+    public BagClothCrossRef(int weekNumber, @NonNull UUID clothUUID, boolean isClothPresent) {
         this.weekNumber = weekNumber;
         this.clothUUID = clothUUID;
+        this.isClothPresent = isClothPresent;
     }
 }
