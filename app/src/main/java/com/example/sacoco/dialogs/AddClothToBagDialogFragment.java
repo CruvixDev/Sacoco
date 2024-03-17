@@ -47,10 +47,10 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
         addClothesToBagRecyclerView.setAdapter(new ClothItemAdapter(this));
         addClothesToBagRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ClothItemAdapter clothItemAdapter = (ClothItemAdapter)addClothesToBagRecyclerView.getAdapter();
+        ClothItemAdapter clothItemAdapter = (ClothItemAdapter) addClothesToBagRecyclerView.getAdapter();
         if (clothItemAdapter != null) {
             clothItemAdapter.setClothesInBagList(Objects.requireNonNull(
-                    this.bagClothViewModel.getClothesLiveData().getValue()));
+                    this.bagClothViewModel.getClothesLiveData().getValue()), null);
         }
 
         Button insertClothIntoBagButton = view.findViewById(R.id.addClothToBagConfirm);
@@ -64,7 +64,7 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
                             },
                             throwable -> {
                                 Toast.makeText(this.getContext(),
-                                    "Impossible d'ajouter les vêtements", Toast.LENGTH_SHORT).show();
+                                        "Impossible d'ajouter les vêtements", Toast.LENGTH_SHORT).show();
                                 this.requireActivity().getSupportFragmentManager().popBackStack();
                             }
                     );

@@ -51,7 +51,8 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
 
         ClothItemAdapter clothItemAdapter = (ClothItemAdapter) clothesInBagRecyclerView.getAdapter();
         if (clothItemAdapter != null) {
-            clothItemAdapter.setClothesInBagList(bagClothViewModel.getClothesLiveData().getValue());
+            clothItemAdapter.setClothesInBagList(bagClothViewModel.getClothesLiveData().getValue(),
+                    null);
         }
 
         Calendar calendar = Calendar.getInstance();

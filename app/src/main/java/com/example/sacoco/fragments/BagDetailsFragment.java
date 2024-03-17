@@ -40,7 +40,7 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
         int bagWeekNumber = Objects.requireNonNull(bagClothViewModel.getSelectedBagLiveData().
                 getValue()).getWeekNumber();
         String bagContentTitle = this.getString(R.string.fragment_bag_content_title);
-        MainActivity mainActivity = (MainActivity)requireActivity();
+        MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.setActivityTitle(String.format(bagContentTitle, bagWeekNumber));
 
         clothesInBagRecyclerView = view.findViewById(R.id.bagContentListView);
@@ -50,13 +50,14 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
         this.bagClothViewModel.getSelectedBagLiveData().observe(this.getViewLifecycleOwner(),
                 bag -> {
                     ClothItemAdapter clothItemAdapter =
-                            (ClothItemAdapter)this.clothesInBagRecyclerView.getAdapter();
+                            (ClothItemAdapter) this.clothesInBagRecyclerView.getAdapter();
 
                     if (clothItemAdapter != null) {
                         clothItemAdapter.setClothesInBagList(this.bagClothViewModel.
-                                getSelectedBagLiveData().
-                                getValue().
-                                getClothesList()
+                                        getSelectedBagLiveData().
+                                        getValue().
+                                        getClothesList(),
+                                null
                         );
                     }
                 }

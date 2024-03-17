@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.ViewHolder> {
     private final ArrayList<Cloth> clothesInBagList;
+    private ArrayList<Boolean> clothesPresenceStateList;
     private final ViewHolderSelectedCallback viewHolderSelectedCallback;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,6 +62,7 @@ public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.View
 
     public ClothItemAdapter(ViewHolderSelectedCallback viewHolderSelectedCallback) {
         this.clothesInBagList = new ArrayList<>();
+        this.clothesPresenceStateList = new ArrayList<>();
         this.viewHolderSelectedCallback = viewHolderSelectedCallback;
     }
 
@@ -75,6 +78,17 @@ public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Cloth cloth = clothesInBagList.get(position);
 
+        if (this.clothesPresenceStateList != null && !this.clothesPresenceStateList.isEmpty()) {
+            if (this.clothesPresenceStateList.get(position)) {
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(),
+                        R.color.cloth_present));
+            }
+            else {
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(),
+                        R.color.md_theme_light_onErrorContainer));
+            }
+        }
+
         holder.getClothImage().setImageDrawable(AppCompatResources.getDrawable(
                 holder.itemView.getContext(), R.drawable.shirt_icon));
         holder.getClothName().setText(cloth.getClothName());
@@ -86,12 +100,14 @@ public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.View
         return this.clothesInBagList.size();
     }
 
-    public void setClothesInBagList(ArrayList<Cloth> newClothesInBagList) {
+    public void setClothesInBagList(ArrayList<Cloth> newClothesInBagList,
+                                    ArrayList<Boolean> newClothesPresentStateList) {
         ClothDiffCallback diffCallback = new ClothDiffCallback(this.clothesInBagList, newClothesInBagList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         this.clothesInBagList.clear();
         this.clothesInBagList.addAll(newClothesInBagList);
+        this.clothesPresenceStateList = newClothesPresentStateList;
         diffResult.dispatchUpdatesTo(this);
     }
 }

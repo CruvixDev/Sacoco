@@ -69,4 +69,6 @@
     <color name="md_theme_dark_outlineVariant">#514347</color>
     <color name="md_theme_dark_scrim">#000000</color>
     <color name="CustomColor1">#C24E7A</color>
+    <color name="cloth_present">#91B862</color>
+    <color name="cloth_not_present">#F47377</color>
 </resources>
