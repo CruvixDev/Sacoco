@@ -48,7 +48,7 @@ public class BagClothViewModel extends ViewModel {
                         Application application = creationExtras.get(APPLICATION_KEY);
                         DatabaseManager databaseManager = DatabaseManager.getInstance(application);
 
-                        RxDataStore< Preferences> appPreferencesDataStore =
+                        RxDataStore<Preferences> appPreferencesDataStore =
                                 new RxPreferenceDataStoreBuilder(Objects.requireNonNull(application),
                                         "appSettings").build();
 
@@ -81,7 +81,7 @@ public class BagClothViewModel extends ViewModel {
     /**
      * Create and add a new bag to the list of bags
      *
-     * @param weekNumber the number of the week in the year
+     * @param weekNumber  the number of the week in the year
      * @param clothesUUID the UUID of the clothes
      * @return a completable observable to subscribe to check the adding status
      */
@@ -93,7 +93,7 @@ public class BagClothViewModel extends ViewModel {
 
             for (UUID clothUUID : clothesUUID) {
                 clothToAdd = this.getClothByUUID(clothUUID);
-                newBagToAdd.addClothToBag(clothToAdd);
+                newBagToAdd.addClothToBag(clothToAdd, false);
             }
 
             return this.appRepository.saveBag(newBagToAdd)

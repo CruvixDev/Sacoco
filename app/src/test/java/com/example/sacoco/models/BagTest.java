@@ -35,25 +35,25 @@ public class BagTest {
 
     @Test
     public void addClothToBag() {
-        assertTrue(bagToTest.addClothToBag(redPant));
-        assertTrue(bagToTest.addClothToBag(blueShirt));
-        assertTrue(bagToTest.addClothToBag(brownShoe));
-        assertTrue(bagToTest.addClothToBag(greySocks));
+        assertTrue(bagToTest.addClothToBag(redPant, false));
+        assertTrue(bagToTest.addClothToBag(blueShirt, false));
+        assertTrue(bagToTest.addClothToBag(brownShoe, false));
+        assertTrue(bagToTest.addClothToBag(greySocks, false));
 
         //Try again to add clothes into bag
-        assertFalse(bagToTest.addClothToBag(redPant));
-        assertFalse(bagToTest.addClothToBag(blueShirt));
-        assertFalse(bagToTest.addClothToBag(brownShoe));
-        assertFalse(bagToTest.addClothToBag(greySocks));
+        assertFalse(bagToTest.addClothToBag(redPant, false));
+        assertFalse(bagToTest.addClothToBag(blueShirt, false));
+        assertFalse(bagToTest.addClothToBag(brownShoe, false));
+        assertFalse(bagToTest.addClothToBag(greySocks, false));
 
         assertEquals(bagToTest.getClothesList().size(), 4);
     }
 
     @Test
     public void removeClothInBag() {
-        assertTrue(bagToTest.addClothToBag(redPant));
-        assertTrue(bagToTest.addClothToBag(blueShirt));
-        assertTrue(bagToTest.addClothToBag(greySocks));
+        assertTrue(bagToTest.addClothToBag(redPant, false));
+        assertTrue(bagToTest.addClothToBag(blueShirt, false));
+        assertTrue(bagToTest.addClothToBag(greySocks, false));
 
         assertTrue(bagToTest.removeClothInBag(redPant));
         assertTrue(bagToTest.removeClothInBag(blueShirt));
@@ -65,9 +65,9 @@ public class BagTest {
 
     @Test
     public void isInBag() {
-        assertTrue(bagToTest.addClothToBag(redPant));
-        assertTrue(bagToTest.addClothToBag(brownShoe));
-        assertTrue(bagToTest.addClothToBag(greySocks));
+        assertTrue(bagToTest.addClothToBag(redPant, false));
+        assertTrue(bagToTest.addClothToBag(brownShoe, false));
+        assertTrue(bagToTest.addClothToBag(greySocks, false));
 
         assertTrue(bagToTest.isInBag(redPant));
         assertFalse(bagToTest.isInBag(blueShirt));
@@ -82,10 +82,10 @@ public class BagTest {
 
     @Test
     public void isChecked() {
-        assertTrue(bagToTestChecked.addClothToBag(redPant));
-        assertTrue(bagToTestChecked.addClothToBag(blueShirt));
-        assertTrue(bagToTestChecked.addClothToBag(brownShoe));
-        assertTrue(bagToTestChecked.addClothToBag(greySocks));
+        assertTrue(bagToTestChecked.addClothToBag(redPant, false));
+        assertTrue(bagToTestChecked.addClothToBag(blueShirt, false));
+        assertTrue(bagToTestChecked.addClothToBag(brownShoe, false));
+        assertTrue(bagToTestChecked.addClothToBag(greySocks, false));
 
         assertTrue(bagToTestChecked.isChecked());
         bagToTestChecked.setChecked(false);
