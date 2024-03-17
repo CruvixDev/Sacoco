@@ -53,8 +53,11 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
                             (ClothItemAdapter)this.clothesInBagRecyclerView.getAdapter();
 
                     if (clothItemAdapter != null) {
-                        clothItemAdapter.setClothesInBagList(
-                                this.bagClothViewModel.getSelectedBagLiveData().getValue().getClothesList());
+                        clothItemAdapter.setClothesInBagList(this.bagClothViewModel.
+                                getSelectedBagLiveData().
+                                getValue().
+                                getClothesList()
+                        );
                     }
                 }
         );
