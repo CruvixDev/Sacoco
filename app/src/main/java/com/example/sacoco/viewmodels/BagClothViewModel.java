@@ -370,7 +370,8 @@ public class BagClothViewModel extends ViewModel {
 
         if (clothMatchingIndex >= 0) {
             return this.clothesLiveData.getValue().get(clothMatchingIndex);
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -389,7 +390,8 @@ public class BagClothViewModel extends ViewModel {
 
         if (bagMatchingIndex >= 0) {
             return this.bagsLiveData.getValue().get(bagMatchingIndex);
-        } else {
+        }
+        else {
             return null;
         }
     }
