@@ -21,10 +21,14 @@ public class AppRepository {
     private final DatabaseManager databaseManagerInstance;
     private final RxDataStore<Preferences> appPreferencesDataStore;
 
-    public AppRepository(DatabaseManager databaseManagerInstance,
-                         RxDataStore<Preferences> appPreferencesDataStore) {
-        this.databaseManagerInstance = databaseManagerInstance;
+    public AppRepository(RxDataStore<Preferences> appPreferencesDataStore) {
+        this.databaseManagerInstance = null;
         this.appPreferencesDataStore = appPreferencesDataStore;
+    }
+
+    public AppRepository(DatabaseManager databaseManagerInstance) {
+        this.databaseManagerInstance = databaseManagerInstance;
+        this.appPreferencesDataStore = null;
     }
 
     /**
@@ -42,15 +46,25 @@ public class AppRepository {
             bagClothCrossRefArrayList.add(currentBagClothCrossRef);
         }
 
-        return Completable.mergeArray(
-                this.databaseManagerInstance.bagDAO().insertBag(bagToSave),
-                this.databaseManagerInstance.bagClothCrossRefDAO().insertClothesInBag(
-                        bagClothCrossRefArrayList)
-        );
+        if (this.databaseManagerInstance != null) {
+            return Completable.mergeArray(
+                    this.databaseManagerInstance.bagDAO().insertBag(bagToSave),
+                    this.databaseManagerInstance.bagClothCrossRefDAO().insertClothesInBag(
+                            bagClothCrossRefArrayList)
+            );
+        }
+        else {
+            return Completable.error(new IllegalStateException("The database instance is null"));
+        }
     }
 
     public Completable deleteBag(Bag bagToRemove) {
-        return this.databaseManagerInstance.bagDAO().deleteBag(bagToRemove);
+        if (this.databaseManagerInstance != null) {
+            return this.databaseManagerInstance.bagDAO().deleteBag(bagToRemove);
+        }
+        else {
+            return Completable.error(new IllegalStateException("The database instance is null"));
+        }
     }
 
     /**
@@ -69,8 +83,13 @@ public class AppRepository {
             bagClothCrossRefArrayList.add(currentBagClothCrossRef);
         }
 
-        return this.databaseManagerInstance.bagClothCrossRefDAO().
-                insertClothesInBag(bagClothCrossRefArrayList);
+        if (this.databaseManagerInstance != null) {
+            return this.databaseManagerInstance.bagClothCrossRefDAO().
+                    insertClothesInBag(bagClothCrossRefArrayList);
+        }
+        else {
+            return Completable.error(new IllegalStateException("The database instance is null"));
+        }
     }
 
     /**
@@ -105,7 +124,12 @@ public class AppRepository {
      * @return an observable list of all bags in the app's storage
      */
     public Single<List<BagWithClothesRelation>> getAllBags() {
-        return this.databaseManagerInstance.bagDAO().getAllBags();
+        if (this.databaseManagerInstance != null) {
+            return this.databaseManagerInstance.bagDAO().getAllBags();
+        }
+        else {
+            return Single.error(new IllegalStateException("The database instance is null"));
+        }
     }
 
     /**
@@ -113,7 +137,12 @@ public class AppRepository {
      * @return an observable list of all clothes in the app's storage
      */
     public Single<List<Cloth>> getAllClothes() {
-        return this.databaseManagerInstance.clothDAO().getAllClothes();
+        if (this.databaseManagerInstance != null) {
+            return this.databaseManagerInstance.clothDAO().getAllClothes();
+        }
+        else {
+            return Single.error(new IllegalStateException("The database instance is null"));
+        }
     }
 
     /**
@@ -124,9 +153,14 @@ public class AppRepository {
     public Flowable<String> readStringPreference(String key) {
         Preferences.Key<String> preferenceKey = PreferencesKeys.stringKey(key);
 
-        return appPreferencesDataStore.data().map(
-                preferences -> preferences.get(preferenceKey)
-        );
+        if (appPreferencesDataStore != null) {
+            return appPreferencesDataStore.data().map(
+                    preferences -> preferences.get(preferenceKey)
+            );
+        }
+        else {
+            return Flowable.error(new IllegalStateException("The preference datastore instance is null"));
+        }
     }
 
     /**
@@ -137,11 +171,13 @@ public class AppRepository {
     public void writeStringPreference(String key, String value) {
         Preferences.Key<String> preferenceKey = PreferencesKeys.stringKey(key);
 
-        appPreferencesDataStore.updateDataAsync(preferences -> {
-            MutablePreferences mutablePreferences = preferences.toMutablePreferences();
-            mutablePreferences.set(preferenceKey, value);
-            return Single.just(mutablePreferences);
-        });
+        if (appPreferencesDataStore != null) {
+            appPreferencesDataStore.updateDataAsync(preferences -> {
+                MutablePreferences mutablePreferences = preferences.toMutablePreferences();
+                mutablePreferences.set(preferenceKey, value);
+                return Single.just(mutablePreferences);
+            });
+        }
     }
 
     /**
@@ -152,8 +188,13 @@ public class AppRepository {
     public Flowable<Boolean> readBooleanPreference(String key) {
         Preferences.Key<Boolean> preferenceKey = PreferencesKeys.booleanKey(key);
 
-        return appPreferencesDataStore.data().map(
-                preferences -> preferences.get(preferenceKey)
-        );
+        if (appPreferencesDataStore != null) {
+            return appPreferencesDataStore.data().map(
+                    preferences -> preferences.get(preferenceKey)
+            );
+        }
+        else {
+            return Flowable.error(new IllegalStateException("The preference datastore instance is null"));
+        }
     }
 }

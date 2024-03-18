@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import com.example.sacoco.data.AppRepository;
-import com.example.sacoco.data.DatabaseManager;
 
 import java.util.Objects;
 
@@ -25,14 +24,12 @@ public class PreferencesViewModel extends ViewModel {
                     PreferencesViewModel.class,
                     creationExtras -> {
                         Application application = creationExtras.get(APPLICATION_KEY);
-                        DatabaseManager databaseManager = DatabaseManager.getInstance(application);
 
                         RxDataStore<Preferences> appPreferencesDataStore =
                                 new RxPreferenceDataStoreBuilder(Objects.requireNonNull(application),
                                         "appSettings").build();
 
-                        AppRepository repository = new AppRepository(databaseManager,
-                                appPreferencesDataStore);
+                        AppRepository repository = new AppRepository(appPreferencesDataStore);
 
                         return new PreferencesViewModel(repository);
                     }

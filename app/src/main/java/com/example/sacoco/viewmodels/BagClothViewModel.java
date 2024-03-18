@@ -1,9 +1,6 @@
 package com.example.sacoco.viewmodels;
 
 import androidx.annotation.Nullable;
-import androidx.datastore.preferences.core.Preferences;
-import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
-import androidx.datastore.rxjava3.RxDataStore;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -48,12 +45,7 @@ public class BagClothViewModel extends ViewModel {
                         Application application = creationExtras.get(APPLICATION_KEY);
                         DatabaseManager databaseManager = DatabaseManager.getInstance(application);
 
-                        RxDataStore<Preferences> appPreferencesDataStore =
-                                new RxPreferenceDataStoreBuilder(Objects.requireNonNull(application),
-                                        "appSettings").build();
-
-                        AppRepository repository = new AppRepository(databaseManager,
-                                appPreferencesDataStore);
+                        AppRepository repository = new AppRepository(databaseManager);
 
                         return new BagClothViewModel(repository);
                     }
