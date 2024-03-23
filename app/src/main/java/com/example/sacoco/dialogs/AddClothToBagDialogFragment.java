@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -71,6 +72,9 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
             compositeDisposable.add(disposable);
             this.dismiss();
         });
+
+        ImageButton closeAddClothToBagDialogFragment = view.findViewById(R.id.addClothToBagDialogClose);
+        closeAddClothToBagDialogFragment.setOnClickListener(view1 -> this.dismiss());
     }
 
     @NonNull
