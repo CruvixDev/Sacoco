@@ -12,10 +12,6 @@ import java.util.List;
 
 public class BagWithClothesRelation {
     @Embedded public Bag bag;
-    @Relation(
-            parentColumn = "weekNumber",
-            entityColumn = "clothUUID",
-            associateBy = @Junction(BagClothCrossRef.class)
-    )
-    public List<Cloth> clothesList;
+    @Embedded public Cloth cloth;
+    public boolean isClothPresent;
 }

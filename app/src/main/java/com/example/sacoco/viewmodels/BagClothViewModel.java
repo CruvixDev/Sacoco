@@ -314,13 +314,20 @@ public class BagClothViewModel extends ViewModel {
                         bagsWithClothesList -> {
                             ArrayList<Bag> bagsArrayList = new ArrayList<>();
 
-                            for (BagWithClothesRelation bagWithClothesRelation :
-                                    bagsWithClothesList) {
+                            if (!bagsWithClothesList.isEmpty()) {
+                                Bag currentBag = bagsWithClothesList.get(0).bag;
 
-                                bagWithClothesRelation.bag.addClothesToBag(
-                                        bagWithClothesRelation.clothesList);
+                                for (BagWithClothesRelation bagWithClothes : bagsWithClothesList) {
+                                    if (currentBag.getWeekNumber() != bagWithClothes.bag.getWeekNumber()) {
+                                        bagsArrayList.add(currentBag);
+                                        currentBag = bagWithClothes.bag;
+                                    }
 
-                                bagsArrayList.add(bagWithClothesRelation.bag);
+                                    currentBag.addClothToBag(bagWithClothes.cloth,
+                                            bagWithClothes.isClothPresent);
+                                }
+
+                                bagsArrayList.add(currentBag);
                             }
 
                             this.bagsLiveData.setValue(bagsArrayList);

@@ -23,6 +23,8 @@ public interface BagDAO {
     Completable deleteBag(Bag bagToDelete);
 
     @Transaction
-    @Query("SELECT * FROM Bag")
+    @Query("SELECT Bag.*, Cloth.*, BagClothCrossRef.isClothPresent FROM Bag " +
+            "INNER JOIN BagClothCrossRef ON Bag.weekNumber = BagClothCrossRef.weekNumber " +
+            "INNER JOIN Cloth ON Cloth.clothUUID = BagClothCrossRef.clothUUID")
     Single<List<BagWithClothesRelation>> getAllBags();
 }
