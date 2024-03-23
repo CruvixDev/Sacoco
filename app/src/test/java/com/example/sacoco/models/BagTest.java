@@ -10,7 +10,6 @@ import java.util.UUID;
 
 public class BagTest {
     private final int WEEK_NUMBER_1 = 1;
-    private final int WEEK_NUMBER_52 = 52;
     private Bag bagToTest;
     private Bag bagToTestChecked;
     private Cloth redPant;
@@ -95,6 +94,7 @@ public class BagTest {
     @Test
     public void testEquals() {
         Bag bagEquals = new Bag(WEEK_NUMBER_1);
+        int WEEK_NUMBER_52 = 52;
         Bag bagNotEquals = new Bag(WEEK_NUMBER_52);
 
         assertEquals(bagToTest, bagEquals);
