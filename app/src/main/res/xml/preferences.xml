@@ -43,4 +43,15 @@
             android:selectable="true"
             android:clickable="true" />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preferences_category_language"
+        android:icon="@drawable/translate">
+
+        <Preference
+            android:key="preferenceLanguage"
+            android:title="@string/preferences_language"
+            android:selectable="true"
+            android:clickable="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

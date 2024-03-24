@@ -74,4 +74,6 @@
     <string name="preferences_cgu">Conditions générales d\'utilisation</string>
     <string name="preferences_category_qrcode">QR code</string>
     <string name="preferences_qrcode_generation">Générer un QR code</string>
+    <string name="preferences_category_language">Langue</string>
+    <string name="preferences_language">Modifier la langue de l\'application</string>
 </resources>
