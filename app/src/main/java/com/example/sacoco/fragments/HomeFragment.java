@@ -73,8 +73,8 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         this.compositeDisposable.dispose();
     }
 
