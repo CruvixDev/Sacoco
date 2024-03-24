@@ -20,6 +20,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
+    private int currentItemId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,17 +57,21 @@ public class MainActivity extends AppCompatActivity {
     private final NavigationBarView.OnItemSelectedListener onItemSelectedListener = item -> {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.home) {
-            loadFragment(HomeFragment.class);
-        }
-        else if (itemId == R.id.clothes_list) {
-            loadFragment(ClothesListFragment.class);
-        }
-        else if (itemId == R.id.settings) {
-            loadFragment(SettingsFragment.class);
-        }
-        else if (itemId == R.id.email) {
-            loadFragment(EmailFragment.class);
+        if (itemId != this.currentItemId) {
+            this.currentItemId = itemId;
+
+            if (itemId == R.id.home) {
+                loadFragment(HomeFragment.class);
+            }
+            else if (itemId == R.id.clothes_list) {
+                loadFragment(ClothesListFragment.class);
+            }
+            else if (itemId == R.id.settings) {
+                loadFragment(SettingsFragment.class);
+            }
+            else if (itemId == R.id.email) {
+                loadFragment(EmailFragment.class);
+            }
         }
 
         return true;
