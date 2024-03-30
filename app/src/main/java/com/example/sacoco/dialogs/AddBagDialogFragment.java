@@ -66,13 +66,18 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
             Disposable disposable =
                     bagClothViewModel.addBag(calendar.get(Calendar.WEEK_OF_YEAR), clothesToAddUUID)
                             .subscribe(
-                                    () -> Toast.makeText(this.getContext(),
-                                            "Sac créé avec succès !", Toast.LENGTH_SHORT).show(),
-                                    throwable -> Toast.makeText(this.getContext(),
-                                            "Impossible de créer le sac", Toast.LENGTH_SHORT).show()
+                                    () -> {
+                                        Toast.makeText(this.getContext(), "Sac créé avec " +
+                                                "succès !", Toast.LENGTH_SHORT).show();
+                                        this.dismiss();
+                                    },
+                                    throwable -> {
+                                        Toast.makeText(this.getContext(), "Impossible de " +
+                                                "créer le sac", Toast.LENGTH_SHORT).show();
+                                        this.dismiss();
+                                    }
                             );
             this.compositeDisposable.add(disposable);
-            this.dismiss();
         });
 
         ImageButton closeAddBagDialogFragment =view.findViewById(R.id.closeAddBagDialog);
