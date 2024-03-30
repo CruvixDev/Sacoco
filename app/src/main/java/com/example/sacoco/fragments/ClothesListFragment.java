@@ -17,7 +17,6 @@ import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.ClothAdapter;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
-import com.example.sacoco.dialogs.AddClothDialogFragment;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,7 +26,6 @@ import java.util.UUID;
 public class ClothesListFragment extends Fragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
     private RecyclerView clothesRecyclerView;
-    private AddClothDialogFragment addClothDialogFragment;
 
     public ClothesListFragment() {
         super(R.layout.fragment_base_layout);
@@ -69,18 +67,15 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
     }
 
     private final View.OnClickListener addClothButtonClickedListener = view -> {
-        if (this.addClothDialogFragment == null || !this.addClothDialogFragment.isVisible()) {
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            this.addClothDialogFragment = new AddClothDialogFragment();
+        CameraFragment cameraFragment = new CameraFragment();
 
-            fragmentManager
-                    .beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .setReorderingAllowed(true)
-                    .add(R.id.fragmentContainerView, this.addClothDialogFragment, "AddClothDialogFragment")
-                    .addToBackStack(null)
-                    .commit();
-        }
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setReorderingAllowed(true)
+                .replace(R.id.fragmentContainerView, cameraFragment)
+                .commit();
     };
 
     @Override

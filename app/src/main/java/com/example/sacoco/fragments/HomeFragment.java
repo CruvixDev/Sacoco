@@ -88,7 +88,6 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .setReorderingAllowed(true)
                     .add(R.id.fragmentContainerView, this.addBagDialogFragment, "AddBagDialogFragment")
-                    .addToBackStack(null)
                     .commit();
         }
     };

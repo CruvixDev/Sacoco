@@ -89,7 +89,6 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .setReorderingAllowed(true)
                 .add(R.id.fragmentContainerView, this.addClothToBagDialogFragment, "AddBagDialogFragment")
-                .addToBackStack(null)
                 .commit();
     };
 
