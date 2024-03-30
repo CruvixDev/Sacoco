@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
 
         bagClothViewModel.setSelectedBagLiveData(weekNumber);
 
-        MainActivity mainActivityInstance = (MainActivity) requireActivity();
+        MainActivity mainActivityInstance = (MainActivity) this.requireActivity();
         mainActivityInstance.loadFragment(BagDetailsFragment.class);
     }
 

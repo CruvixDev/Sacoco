@@ -67,15 +67,8 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
     }
 
     private final View.OnClickListener addClothButtonClickedListener = view -> {
-        CameraFragment cameraFragment = new CameraFragment();
-
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        fragmentManager
-                .beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .setReorderingAllowed(true)
-                .replace(R.id.fragmentContainerView, cameraFragment)
-                .commit();
+        MainActivity mainActivity = (MainActivity) this.requireActivity();
+        mainActivity.loadFragment(CameraFragment.class);
     };
 
     @Override
