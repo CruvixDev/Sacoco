@@ -32,6 +32,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class BagClothViewModel extends ViewModel {
     private boolean isBagsDataFetched;
     private boolean isClothesDataFetched;
+    private Cloth clothInCreation;
     private final MutableLiveData<Bag> selectedBagLiveData;
     private final MutableLiveData<Cloth> selectedClothLiveData;
     private final MutableLiveData<ArrayList<Cloth>> clothesLiveData;
@@ -279,6 +280,15 @@ public class BagClothViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Set the temporary cloth in creation
+     *
+     * @param clothUUID the UUID of the temporary cloth
+     */
+    public void setClothInCreation(UUID clothUUID) {
+        this.clothInCreation = new Cloth(clothUUID);
+    }
+
     public LiveData<Bag> getSelectedBagLiveData() {
         return selectedBagLiveData;
     }
@@ -301,6 +311,10 @@ public class BagClothViewModel extends ViewModel {
 
     public boolean isClothesDataFetched() {
         return this.isClothesDataFetched;
+    }
+
+    public Cloth getClothInCreation() {
+        return this.clothInCreation;
     }
 
     /**

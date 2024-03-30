@@ -1,5 +1,7 @@
 package com.example.sacoco.fragments;
 
+import static androidx.camera.view.CameraController.COORDINATE_SYSTEM_VIEW_REFERENCED;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,16 +18,27 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.ImageProxy;
+import androidx.camera.mlkit.vision.MlKitAnalyzer;
 import androidx.camera.view.LifecycleCameraController;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.sacoco.R;
+import com.example.sacoco.viewmodels.BagClothViewModel;
+import com.google.mlkit.vision.barcode.BarcodeScanner;
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
+import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.common.Barcode;
 
+import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Executor;
 
 public class CameraFragment extends Fragment {
+    private BagClothViewModel bagClothViewModel;
+    private String lastBarcodeStringResult;
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -38,21 +51,22 @@ public class CameraFragment extends Fragment {
 
     public CameraFragment() {
         super(R.layout.fragment_camera_layout);
+        this.lastBarcodeStringResult = "";
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        this.bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
+
         if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED) {
 
             PreviewView previewView = view.findViewById(R.id.viewFinder);
             LifecycleCameraController cameraController = new LifecycleCameraController(
-                    requireActivity().getBaseContext());
-            cameraController.bindToLifecycle(this);
+                    this.requireActivity().getBaseContext());
             cameraController.setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA);
-            previewView.setController(cameraController);
 
             Executor cameraExecutor = ContextCompat.getMainExecutor(this.requireContext());
 
@@ -75,6 +89,42 @@ public class CameraFragment extends Fragment {
                         }
                     })
             );
+
+            BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
+                    .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                    .build();
+            BarcodeScanner barcodeScanner = BarcodeScanning.getClient(options);
+
+            cameraController.setImageAnalysisAnalyzer(cameraExecutor,
+                    new MlKitAnalyzer(List.of(barcodeScanner), COORDINATE_SYSTEM_VIEW_REFERENCED,
+                            cameraExecutor, result -> {
+                        List<Barcode> barcodeResults = result.getValue(barcodeScanner);
+
+                        if (barcodeResults != null && !barcodeResults.isEmpty() &&
+                                barcodeResults.get(0) != null) {
+                            String bardcodeResultString = barcodeResults.get(0).getRawValue();
+
+                            if (!this.lastBarcodeStringResult.equals(bardcodeResultString)) {
+                                try {
+                                    UUID clothUUID = UUID.fromString(bardcodeResultString);
+                                    this.bagClothViewModel.setClothInCreation(clothUUID);
+
+                                    Toast.makeText(this.requireContext(), "Cloth detected!",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                catch (IllegalArgumentException e) {
+                                    Toast.makeText(this.requireContext(), "No cloth detected!",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+
+                                this.lastBarcodeStringResult = bardcodeResultString;
+                            }
+                        }
+                    })
+            );
+
+            cameraController.bindToLifecycle(this);
+            previewView.setController(cameraController);
         }
         else {
             this.requestPermissionLauncher.launch(Manifest.permission.CAMERA);
