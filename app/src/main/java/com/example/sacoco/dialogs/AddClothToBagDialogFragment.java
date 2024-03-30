@@ -61,16 +61,15 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
                             () -> {
                                 Toast.makeText(this.getContext(),
                                         "Vêtements ajoutés avec succès !", Toast.LENGTH_SHORT).show();
-                                this.requireActivity().getSupportFragmentManager().popBackStack();
+                                this.dismiss();
                             },
                             throwable -> {
                                 Toast.makeText(this.getContext(),
                                         "Impossible d'ajouter les vêtements", Toast.LENGTH_SHORT).show();
-                                this.requireActivity().getSupportFragmentManager().popBackStack();
+                                this.dismiss();
                             }
                     );
             compositeDisposable.add(disposable);
-            this.dismiss();
         });
 
         ImageButton closeAddClothToBagDialogFragment = view.findViewById(R.id.addClothToBagDialogClose);
