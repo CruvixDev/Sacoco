@@ -10,8 +10,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import com.example.sacoco.fragments.CameraFragment;
 import com.example.sacoco.fragments.ClothesListFragment;
-import com.example.sacoco.fragments.EmailFragment;
 import com.example.sacoco.fragments.HomeFragment;
 import com.example.sacoco.fragments.SettingsFragment;
 import com.example.sacoco.viewmodels.BagClothViewModel;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 loadFragment(SettingsFragment.class);
             }
             else if (itemId == R.id.email) {
-                loadFragment(EmailFragment.class);
+                loadFragment(CameraFragment.class);
             }
         }
 
