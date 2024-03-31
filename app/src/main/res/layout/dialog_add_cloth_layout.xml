@@ -74,12 +74,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/identifierTextInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clothIdentifierTitle"
@@ -129,6 +129,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/clothNameTextInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -143,9 +144,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/dialog_add_cloth_cloth_name_hint"
-                android:maxLines="1"
-                android:maxLength="50"
                 android:inputType="text"
+                android:maxLength="50"
+                android:maxLines="1"
                 tools:ignore="TextContrastCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -163,6 +164,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/clothTypeTextInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -171,13 +173,12 @@
             app:layout_constraintTop_toBottomOf="@+id/clothTypeTitle"
             app:startIconDrawable="@drawable/text">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/dialog_add_cloth_cloth_type_hint"
-                android:maxLines="1"
-                android:maxLength="50"
-                tools:ignore="TextContrastCheck" />
+                android:inputType="none"
+                app:simpleItems="@array/items_array" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
