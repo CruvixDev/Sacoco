@@ -45,6 +45,7 @@ public class CameraFragment extends Fragment {
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
+                    setupCamera();
                     Log.i(this.getClass().getName(), "Camera permission granted");
                 }
                 else {
@@ -66,82 +67,87 @@ public class CameraFragment extends Fragment {
         if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED) {
 
-            PreviewView previewView = view.findViewById(R.id.viewFinder);
-            LifecycleCameraController cameraController = new LifecycleCameraController(
-                    this.requireActivity().getBaseContext());
-            cameraController.setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA);
-
-            Executor cameraExecutor = ContextCompat.getMainExecutor(this.requireContext());
-
-            Button captureImageButton = view.findViewById(R.id.captureImageButton);
-            captureImageButton.setOnClickListener(view1 ->
-                    cameraController.takePicture(cameraExecutor, new ImageCapture.OnImageCapturedCallback() {
-                        @Override
-                        public void onCaptureSuccess(@NonNull ImageProxy image) {
-                            super.onCaptureSuccess(image);
-                            Toast.makeText(view.getContext(), "Image captured",
-                                    Toast.LENGTH_SHORT).show();
-
-                            if (bagClothViewModel.isClothInCreationSet()) {
-                                bagClothViewModel.setClothImageTemp(image.toBitmap());
-                                image.close();
-                                loadAddClothDialogFragment();
-                            }
-                            else {
-                                Toast.makeText(view.getContext(), "Please scan a QR code " +
-                                        "before", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onError(@NonNull ImageCaptureException exception) {
-                            super.onError(exception);
-                            Toast.makeText(view.getContext(), "Failed to capture image",
-                                    Toast.LENGTH_SHORT).show();
-                            Log.e(view.getContext().getClass().getName(), exception.toString());
-                        }
-                    })
-            );
-
-            BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
-                    .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                    .build();
-            BarcodeScanner barcodeScanner = BarcodeScanning.getClient(options);
-
-            cameraController.setImageAnalysisAnalyzer(cameraExecutor,
-                    new MlKitAnalyzer(List.of(barcodeScanner), COORDINATE_SYSTEM_VIEW_REFERENCED,
-                            cameraExecutor, result -> {
-                        List<Barcode> barcodeResults = result.getValue(barcodeScanner);
-
-                        if (barcodeResults != null && !barcodeResults.isEmpty() &&
-                                barcodeResults.get(0) != null) {
-                            String bardcodeResultString = barcodeResults.get(0).getRawValue();
-
-                            if (!this.lastBarcodeStringResult.equals(bardcodeResultString)) {
-                                try {
-                                    UUID clothUUID = UUID.fromString(bardcodeResultString);
-                                    this.bagClothViewModel.setClothInCreation(clothUUID);
-
-                                    Toast.makeText(this.requireContext(), "Cloth detected!",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                                catch (IllegalArgumentException e) {
-                                    Toast.makeText(this.requireContext(), "No cloth detected!",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-
-                                this.lastBarcodeStringResult = bardcodeResultString;
-                            }
-                        }
-                    })
-            );
-
-            cameraController.bindToLifecycle(this);
-            previewView.setController(cameraController);
+            setupCamera();
         }
         else {
             this.requestPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
+    }
+
+    private void setupCamera() {
+        View view = this.requireView();
+        PreviewView previewView = view.findViewById(R.id.viewFinder);
+        LifecycleCameraController cameraController = new LifecycleCameraController(
+                this.requireActivity().getBaseContext());
+        cameraController.setCameraSelector(CameraSelector.DEFAULT_BACK_CAMERA);
+
+        Executor cameraExecutor = ContextCompat.getMainExecutor(this.requireContext());
+
+        Button captureImageButton = view.findViewById(R.id.captureImageButton);
+        captureImageButton.setOnClickListener(view1 ->
+                cameraController.takePicture(cameraExecutor, new ImageCapture.OnImageCapturedCallback() {
+                    @Override
+                    public void onCaptureSuccess(@NonNull ImageProxy image) {
+                        super.onCaptureSuccess(image);
+                        Toast.makeText(view.getContext(), "Image captured",
+                                Toast.LENGTH_SHORT).show();
+
+                        if (bagClothViewModel.isClothInCreationSet()) {
+                            bagClothViewModel.setClothImageTemp(image.toBitmap());
+                            image.close();
+                            loadAddClothDialogFragment();
+                        }
+                        else {
+                            Toast.makeText(view.getContext(), "Please scan a QR code " +
+                                    "before", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull ImageCaptureException exception) {
+                        super.onError(exception);
+                        Toast.makeText(view.getContext(), "Failed to capture image",
+                                Toast.LENGTH_SHORT).show();
+                        Log.e(view.getContext().getClass().getName(), exception.toString());
+                    }
+                })
+        );
+
+        BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
+                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                .build();
+        BarcodeScanner barcodeScanner = BarcodeScanning.getClient(options);
+
+        cameraController.setImageAnalysisAnalyzer(cameraExecutor,
+                new MlKitAnalyzer(List.of(barcodeScanner), COORDINATE_SYSTEM_VIEW_REFERENCED,
+                        cameraExecutor, result -> {
+                    List<Barcode> barcodeResults = result.getValue(barcodeScanner);
+
+                    if (barcodeResults != null && !barcodeResults.isEmpty() &&
+                            barcodeResults.get(0) != null) {
+                        String bardcodeResultString = barcodeResults.get(0).getRawValue();
+
+                        if (!this.lastBarcodeStringResult.equals(bardcodeResultString)) {
+                            try {
+                                UUID clothUUID = UUID.fromString(bardcodeResultString);
+                                this.bagClothViewModel.setClothInCreation(clothUUID);
+
+                                Toast.makeText(this.requireContext(), "Cloth detected!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            catch (IllegalArgumentException e) {
+                                Toast.makeText(this.requireContext(), "No cloth detected!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                            this.lastBarcodeStringResult = bardcodeResultString;
+                        }
+                    }
+                })
+        );
+
+        cameraController.bindToLifecycle(this);
+        previewView.setController(cameraController);
     }
 
     private void loadAddClothDialogFragment() {
