@@ -62,7 +62,7 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
                 calendar.set(year, month, day));
 
         Button saveBagButton = view.findViewById(R.id.addBagButton);
-        saveBagButton.setOnClickListener(view1 -> {
+        saveBagButton.setOnClickListener(parentView -> {
             Disposable disposable =
                     bagClothViewModel.addBag(calendar.get(Calendar.WEEK_OF_YEAR), clothesToAddUUID)
                             .subscribe(

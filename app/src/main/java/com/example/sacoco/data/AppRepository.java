@@ -33,6 +33,7 @@ public class AppRepository {
 
     /**
      * Save a new bag into the app's storage
+     *
      * @param bagToSave the bag to save on device
      * @return a completable object to subscribe to observe the saving status
      */
@@ -69,7 +70,8 @@ public class AppRepository {
 
     /**
      * Save clothes in bag into the app's storage
-     * @param bag the bag where to add clothes
+     *
+     * @param bag          the bag where to add clothes
      * @param clothesToAdd the clothes to add into the bag
      * @return a completable object to subscribe to observe the saving status
      */
@@ -93,34 +95,38 @@ public class AppRepository {
     }
 
     /**
-     * Remove a bag into the app's storage
-     * @param bagToRemove the bag to remove from device
-     * @return a completable object to subscribe to observe removing status
-     */
-    public Completable removeBag(Bag bagToRemove) {
-        return null;
-    }
-
-    /**
      * Save a new cloth in the app's storage
+     *
      * @param clothToSave the cloth to save on device
      * @return a completable object to subscribe to observe saving status
      */
     public Completable saveCloth(Cloth clothToSave) {
-        return null;
+        if (this.databaseManagerInstance != null) {
+            return this.databaseManagerInstance.clothDAO().insertCloth(clothToSave);
+        }
+        else {
+            return Completable.error(new IllegalStateException("The database instance is null"));
+        }
     }
 
     /**
      * Remove a cloth in app's storage
+     *
      * @param clothToRemove the cloth to remove from device
      * @return a completable object to subscribe to observe removing status
      */
     public Completable removeCloth(Cloth clothToRemove) {
-        return null;
+        if (this.databaseManagerInstance != null) {
+            return this.databaseManagerInstance.clothDAO().deleteCloth(clothToRemove);
+        }
+        else {
+            return Completable.error(new IllegalStateException("The database instance is null"));
+        }
     }
 
     /**
      * Get all bags saved in the app's storage
+     *
      * @return an observable list of all bags in the app's storage
      */
     public Single<List<BagWithClothesRelation>> getAllBags() {
@@ -134,6 +140,7 @@ public class AppRepository {
 
     /**
      * Get all clothes saved in the app's storage
+     *
      * @return an observable list of all clothes in the app's storage
      */
     public Single<List<Cloth>> getAllClothes() {
@@ -147,6 +154,7 @@ public class AppRepository {
 
     /**
      * Read a preference String value from a String key
+     *
      * @param key the String key
      * @return a RxJava Flowable to observe
      */
@@ -165,7 +173,8 @@ public class AppRepository {
 
     /**
      * Write a preference String value for a specified String key
-     * @param key the String key
+     *
+     * @param key   the String key
      * @param value the String value to write
      */
     public void writeStringPreference(String key, String value) {
@@ -182,6 +191,7 @@ public class AppRepository {
 
     /**
      * Read a preference boolean value from a String key
+     *
      * @param key the String key
      * @return a RxJava Flowable to observe
      */

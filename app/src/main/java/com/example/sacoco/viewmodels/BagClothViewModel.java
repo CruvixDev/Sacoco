@@ -19,7 +19,6 @@ import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.Cloth;
 import com.example.sacoco.models.ClothTypeEnum;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
@@ -95,6 +94,7 @@ public class BagClothViewModel extends ViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnComplete(() -> {
                         ArrayList<Bag> bagsArrayList = this.bagsLiveData.getValue();
+
                         if (bagsArrayList != null) {
                             bagsArrayList.add(newBagToAdd);
                             this.bagsLiveData.setValue(bagsArrayList);
@@ -123,6 +123,7 @@ public class BagClothViewModel extends ViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnComplete(() -> {
                         ArrayList<Bag> bagsArrayList = this.bagsLiveData.getValue();
+
                         if (bagsArrayList != null) {
                             bagsArrayList.remove(bagToRemove);
                             this.bagsLiveData.setValue(bagsArrayList);
@@ -139,55 +140,68 @@ public class BagClothViewModel extends ViewModel {
     /**
      * Create and add a new cloth to the list of clothes
      *
-     * @param clothIdentifier the UUID of cloth
      * @param clothName       the cloth name
      * @param clothType       the cloth type
-     * @param imagePath       the cloth image path on the system
-     * @return true if the cloth has been created and added to the list of clothes false if it
-     * already exists or parameters invalid
+     * @return a completable observable to subscribe to check the adding status
      */
-    public boolean addCloth(UUID clothIdentifier, String clothName, ClothTypeEnum clothType,
-                            URI imagePath) {
+    public Completable addCloth(String clothName, ClothTypeEnum clothType) {
         int MAX_STRING_LENGTH = 50;
-        boolean isClothExists = getClothByUUID(clothIdentifier) == null;
-        boolean isClothAdded = false;
 
-        if (isClothExists && clothName.length() <= MAX_STRING_LENGTH) {
-            Cloth newClothToAdd = new Cloth(clothIdentifier, clothName, clothType, imagePath);
-            //Get the wrapped data
-            ArrayList<Cloth> clothesList = this.clothesLiveData.getValue();
+        if (clothName.length() < MAX_STRING_LENGTH) {
+            if (this.clothInCreation != null) {
+                this.clothInCreation.setClothName(clothName);
+                this.clothInCreation.setClothType(clothType);
 
-            if (clothesList != null) {
-                isClothAdded = clothesList.add(newClothToAdd);
+                //TODO save image and get path
+
+                return this.appRepository.saveCloth(this.clothInCreation)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnComplete(() -> {
+                            ArrayList<Cloth> clothesList = this.clothesLiveData.getValue();
+
+                            if (clothesList != null) {
+                                clothesList.add(this.clothInCreation);
+                                this.clothesLiveData.setValue(clothesList);
+                            }
+                        })
+                        .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot add cloth"))
+                        .subscribeOn(Schedulers.io());
             }
-
-            //Update the clothes list to update the UI
-            this.clothesLiveData.setValue(clothesList);
+            else {
+                return Completable.error(new IllegalStateException("No cloth in creation"));
+            }
         }
-
-        return isClothAdded;
+        else {
+            return Completable.error(new IllegalStateException("Cloth name too long"));
+        }
     }
 
     /**
      * Remove a cloth into the list of clothes
      *
      * @param clothIdentifier the cloth UUID
-     * @return true if the cloth has been removed from the list of clothes and false it does not
-     * exists
+     * @return a completable to subscribe to check the removing status
      */
-    public boolean removeCloth(UUID clothIdentifier) {
+    public Completable removeCloth(UUID clothIdentifier) {
         Cloth clothToRemove = getClothByUUID(clothIdentifier);
-        //Get the wrapped data
-        ArrayList<Cloth> clothesList = this.clothesLiveData.getValue();
-        boolean isClothRemoved = false;
 
-        if (clothToRemove != null && clothesList != null) {
-            isClothRemoved = clothesList.remove(clothToRemove);
-            //Update the clothes list to update the UI
-            this.clothesLiveData.setValue(clothesList);
+        if (clothToRemove != null) {
+            return this.appRepository.removeCloth(clothToRemove)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete(() -> {
+                        ArrayList<Cloth> clothesList = this.clothesLiveData.getValue();
+
+                        if (clothesList != null) {
+                            clothesList.remove(clothToRemove);
+                            this.clothesLiveData.setValue(clothesList);
+                        }
+                    })
+                    .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot remove cloth!"))
+                    .subscribeOn(Schedulers.io());
         }
-
-        return isClothRemoved;
+        else {
+            return Completable.error(new IllegalStateException("The cloth to remove does not exist"));
+        }
     }
 
     /**

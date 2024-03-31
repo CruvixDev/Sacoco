@@ -3,7 +3,7 @@
     <string-array name="items_array">
         <item>Shirt</item>
         <item>Pantalon</item>
-        <item>Chaussures</item>
         <item>Chaussettes</item>
+        <item>Chaussures</item>
     </string-array>
 </resources>

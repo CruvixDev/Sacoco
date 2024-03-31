@@ -3,6 +3,7 @@ package com.example.sacoco.fragments;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,12 +22,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Objects;
 import java.util.UUID;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 public class ClothesListFragment extends Fragment implements ViewHolderSelectedCallback {
     private BagClothViewModel bagClothViewModel;
     private RecyclerView clothesRecyclerView;
+    private final CompositeDisposable compositeDisposable;
 
     public ClothesListFragment() {
         super(R.layout.fragment_base_layout);
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -64,6 +70,12 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
         addClothButton.setOnClickListener(addClothButtonClickedListener);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.compositeDisposable.dispose();
+    }
+
     private final View.OnClickListener addClothButtonClickedListener = view -> {
         MainActivity mainActivity = (MainActivity) this.requireActivity();
         mainActivity.loadFragment(CameraFragment.class);
@@ -85,6 +97,13 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
         UUID clothUUID = Objects.requireNonNull(bagClothViewModel.getClothesLiveData().getValue()).
                 get(viewHolderSelectedIndex).getClothUUID();
 
-        bagClothViewModel.removeCloth(clothUUID);
+        Disposable disposable = bagClothViewModel.removeCloth(clothUUID)
+                .subscribe(
+                        () -> Toast.makeText(this.getContext(),
+                                "Suppression du vêtement réussi", Toast.LENGTH_SHORT).show(),
+                        throwable -> Toast.makeText(this.getContext(),
+                                "Impossible de supprimer le vêtement", Toast.LENGTH_SHORT).show()
+                );
+        this.compositeDisposable.add(disposable);
     }
 }
