@@ -84,14 +84,20 @@ public class AddClothDialogFragment extends DialogFragment {
                                     () -> {
                                         Toast.makeText(this.getContext(), "Vêtement ajouté avec " +
                                                 "succès !", Toast.LENGTH_SHORT).show();
+                                        this.bagClothViewModel.clearClothInCreation();
+                                        this.bagClothViewModel.clearClothImageTemp();
                                         this.dismiss();
+
                                         MainActivity mainActivity = (MainActivity) this.requireActivity();
                                         mainActivity.loadFragment(ClothesListFragment.class);
                                     },
                                     throwable -> {
                                         Toast.makeText(this.getContext(), "Impossible d' " +
                                                 "ajouter le vêtement", Toast.LENGTH_SHORT).show();
+                                        this.bagClothViewModel.clearClothInCreation();
+                                        this.bagClothViewModel.clearClothImageTemp();
                                         this.dismiss();
+
                                         MainActivity mainActivity = (MainActivity) this.requireActivity();
                                         mainActivity.loadFragment(ClothesListFragment.class);
                                     }

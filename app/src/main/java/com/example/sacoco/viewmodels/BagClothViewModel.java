@@ -305,6 +305,10 @@ public class BagClothViewModel extends ViewModel {
         this.clothInCreation = new Cloth(clothUUID);
     }
 
+    public void clearClothInCreation() {
+        this.clothInCreation = null;
+    }
+
     /**
      * Set the temporary cloth image bitmap
      *
@@ -312,6 +316,10 @@ public class BagClothViewModel extends ViewModel {
      */
     public void setClothImageTemp(Bitmap clothImageBitmap) {
         this.clothImageTemp = clothImageBitmap;
+    }
+
+    public void clearClothImageTemp() {
+        this.clothImageTemp = null;
     }
 
     public LiveData<Bag> getSelectedBagLiveData() {

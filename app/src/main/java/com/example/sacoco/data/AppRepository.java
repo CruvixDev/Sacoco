@@ -1,5 +1,8 @@
 package com.example.sacoco.data;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import androidx.datastore.preferences.core.MutablePreferences;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
@@ -10,8 +13,12 @@ import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.BagClothCrossRef;
 import com.example.sacoco.models.Cloth;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -205,6 +212,23 @@ public class AppRepository {
         }
         else {
             return Flowable.error(new IllegalStateException("The preference datastore instance is null"));
+        }
+    }
+
+    public String saveClothBitmapImage(Cloth cloth, Bitmap clothBitmapImage, String baseFilePath) {
+        File clothImageFile = new File(baseFilePath + "/" + cloth.getClothName() + "_" +
+                cloth.getClothUUID() + ".png");
+
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);
+            clothBitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.close();
+
+            return clothImageFile.getAbsolutePath();
+        }
+        catch (IOException e) {
+            Log.e(this.getClass().getName(), e.toString());
+            return "";
         }
     }
 }
