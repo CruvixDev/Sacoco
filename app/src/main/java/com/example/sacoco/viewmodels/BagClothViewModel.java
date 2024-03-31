@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.example.sacoco.data.AppRepository;
@@ -33,6 +34,7 @@ public class BagClothViewModel extends ViewModel {
     private boolean isBagsDataFetched;
     private boolean isClothesDataFetched;
     private Cloth clothInCreation;
+    private Bitmap clothImageTemp;
     private final MutableLiveData<Bag> selectedBagLiveData;
     private final MutableLiveData<Cloth> selectedClothLiveData;
     private final MutableLiveData<ArrayList<Cloth>> clothesLiveData;
@@ -289,6 +291,15 @@ public class BagClothViewModel extends ViewModel {
         this.clothInCreation = new Cloth(clothUUID);
     }
 
+    /**
+     * Set the temporary cloth image bitmap
+     *
+     * @param clothImageBitmap the temporary cloth image bitmap
+     */
+    public void setClothImageTemp(Bitmap clothImageBitmap) {
+        this.clothImageTemp = clothImageBitmap;
+    }
+
     public LiveData<Bag> getSelectedBagLiveData() {
         return selectedBagLiveData;
     }
@@ -305,6 +316,14 @@ public class BagClothViewModel extends ViewModel {
         return bagsLiveData;
     }
 
+    public Cloth getClothInCreation() {
+        return this.clothInCreation;
+    }
+
+    public Bitmap getClothImageTemp() {
+        return this.clothImageTemp;
+    }
+
     public boolean isBagsDataFetched() {
         return this.isBagsDataFetched;
     }
@@ -313,8 +332,8 @@ public class BagClothViewModel extends ViewModel {
         return this.isClothesDataFetched;
     }
 
-    public Cloth getClothInCreation() {
-        return this.clothInCreation;
+    public boolean isClothInCreationSet() {
+        return this.clothInCreation != null;
     }
 
     /**

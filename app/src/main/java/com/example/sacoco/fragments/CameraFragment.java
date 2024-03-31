@@ -23,9 +23,12 @@ import androidx.camera.view.LifecycleCameraController;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.sacoco.R;
+import com.example.sacoco.dialogs.AddClothDialogFragment;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
@@ -78,6 +81,24 @@ public class CameraFragment extends Fragment {
                             super.onCaptureSuccess(image);
                             Toast.makeText(view.getContext(), "Image captured",
                                     Toast.LENGTH_SHORT).show();
+
+                            if (bagClothViewModel.isClothInCreationSet()) {
+                                bagClothViewModel.setClothImageTemp(image.toBitmap());
+                                image.close();
+
+                                AddClothDialogFragment addClothDialogFragment = new AddClothDialogFragment();
+                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                fragmentManager
+                                        .beginTransaction()
+                                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                        .setReorderingAllowed(true)
+                                        .add(R.id.fragmentContainerView, addClothDialogFragment)
+                                        .commit();
+                            }
+                            else {
+                                Toast.makeText(view.getContext(), "Please scan a QR code " +
+                                        "before", Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override
