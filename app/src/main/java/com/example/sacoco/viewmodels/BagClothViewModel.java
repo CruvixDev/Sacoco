@@ -378,8 +378,10 @@ public class BagClothViewModel extends ViewModel {
                                         currentBag = bagWithClothes.bag;
                                     }
 
-                                    currentBag.addClothToBag(bagWithClothes.cloth,
-                                            bagWithClothes.isClothPresent);
+                                    if (bagWithClothes.cloth != null) {
+                                        currentBag.addClothToBag(bagWithClothes.cloth,
+                                                bagWithClothes.isClothPresent);
+                                    }
                                 }
 
                                 bagsArrayList.add(currentBag);

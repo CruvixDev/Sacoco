@@ -19,7 +19,8 @@ import java.util.UUID;
                 @ForeignKey(
                         entity = Cloth.class,
                         parentColumns = "clothUUID",
-                        childColumns = "clothUUID"
+                        childColumns = "clothUUID",
+                        onDelete = ForeignKey.CASCADE
                 )
         },
         indices = {@Index(value = {"clothUUID"})}

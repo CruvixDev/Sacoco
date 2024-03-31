@@ -24,8 +24,8 @@ public interface BagDAO {
 
     @Transaction
     @Query("SELECT Bag.*, Cloth.*, BagClothCrossRef.isClothPresent FROM Bag " +
-            "INNER JOIN BagClothCrossRef ON Bag.weekNumber = BagClothCrossRef.weekNumber " +
-            "INNER JOIN Cloth ON Cloth.clothUUID = BagClothCrossRef.clothUUID " +
+            "LEFT JOIN BagClothCrossRef ON Bag.weekNumber = BagClothCrossRef.weekNumber " +
+            "LEFT JOIN Cloth ON Cloth.clothUUID = BagClothCrossRef.clothUUID " +
             "ORDER BY Bag.weekNumber DESC")
     Single<List<BagWithClothesRelation>> getAllBags();
 }
