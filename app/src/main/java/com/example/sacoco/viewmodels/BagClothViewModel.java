@@ -1,9 +1,9 @@
 package com.example.sacoco.viewmodels;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
@@ -29,7 +29,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class BagClothViewModel extends ViewModel {
+public class BagClothViewModel extends AndroidViewModel {
     private boolean isBagsDataFetched;
     private boolean isClothesDataFetched;
     private Cloth clothInCreation;
@@ -49,11 +49,13 @@ public class BagClothViewModel extends ViewModel {
 
                         AppRepository repository = new AppRepository(databaseManager);
 
-                        return new BagClothViewModel(repository);
+                        return new BagClothViewModel(repository, application);
                     }
             );
 
-    public BagClothViewModel(AppRepository appRepository) {
+    public BagClothViewModel(AppRepository appRepository, Application application) {
+        super(application);
+
         this.selectedBagLiveData = new MutableLiveData<>();
         this.selectedClothLiveData = new MutableLiveData<>();
         this.clothesLiveData = new MutableLiveData<>();
@@ -152,7 +154,13 @@ public class BagClothViewModel extends ViewModel {
                 this.clothInCreation.setClothName(clothName);
                 this.clothInCreation.setClothType(clothType);
 
-                //TODO save image and get path
+                /*String clothImagePath = this.appRepository.saveClothBitmapImage(
+                        this.clothInCreation,
+                        this.clothImageTemp,
+                        this.getApplication().getFilesDir().getAbsolutePath()
+                );*/
+
+                this.clothInCreation.setImagePath("/");
 
                 return this.appRepository.saveCloth(this.clothInCreation)
                         .observeOn(AndroidSchedulers.mainThread())

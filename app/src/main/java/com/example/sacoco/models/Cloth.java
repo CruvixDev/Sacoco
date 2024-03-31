@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 
 import java.net.URI;
 
+import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -58,6 +59,15 @@ public class Cloth {
 
     public void setImagePath(URI imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        try {
+            this.imagePath = new URI(imagePath);
+        }
+        catch (URISyntaxException e) {
+            this.imagePath = null;
+        }
     }
 
     @Override
