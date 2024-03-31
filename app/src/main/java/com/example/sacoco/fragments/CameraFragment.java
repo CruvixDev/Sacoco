@@ -85,15 +85,7 @@ public class CameraFragment extends Fragment {
                             if (bagClothViewModel.isClothInCreationSet()) {
                                 bagClothViewModel.setClothImageTemp(image.toBitmap());
                                 image.close();
-
-                                AddClothDialogFragment addClothDialogFragment = new AddClothDialogFragment();
-                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                                fragmentManager
-                                        .beginTransaction()
-                                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                        .setReorderingAllowed(true)
-                                        .add(R.id.fragmentContainerView, addClothDialogFragment)
-                                        .commit();
+                                loadAddClothDialogFragment();
                             }
                             else {
                                 Toast.makeText(view.getContext(), "Please scan a QR code " +
@@ -150,5 +142,16 @@ public class CameraFragment extends Fragment {
         else {
             this.requestPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
+    }
+
+    private void loadAddClothDialogFragment() {
+        AddClothDialogFragment addClothDialogFragment = new AddClothDialogFragment();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .setReorderingAllowed(true)
+                .add(R.id.fragmentContainerView, addClothDialogFragment)
+                .commit();
     }
 }
