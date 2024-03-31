@@ -2,7 +2,6 @@ package com.example.sacoco.dialogs;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -10,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.sacoco.R;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -34,7 +34,9 @@ public class AddClothDialogFragment extends DialogFragment {
         closeAddClothDialogFragment.setOnClickListener(view1 -> this.dismiss());
 
         ShapeableImageView clothImageView = view.findViewById(R.id.clothImageView);
-        clothImageView.setImageBitmap(this.bagClothViewModel.getClothImageTemp());
+        Glide.with(this.requireContext())
+                .load(this.bagClothViewModel.getClothImageTemp())
+                .into(clothImageView);
 
         TextInputLayout clothUUIDTextView = view.findViewById(R.id.identifierTextInputLayout);
         Objects.requireNonNull(clothUUIDTextView.getEditText()).setText(
