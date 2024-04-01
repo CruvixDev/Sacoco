@@ -152,8 +152,7 @@ public class BagClothViewModel extends AndroidViewModel {
         if (clothName.length() < MAX_STRING_LENGTH) {
             if (this.clothInCreation != null) {
                 String clothImagePath = this.getApplication().getFilesDir().getAbsolutePath() +
-                        this.clothInCreation.getClothUUID() +
-                        ".jpeg";
+                        this.clothInCreation.getClothUUID();
 
                 this.clothInCreation.setClothName(clothName);
                 this.clothInCreation.setClothType(clothType);
