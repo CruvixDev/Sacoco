@@ -5,28 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/clothDetailsImageTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/dialog_show_cloth_details_cloth_image_title"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/clothDetailsImageView"
-        android:layout_width="216dp"
-        android:layout_height="224dp"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/luggage_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clothDetailsImageTitle"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -37,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/dialog_show_cloth_details_modify_image_button"
-        app:icon="@drawable/check"
+        app:icon="@drawable/camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clothDetailsImageView" />
@@ -56,6 +43,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/clothDetailsNameTextInputLayout"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -88,6 +76,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/clothTypeTextInputLayout"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -96,13 +85,24 @@
         app:layout_constraintTop_toBottomOf="@+id/clothDetailsTypeTitle"
         app:startIconDrawable="@drawable/text">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/dialog_show_cloth_details_cloth_type_hint"
-            android:maxLength="50"
-            android:maxLines="1"
-            tools:ignore="TextContrastCheck" />
+            android:hint="@string/dialog_add_cloth_cloth_type_hint"
+            android:inputType="none"
+            app:simpleItems="@array/items_array" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/saveModificationButton"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/dialog_show_cloth_details_save_button"
+        app:icon="@drawable/check"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clothTypeTextInputLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

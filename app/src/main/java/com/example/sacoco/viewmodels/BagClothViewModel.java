@@ -330,6 +330,18 @@ public class BagClothViewModel extends AndroidViewModel {
         this.clothImageTemp = null;
     }
 
+    /**
+     * Get the cloth's image bitmap from given UUID
+     * @param clothUUID the cloth's UUID
+     * @return the cloth's image bitmap to get
+     */
+    public Bitmap getClothImageBitmap(UUID clothUUID) {
+        String clothImagePath = this.getApplication().getFilesDir().getAbsolutePath() + clothUUID +
+                ".jpeg";
+
+        return this.appRepository.loadClothBitmapImage(clothImagePath);
+    }
+
     public LiveData<Bag> getSelectedBagLiveData() {
         return selectedBagLiveData;
     }

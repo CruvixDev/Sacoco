@@ -1,6 +1,7 @@
 package com.example.sacoco.data;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.datastore.preferences.core.MutablePreferences;
@@ -14,6 +15,7 @@ import com.example.sacoco.models.BagClothCrossRef;
 import com.example.sacoco.models.Cloth;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -231,5 +233,27 @@ public class AppRepository {
         catch (IOException e) {
             Log.e(this.getClass().getName(), e.toString());
         }
+    }
+
+    /**
+     * Load cloth's bitmap image from app specific storage
+     *
+     * @param clothImagePath the cloth image path
+     * @return the cloth's bitmap image
+     */
+    public Bitmap loadClothBitmapImage(String clothImagePath) {
+        File clothImageFile = new File(clothImagePath);
+        Bitmap clothBitmapImage = null;
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(clothImageFile);
+            clothBitmapImage = BitmapFactory.decodeStream(fileInputStream);
+            fileInputStream.close();
+        }
+        catch (IOException e) {
+            Log.e(this.getClass().getName(), e.toString());
+        }
+
+        return clothBitmapImage;
     }
 }
