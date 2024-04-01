@@ -3,6 +3,7 @@ package com.example.sacoco.fragments;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,8 +53,10 @@ public class ClothDetailsFragment extends Fragment {
             Objects.requireNonNull(clothNameEditText.getEditText()).setText(clothName);
 
             TextInputLayout clothTypeEditText = view.findViewById(R.id.clothTypeTextInputLayout);
-            Objects.requireNonNull(clothTypeEditText.getEditText()).setText(clothTypeEnumStringMap.
-                    get(bagClothViewModel.getSelectedClothLiveData().getValue().getClothType()));
+            AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView)
+                    clothTypeEditText.getEditText();
+            Objects.requireNonNull(autoCompleteTextView).setText(clothTypeEnumStringMap.get(
+                    bagClothViewModel.getSelectedClothLiveData().getValue().getClothType()), false);
 
             ShapeableImageView clothImageView = view.findViewById(R.id.clothDetailsImageView);
             Glide.with(this.requireContext())
