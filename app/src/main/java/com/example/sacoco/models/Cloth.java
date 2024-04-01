@@ -5,9 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.net.URI;
-
-import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,9 +15,9 @@ public class Cloth {
     private final UUID clothUUID;
     private String clothName;
     private ClothTypeEnum clothType;
-    private URI imagePath;
+    private String imagePath;
 
-    public Cloth(@NonNull UUID clothUUID, String clothName, ClothTypeEnum clothType, URI imagePath) {
+    public Cloth(@NonNull UUID clothUUID, String clothName, ClothTypeEnum clothType, String imagePath) {
         this.clothUUID = clothUUID;
         this.clothName = clothName;
         this.clothType = clothType;
@@ -45,7 +42,7 @@ public class Cloth {
         return clothType;
     }
 
-    public URI getImagePath() {
+    public String getImagePath() {
         return imagePath;
     }
 
@@ -57,17 +54,8 @@ public class Cloth {
         this.clothType = clothType;
     }
 
-    public void setImagePath(URI imagePath) {
-        this.imagePath = imagePath;
-    }
-
     public void setImagePath(String imagePath) {
-        try {
-            this.imagePath = new URI(imagePath);
-        }
-        catch (URISyntaxException e) {
-            this.imagePath = null;
-        }
+        this.imagePath = imagePath;
     }
 
     @Override

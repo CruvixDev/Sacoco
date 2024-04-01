@@ -5,14 +5,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URI;
 import java.util.UUID;
 
 public class ClothTest {
     private Cloth clothToTest;
     private final String clothName = "Red and white shirt";
     private final ClothTypeEnum clothType = ClothTypeEnum.SHIRT;
-    private final URI clothImagePath = URI.create("/");
+    private final String clothImagePath = "/";
 
     @Before
     public void initClothTest() {
@@ -55,7 +54,7 @@ public class ClothTest {
 
     @Test
     public void setImagePath() {
-        URI newClothImagePath = URI.create("/android/imagePath/");
+        String newClothImagePath = "/android/imagePath/";
         clothToTest.setImagePath(newClothImagePath);
         assertEquals(clothToTest.getImagePath(), newClothImagePath);
     }

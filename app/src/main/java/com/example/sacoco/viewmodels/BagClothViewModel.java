@@ -151,8 +151,13 @@ public class BagClothViewModel extends AndroidViewModel {
 
         if (clothName.length() < MAX_STRING_LENGTH) {
             if (this.clothInCreation != null) {
+                String clothImagePath = this.getApplication().getFilesDir().getAbsolutePath() +
+                        this.clothInCreation.getClothUUID() +
+                        ".jpeg";
+
                 this.clothInCreation.setClothName(clothName);
                 this.clothInCreation.setClothType(clothType);
+                this.clothInCreation.setImagePath(clothImagePath);
 
                 return this.appRepository.saveCloth(this.clothInCreation)
                         .observeOn(AndroidSchedulers.mainThread())
@@ -163,6 +168,9 @@ public class BagClothViewModel extends AndroidViewModel {
                                 clothesList.add(this.clothInCreation);
                                 this.clothesLiveData.setValue(clothesList);
                             }
+
+                            this.appRepository.saveClothBitmapImage(clothImagePath,
+                                    this.clothImageTemp);
                         })
                         .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot add cloth"))
                         .subscribeOn(Schedulers.io());

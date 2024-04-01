@@ -214,19 +214,22 @@ public class AppRepository {
         }
     }
 
-    public String saveClothBitmapImage(Cloth cloth, Bitmap clothBitmapImage, String baseFilePath) {
-        File clothImageFile = new File(baseFilePath, cloth.getClothUUID() + ".png");
+    /**
+     * Save cloth's bitmap image on the app specific storage in JPEG format
+     *
+     * @param clothImagePath the path where to store the cloth's bitmap image
+     * @param clothBitmapImage the cloth's bitmap image to save
+     */
+    public void saveClothBitmapImage(String clothImagePath, Bitmap clothBitmapImage) {
+        File clothImageFile = new File(clothImagePath);
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);
-            clothBitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            clothBitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
             fileOutputStream.close();
-
-            return clothImageFile.getAbsolutePath();
         }
         catch (IOException e) {
             Log.e(this.getClass().getName(), e.toString());
-            return "";
         }
     }
 }
