@@ -18,7 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -216,8 +215,7 @@ public class AppRepository {
     }
 
     public String saveClothBitmapImage(Cloth cloth, Bitmap clothBitmapImage, String baseFilePath) {
-        File clothImageFile = new File(baseFilePath + "/" + cloth.getClothName() + "_" +
-                cloth.getClothUUID() + ".png");
+        File clothImageFile = new File(baseFilePath, cloth.getClothUUID() + ".png");
 
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);

@@ -154,14 +154,6 @@ public class BagClothViewModel extends AndroidViewModel {
                 this.clothInCreation.setClothName(clothName);
                 this.clothInCreation.setClothType(clothType);
 
-                /*String clothImagePath = this.appRepository.saveClothBitmapImage(
-                        this.clothInCreation,
-                        this.clothImageTemp,
-                        this.getApplication().getFilesDir().getAbsolutePath()
-                );*/
-
-                this.clothInCreation.setImagePath("/");
-
                 return this.appRepository.saveCloth(this.clothInCreation)
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnComplete(() -> {
