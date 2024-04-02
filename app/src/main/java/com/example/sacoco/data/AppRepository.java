@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
@@ -238,7 +239,7 @@ public class AppRepository {
             catch (IOException e) {
                 Log.e(this.getClass().getName(), e.toString());
             }
-        }).subscribeOn(Schedulers.io());
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
     }
 
     /**
@@ -255,6 +256,6 @@ public class AppRepository {
                     .load(clothImagePath)
                     .submit();
             return target.get();
-        }).subscribeOn(Schedulers.io());
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
     }
 }
