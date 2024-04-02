@@ -1,7 +1,7 @@
 package com.example.sacoco.data;
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.datastore.preferences.core.MutablePreferences;
@@ -9,13 +9,14 @@ import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava3.RxDataStore;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
 import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.BagClothCrossRef;
 import com.example.sacoco.models.Cloth;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +24,9 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AppRepository {
     private final DatabaseManager databaseManagerInstance;
@@ -221,39 +224,37 @@ public class AppRepository {
      *
      * @param clothImagePath the path where to store the cloth's bitmap image
      * @param clothBitmapImage the cloth's bitmap image to save
+     * @return a completable to observe the image saving status
      */
-    public void saveClothBitmapImage(String clothImagePath, Bitmap clothBitmapImage) {
-        File clothImageFile = new File(clothImagePath);
+    public Completable saveClothBitmapImage(String clothImagePath, Bitmap clothBitmapImage) {
+        return Completable.fromAction(() -> {
+            File clothImageFile = new File(clothImagePath);
 
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);
-            clothBitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-            fileOutputStream.close();
-        }
-        catch (IOException e) {
-            Log.e(this.getClass().getName(), e.toString());
-        }
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);
+                clothBitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                fileOutputStream.close();
+            }
+            catch (IOException e) {
+                Log.e(this.getClass().getName(), e.toString());
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
     /**
-     * Load cloth's bitmap image from app specific storage
+     * Load cloth's image bitmap asynchronously
      *
-     * @param clothImagePath the cloth image path
-     * @return the cloth's bitmap image
+     * @param context the application context
+     * @param clothImagePath the cloth's image bitmap path
+     * @return an observable on a bitmap
      */
-    public Bitmap loadClothBitmapImage(String clothImagePath) {
-        File clothImageFile = new File(clothImagePath);
-        Bitmap clothBitmapImage = null;
-
-        try {
-            FileInputStream fileInputStream = new FileInputStream(clothImageFile);
-            clothBitmapImage = BitmapFactory.decodeStream(fileInputStream);
-            fileInputStream.close();
-        }
-        catch (IOException e) {
-            Log.e(this.getClass().getName(), e.toString());
-        }
-
-        return clothBitmapImage;
+    public Observable<Bitmap> loadClothBitmapImage(Context context, String clothImagePath) {
+        return Observable.fromCallable(() -> {
+            FutureTarget<Bitmap> target = Glide.with(context)
+                    .asBitmap()
+                    .load(clothImagePath)
+                    .submit();
+            return target.get();
+        }).subscribeOn(Schedulers.io());
     }
 }

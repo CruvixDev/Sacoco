@@ -25,6 +25,7 @@ import java.util.UUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -168,8 +169,12 @@ public class BagClothViewModel extends AndroidViewModel {
                                 this.clothesLiveData.setValue(clothesList);
                             }
 
-                            this.appRepository.saveClothBitmapImage(clothImagePath,
-                                    this.clothImageTemp);
+                            Disposable disposable = this.appRepository.saveClothBitmapImage(
+                                    clothImagePath, this.clothImageTemp).subscribe(
+                                            () -> Log.i(this.getClass().getName(), "Image saved!"),
+                                    throwable -> Log.e(this.getClass().getName(), "Failed to save image!")
+                            );
+                            this.compositeDisposable.add(disposable);
                         })
                         .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot add cloth"))
                         .subscribeOn(Schedulers.io());
@@ -358,10 +363,10 @@ public class BagClothViewModel extends AndroidViewModel {
      * @param clothUUID the cloth's UUID
      * @return the cloth's image bitmap to get
      */
-    public Bitmap getClothImageBitmap(UUID clothUUID) {
+    public Observable<Bitmap> getClothImageBitmap(UUID clothUUID) {
         String clothImagePath = this.getApplication().getFilesDir().getAbsolutePath() + clothUUID;
 
-        return this.appRepository.loadClothBitmapImage(clothImagePath);
+        return this.appRepository.loadClothBitmapImage(this.getApplication(), clothImagePath);
     }
 
     public boolean isBagsDataFetched() {
