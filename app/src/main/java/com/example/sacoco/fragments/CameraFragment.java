@@ -89,8 +89,6 @@ public class CameraFragment extends Fragment {
                     @Override
                     public void onCaptureSuccess(@NonNull ImageProxy image) {
                         super.onCaptureSuccess(image);
-                        Toast.makeText(view.getContext(), "Image captured",
-                                Toast.LENGTH_SHORT).show();
 
                         if (bagClothViewModel.isClothInCreationSet()) {
                             bagClothViewModel.setClothImageTemp(image.toBitmap());
