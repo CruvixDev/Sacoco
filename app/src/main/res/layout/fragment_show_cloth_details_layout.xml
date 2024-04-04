@@ -7,9 +7,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/clothDetailsImageView"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="200dp"
-        android:layout_marginTop="16dp"
         android:src="@drawable/luggage_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

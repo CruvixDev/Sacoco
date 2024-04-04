@@ -202,10 +202,16 @@ public class BagClothViewModel extends AndroidViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnComplete(() -> {
                         ArrayList<Cloth> clothesList = this.clothesLiveData.getValue();
+                        ArrayList<Bag> bagsList = this.bagsLiveData.getValue();
 
-                        if (clothesList != null) {
+                        if (clothesList != null && bagsList != null) {
+                            for (Bag bag : bagsList) {
+                                bag.removeClothInBag(clothToRemove);
+                            }
                             clothesList.remove(clothToRemove);
+
                             this.clothesLiveData.setValue(clothesList);
+                            this.bagsLiveData.setValue(bagsList);
                         }
                     })
                     .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot remove cloth!"))
