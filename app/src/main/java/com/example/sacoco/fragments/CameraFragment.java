@@ -121,7 +121,7 @@ public class CameraFragment extends Fragment {
                         cameraExecutor, result -> {
                     List<Barcode> barcodeResults = result.getValue(barcodeScanner);
 
-                    if (barcodeResults != null && !barcodeResults.isEmpty() &&
+                    if (barcodeResults != null && barcodeResults.size() == 1 &&
                             barcodeResults.get(0) != null) {
                         String bardcodeResultString = barcodeResults.get(0).getRawValue();
 
