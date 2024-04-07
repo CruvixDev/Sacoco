@@ -31,6 +31,7 @@ import java.util.UUID;
 
 public class CameraFragmentTakeAndScan extends AbstractCameraFragment {
     private String lastBarcodeStringResult;
+    private Toast currentToast;
 
     public CameraFragmentTakeAndScan() {
         this.lastBarcodeStringResult = "";
@@ -52,31 +53,38 @@ public class CameraFragmentTakeAndScan extends AbstractCameraFragment {
     @Override
     protected void setupCameraUseCases() {
         View view = this.requireView();
-        this.cameraFragmentButton.setOnClickListener(buttonView ->
-                this.cameraController.takePicture(this.cameraExecutor, new ImageCapture.OnImageCapturedCallback() {
-                    @Override
-                    public void onCaptureSuccess(@NonNull ImageProxy image) {
-                        super.onCaptureSuccess(image);
+        this.cameraFragmentButton.setOnClickListener(
+                buttonView -> {
+                    if (this.bagClothViewModel.isClothInCreationSet()) {
+                        this.cameraFragmentButton.setEnabled(false);
+                        this.cameraController.takePicture(this.cameraExecutor, new ImageCapture.OnImageCapturedCallback() {
+                            @Override
+                            public void onCaptureSuccess(@NonNull ImageProxy image) {
+                                super.onCaptureSuccess(image);
 
-                        if (bagClothViewModel.isClothInCreationSet()) {
-                            bagClothViewModel.setClothImageTemp(image.toBitmap());
-                            image.close();
-                            onCameraFragmentFinish();
-                        }
-                        else {
-                            Toast.makeText(view.getContext(), "Please scan a QR code " +
-                                    "before", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                                bagClothViewModel.setClothImageTemp(image.toBitmap());
+                                image.close();
+                                onCameraFragmentFinish();
+                            }
 
-                    @Override
-                    public void onError(@NonNull ImageCaptureException exception) {
-                        super.onError(exception);
-                        Toast.makeText(view.getContext(), "Failed to capture image",
-                                Toast.LENGTH_SHORT).show();
-                        Log.e(view.getContext().getClass().getName(), exception.toString());
+                            @Override
+                            public void onError(@NonNull ImageCaptureException exception) {
+                                super.onError(exception);
+                                Toast.makeText(view.getContext(), "Erreur lors de la capture" +
+                                        " de l'image !", Toast.LENGTH_SHORT).show();
+                                Log.e(view.getContext().getClass().getName(), exception.toString());
+                            }
+                        });
                     }
-                })
+                    else {
+                        if (this.currentToast != null) {
+                            this.currentToast.cancel();
+                        }
+                        this.currentToast = Toast.makeText(this.requireContext(), "Scanner " +
+                                "un QR code avant !", Toast.LENGTH_SHORT);
+                        this.currentToast.show();
+                    }
+                }
         );
 
         BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
@@ -98,11 +106,11 @@ public class CameraFragmentTakeAndScan extends AbstractCameraFragment {
                                 UUID clothUUID = UUID.fromString(bardcodeResultString);
                                 this.bagClothViewModel.setClothInCreation(clothUUID);
 
-                                Toast.makeText(this.requireContext(), "Cloth detected!",
+                                Toast.makeText(this.requireContext(), "Vêtement détecté !",
                                         Toast.LENGTH_SHORT).show();
                             }
                             catch (IllegalArgumentException e) {
-                                Toast.makeText(this.requireContext(), "No cloth detected!",
+                                Toast.makeText(this.requireContext(), "Aucun vêtement détecté !",
                                         Toast.LENGTH_SHORT).show();
                             }
 
