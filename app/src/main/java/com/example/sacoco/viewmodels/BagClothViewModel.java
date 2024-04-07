@@ -218,6 +218,16 @@ public class BagClothViewModel extends AndroidViewModel {
 
                             this.clothesLiveData.setValue(clothesList);
                             this.bagsLiveData.setValue(bagsList);
+
+                            Disposable disposable = this.appRepository.deleteClothBitmapImage(
+                                    this.getApplication(), clothToRemove
+                            ).subscribe(
+                                    () -> Log.i(this.getClass().getName(),
+                                            "Image deleted!"),
+                                    throwable -> Log.e(this.getClass().getName(),
+                                            "Failed to delete image")
+                            );
+                            this.compositeDisposable.add(disposable);
                         }
                     })
                     .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot remove cloth!"))

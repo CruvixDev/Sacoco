@@ -244,6 +244,33 @@ public class AppRepository {
     }
 
     /**
+     * Delete the cloth's image bitmap asynchronously
+     *
+     * @param application the application context
+     * @param cloth the cloth from which we want to delete bitmap image
+     * @return a completable to observe the removing status
+     */
+    public Completable deleteClothBitmapImage(Application application, Cloth cloth) {
+        return Completable.fromAction(() -> {
+            File clothImageFile = new File(application.getFilesDir(), cloth.getClothUUID().toString());
+
+            if (clothImageFile.exists()) {
+                boolean isClothDeleted = clothImageFile.delete();
+
+                if (isClothDeleted) {
+                    Log.i(this.getClass().getName(), "The file has been deleted");
+                }
+                else {
+                    Log.e(this.getClass().getName(), "The file has not been deleted");
+                }
+            }
+            else {
+                Log.e(this.getClass().getName(), "The file does not exist!");
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
+    }
+
+    /**
      * Load cloth's image bitmap asynchronously
      *
      * @param application the application context
