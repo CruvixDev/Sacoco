@@ -16,6 +16,7 @@ import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.ClothAdapter;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
+import com.example.sacoco.fragments.camera.CameraFragmentTakeAndScan;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -78,7 +79,7 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
 
     private final View.OnClickListener addClothButtonClickedListener = view -> {
         MainActivity mainActivity = (MainActivity) this.requireActivity();
-        mainActivity.loadFragment(CameraFragment.class);
+        mainActivity.loadFragment(CameraFragmentTakeAndScan.class);
     };
 
     @Override
