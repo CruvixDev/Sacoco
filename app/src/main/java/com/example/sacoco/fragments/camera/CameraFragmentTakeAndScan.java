@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sacoco.R;
+import com.example.sacoco.cominterface.DialogInterface;
 import com.example.sacoco.dialogs.AddClothDialogFragment;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
@@ -29,7 +30,7 @@ import com.google.mlkit.vision.barcode.common.Barcode;
 import java.util.List;
 import java.util.UUID;
 
-public class CameraFragmentTakeAndScan extends AbstractCameraFragment {
+public class CameraFragmentTakeAndScan extends AbstractCameraFragment implements DialogInterface {
     private String lastBarcodeStringResult;
     private Toast currentToast;
 
@@ -125,7 +126,11 @@ public class CameraFragmentTakeAndScan extends AbstractCameraFragment {
 
     @Override
     protected void onCameraFragmentFinish() {
+        this.cameraController.unbind();
+
         AddClothDialogFragment addClothDialogFragment = new AddClothDialogFragment();
+        addClothDialogFragment.setDialogInterface(this);
+
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
@@ -133,5 +138,15 @@ public class CameraFragmentTakeAndScan extends AbstractCameraFragment {
                 .setReorderingAllowed(true)
                 .add(R.id.fragmentContainerView, addClothDialogFragment)
                 .commit();
+    }
+
+    @Override
+    public void onDialogDismiss() {
+        this.bagClothViewModel.clearClothInCreation();
+        this.bagClothViewModel.clearClothImageTemp();
+        this.cameraFragmentButton.setEnabled(true);
+        this.lastBarcodeStringResult = "";
+
+        this.cameraController.bindToLifecycle(this);
     }
 }

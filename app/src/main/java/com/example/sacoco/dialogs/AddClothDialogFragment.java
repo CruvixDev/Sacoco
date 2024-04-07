@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
+import com.example.sacoco.cominterface.DialogInterface;
 import com.example.sacoco.fragments.ClothesListFragment;
 import com.example.sacoco.models.ClothTypeEnum;
 import com.example.sacoco.viewmodels.BagClothViewModel;
@@ -33,6 +34,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class AddClothDialogFragment extends DialogFragment {
     private BagClothViewModel bagClothViewModel;
     private final CompositeDisposable compositeDisposable;
+    private DialogInterface dialogInterface;
 
     public AddClothDialogFragment() {
         super(R.layout.dialog_add_cloth_layout);
@@ -128,5 +130,12 @@ public class AddClothDialogFragment extends DialogFragment {
     public void onDestroy() {
         super.onDestroy();
         this.compositeDisposable.dispose();
+        if (this.dialogInterface != null) {
+            this.dialogInterface.onDialogDismiss();
+        }
+    }
+
+    public void setDialogInterface(DialogInterface dialogInterface) {
+        this.dialogInterface = dialogInterface;
     }
 }
