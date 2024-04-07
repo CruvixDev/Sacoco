@@ -143,8 +143,8 @@ public class BagClothViewModel extends AndroidViewModel {
     /**
      * Create and add a new cloth to the list of clothes
      *
-     * @param clothName       the cloth name
-     * @param clothType       the cloth type
+     * @param clothName the cloth name
+     * @param clothType the cloth type
      * @return a completable observable to subscribe to check the adding status
      */
     public Completable addCloth(String clothName, ClothTypeEnum clothType) {
@@ -169,11 +169,17 @@ public class BagClothViewModel extends AndroidViewModel {
                                 this.clothesLiveData.setValue(clothesList);
                             }
 
-                            Disposable disposable = this.appRepository.saveClothBitmapImage(
-                                    clothImagePath, this.clothImageTemp).subscribe(
-                                            () -> Log.i(this.getClass().getName(), "Image saved!"),
-                                    throwable -> Log.e(this.getClass().getName(), "Failed to save image!")
-                            );
+                            Disposable disposable =
+                                    this.appRepository.saveClothBitmapImage(
+                                            this.getApplication(),
+                                            this.clothInCreation,
+                                            this.clothImageTemp
+                                    ).subscribe(
+                                            () -> Log.i(this.getClass().getName(),
+                                                    "Image saved!"),
+                                            throwable -> Log.e(this.getClass().getName(),
+                                                    "Failed to save image!")
+                                    );
                             this.compositeDisposable.add(disposable);
                         })
                         .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot add cloth"))
@@ -366,13 +372,14 @@ public class BagClothViewModel extends AndroidViewModel {
 
     /**
      * Get the cloth's image bitmap from given UUID
+     *
      * @param clothUUID the cloth's UUID
      * @return the cloth's image bitmap to get
      */
     public Observable<Bitmap> getClothImageBitmap(UUID clothUUID) {
-        String clothImagePath = this.getApplication().getFilesDir().getAbsolutePath() + clothUUID;
+        Cloth cloth = getClothByUUID(clothUUID);
 
-        return this.appRepository.loadClothBitmapImage(this.getApplication(), clothImagePath);
+        return this.appRepository.loadClothBitmapImage(this.getApplication(), cloth);
     }
 
     public boolean isBagsDataFetched() {

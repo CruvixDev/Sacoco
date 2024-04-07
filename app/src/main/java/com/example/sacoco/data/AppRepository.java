@@ -1,6 +1,6 @@
 package com.example.sacoco.data;
 
-import android.content.Context;
+import android.app.Application;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -221,15 +221,16 @@ public class AppRepository {
     }
 
     /**
-     * Save cloth's bitmap image on the app specific storage in JPEG format
+     * Save cloth's image bitmap asynchronously
      *
-     * @param clothImagePath the path where to store the cloth's bitmap image
-     * @param clothBitmapImage the cloth's bitmap image to save
-     * @return a completable to observe the image saving status
+     * @param application the application context
+     * @param cloth the cloth from which the bitmap image originates
+     * @param clothBitmapImage the cloth's image bitmap to save
+     * @return a completable to observe the saving status
      */
-    public Completable saveClothBitmapImage(String clothImagePath, Bitmap clothBitmapImage) {
+    public Completable saveClothBitmapImage(Application application, Cloth cloth, Bitmap clothBitmapImage) {
         return Completable.fromAction(() -> {
-            File clothImageFile = new File(clothImagePath);
+            File clothImageFile = new File(application.getFilesDir(), cloth.getClothUUID().toString());
 
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);
@@ -245,15 +246,15 @@ public class AppRepository {
     /**
      * Load cloth's image bitmap asynchronously
      *
-     * @param context the application context
-     * @param clothImagePath the cloth's image bitmap path
-     * @return an observable on a bitmap
+     * @param application the application context
+     * @param cloth the cloth whose image we want to load
+     * @return an observable on cloth's bitmap image
      */
-    public Observable<Bitmap> loadClothBitmapImage(Context context, String clothImagePath) {
+    public Observable<Bitmap> loadClothBitmapImage(Application application, Cloth cloth) {
         return Observable.fromCallable(() -> {
-            FutureTarget<Bitmap> target = Glide.with(context)
+            FutureTarget<Bitmap> target = Glide.with(application)
                     .asBitmap()
-                    .load(clothImagePath)
+                    .load(new File(application.getFilesDir(), cloth.getClothUUID().toString()))
                     .submit();
             return target.get();
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
