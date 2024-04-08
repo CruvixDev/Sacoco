@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava3.RxDataStore;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.FutureTarget;
 import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
@@ -230,7 +231,8 @@ public class AppRepository {
      */
     public Completable saveClothBitmapImage(Application application, Cloth cloth, Bitmap clothBitmapImage) {
         return Completable.fromAction(() -> {
-            File clothImageFile = new File(application.getFilesDir(), cloth.getClothUUID().toString());
+            File clothImageFile = new File(application.getFilesDir(), cloth.getClothUUID()
+                    + ".jpeg");
 
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);
@@ -252,7 +254,8 @@ public class AppRepository {
      */
     public Completable deleteClothBitmapImage(Application application, Cloth cloth) {
         return Completable.fromAction(() -> {
-            File clothImageFile = new File(application.getFilesDir(), cloth.getClothUUID().toString());
+            File clothImageFile = new File(application.getFilesDir(), cloth.getClothUUID()
+                    + ".jpeg");
 
             if (clothImageFile.exists()) {
                 boolean isClothDeleted = clothImageFile.delete();
@@ -281,7 +284,8 @@ public class AppRepository {
         return Observable.fromCallable(() -> {
             FutureTarget<Bitmap> target = Glide.with(application)
                     .asBitmap()
-                    .load(new File(application.getFilesDir(), cloth.getClothUUID().toString()))
+                    .load(new File(application.getFilesDir(), cloth.getClothUUID() + ".jpeg"))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .submit();
             return target.get();
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
