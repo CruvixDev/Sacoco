@@ -2,6 +2,7 @@ package com.example.sacoco.fragments;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
     private BagClothViewModel bagClothViewModel;
     private RecyclerView clothesInBagRecyclerView;
     private AddClothToBagDialogFragment addClothToBagDialogFragment;
+    private ImageButton deleteClothButton;
 
     public BagDetailsFragment() {
         super(R.layout.fragment_bag_content_layout);
@@ -69,6 +71,8 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
 
         FloatingActionButton addBagButton = view.findViewById(R.id.addClothToBagButton);
         addBagButton.setOnClickListener(this.addClothToBagButtonListener);
+
+        this.deleteClothButton = view.findViewById(R.id.deleteClothIntoBagButton);
     }
 
     @Override
@@ -94,11 +98,11 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
 
     @Override
     public void onPositiveViewHolderSelected(int viewHolderSelectedIndex) {
-
+        this.deleteClothButton.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onNegativeViewHolderSelected(int viewHolderSelectedIndex) {
-
+        this.deleteClothButton.setVisibility(View.GONE);
     }
 }
