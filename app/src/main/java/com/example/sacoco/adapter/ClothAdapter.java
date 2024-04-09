@@ -17,7 +17,6 @@ import com.example.sacoco.models.Cloth;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> {
     private final ArrayList<Cloth> clothesArrayList;
@@ -109,7 +108,7 @@ public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> 
         return clothesArrayList.size();
     }
 
-    public void setClothesArrayList(List<Cloth> newClothesList) {
+    public void setClothesArrayList(ArrayList<Cloth> newClothesList) {
         ClothDiffCallback diffCallback = new ClothDiffCallback(this.clothesArrayList, newClothesList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 

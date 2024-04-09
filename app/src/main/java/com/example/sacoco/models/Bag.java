@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -53,7 +52,7 @@ public class Bag {
      *
      * @param clothesList the clothes list to add
      */
-    public void addClothesToBag(List<Cloth> clothesList) {
+    public void addClothesToBag(ArrayList<Cloth> clothesList) {
         for (Cloth cloth : clothesList) {
             this.addClothToBag(cloth, false);
         }
@@ -63,10 +62,20 @@ public class Bag {
      * Remove an existing cloth in the bag
      *
      * @param cloth the cloth to remove
-     * @return true if the cloth has been removed false otherwise
      */
-    public boolean removeClothInBag(Cloth cloth) {
-        return Boolean.TRUE.equals(this.clothesMap.remove(cloth));
+    public void removeClothInBag(Cloth cloth) {
+        this.clothesMap.remove(cloth);
+    }
+
+    /**
+     * Remove a set of existing clothes in the bag
+     *
+     * @param clothesToRemove the clothes to remove
+     */
+    public void removeClothesInBag(ArrayList<Cloth> clothesToRemove) {
+        for (Cloth cloth : clothesToRemove) {
+            this.removeClothInBag(cloth);
+        }
     }
 
     /**

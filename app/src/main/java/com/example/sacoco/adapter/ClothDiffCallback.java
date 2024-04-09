@@ -4,13 +4,13 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.example.sacoco.models.Cloth;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ClothDiffCallback extends DiffUtil.Callback {
-    private final List<Cloth> oldClothesList;
-    private final List<Cloth> newClothesList;
+    private final ArrayList<Cloth> oldClothesList;
+    private final ArrayList<Cloth> newClothesList;
 
-    public ClothDiffCallback(List<Cloth> oldClothesList, List<Cloth> newClothesList) {
+    public ClothDiffCallback(ArrayList<Cloth> oldClothesList, ArrayList<Cloth> newClothesList) {
         this.oldClothesList = oldClothesList;
         this.newClothesList = newClothesList;
     }

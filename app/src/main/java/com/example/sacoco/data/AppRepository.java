@@ -108,6 +108,32 @@ public class AppRepository {
     }
 
     /**
+     * Remove clothes in bag into the app's storage
+     *
+     * @param bag             the bag where to remove clothes
+     * @param clothesToRemove the clothes to remove into bag
+     * @return a completable object to subscribe to observe the removing status
+     */
+    public Completable removeClothesIntoBag(Bag bag, ArrayList<Cloth> clothesToRemove) {
+        ArrayList<BagClothCrossRef> bagClothCrossRefArrayList = new ArrayList<>();
+
+        BagClothCrossRef currentBagClothCrossRef;
+        for (Cloth clothToRemove : clothesToRemove) {
+            currentBagClothCrossRef = new BagClothCrossRef(bag.getWeekNumber(),
+                    clothToRemove.getClothUUID(), false);
+            bagClothCrossRefArrayList.add(currentBagClothCrossRef);
+        }
+
+        if (this.databaseManagerInstance != null) {
+            return this.databaseManagerInstance.bagClothCrossRefDAO().
+                    deleteClothesInBag(bagClothCrossRefArrayList);
+        }
+        else {
+            return Completable.error(new IllegalStateException("The database instance is null"));
+        }
+    }
+
+    /**
      * Save a new cloth in the app's storage
      *
      * @param clothToSave the cloth to save on device

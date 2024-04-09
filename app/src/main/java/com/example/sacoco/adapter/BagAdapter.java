@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
@@ -97,7 +96,7 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         return bagsArrayList.size();
     }
 
-    public void setBagsArrayList(List<Bag> newBagsList) {
+    public void setBagsArrayList(ArrayList<Bag> newBagsList) {
         BagDiffCallback diffCallback = new BagDiffCallback(this.bagsArrayList, newBagsList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 

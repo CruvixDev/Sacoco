@@ -282,26 +282,37 @@ public class BagClothViewModel extends AndroidViewModel {
      * Remove existing clothes from selected bag into bags list
      *
      * @param clothesIdentifiers the UUID of clothes list
-     * @return true if a bag is selected false otherwise
+     * @return a completable to observe to check the status of removing clothes into the selected bag
      */
-    public boolean removeClothesInBag(ArrayList<UUID> clothesIdentifiers) {
+    public Completable removeClothesInBag(ArrayList<UUID> clothesIdentifiers) {
         boolean isBagSelected = this.selectedBagLiveData.isInitialized();
 
         if (isBagSelected) {
             Bag bagToRemoveClothes = this.selectedBagLiveData.getValue();
-            Cloth clothToRemove;
+            ArrayList<Cloth> clothesToRemove = new ArrayList<>();
 
+            Cloth clothToRemove;
             for (UUID clothIdentifier : clothesIdentifiers) {
-                clothToRemove = getClothByUUID(clothIdentifier);
-                if (clothToRemove != null && bagToRemoveClothes != null) {
-                    bagToRemoveClothes.removeClothInBag(clothToRemove);
-                }
+                clothToRemove = this.getClothByUUID(clothIdentifier);
+                clothesToRemove.add(clothToRemove);
             }
 
-            this.selectedBagLiveData.setValue(bagToRemoveClothes);
-        }
+            return this.appRepository.removeClothesIntoBag(bagToRemoveClothes, clothesToRemove)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete(() -> {
+                        if (bagToRemoveClothes != null) {
+                            bagToRemoveClothes.removeClothesInBag(clothesToRemove);
+                        }
 
-        return isBagSelected;
+                        this.selectedBagLiveData.setValue(bagToRemoveClothes);
+                    })
+                    .doOnError(throwable -> Log.e(this.getClass().getName(),
+                            "Cannot remove clothed!"))
+                    .subscribeOn(Schedulers.io());
+        }
+        else {
+            return Completable.error(new IllegalStateException("No cloth selected!"));
+        }
     }
 
     /**

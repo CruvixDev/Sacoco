@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.URI;
 import java.util.UUID;
 
 public class BagTest {
@@ -23,13 +22,13 @@ public class BagTest {
         bagToTestChecked = new Bag(WEEK_NUMBER_1, true);
 
         redPant = new Cloth(UUID.randomUUID(), "Red pant",
-                ClothTypeEnum.PANT, URI.create("/"));
+                ClothTypeEnum.PANT, "/");
         blueShirt = new Cloth(UUID.randomUUID(), "Blue shirt",
-                ClothTypeEnum.SHIRT, URI.create("/"));
+                ClothTypeEnum.SHIRT, "/");
         brownShoe = new Cloth(UUID.randomUUID(), "Brown shoe",
-                ClothTypeEnum.SHOE, URI.create("/"));
+                ClothTypeEnum.SHOE, "/");
         greySocks = new Cloth(UUID.randomUUID(), "Grey socks",
-                ClothTypeEnum.SOCK, URI.create("/"));
+                ClothTypeEnum.SOCK, "/");
     }
 
     @Test
@@ -53,11 +52,6 @@ public class BagTest {
         assertTrue(bagToTest.addClothToBag(redPant, false));
         assertTrue(bagToTest.addClothToBag(blueShirt, false));
         assertTrue(bagToTest.addClothToBag(greySocks, false));
-
-        assertTrue(bagToTest.removeClothInBag(redPant));
-        assertTrue(bagToTest.removeClothInBag(blueShirt));
-        assertFalse(bagToTest.removeClothInBag(brownShoe));
-        assertTrue(bagToTest.removeClothInBag(greySocks));
 
         assertEquals(bagToTest.getClothesList().size(), 0);
     }

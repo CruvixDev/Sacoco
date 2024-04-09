@@ -4,13 +4,13 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.example.sacoco.models.Bag;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class BagDiffCallback extends DiffUtil.Callback {
-    private final List<Bag> oldBagsList;
-    private final List<Bag> newBagsList;
+    private final ArrayList<Bag> oldBagsList;
+    private final ArrayList<Bag> newBagsList;
 
-    public BagDiffCallback(List<Bag> oldBagsList, List<Bag> newBagsList) {
+    public BagDiffCallback(ArrayList<Bag> oldBagsList, ArrayList<Bag> newBagsList) {
         this.oldBagsList = oldBagsList;
         this.newBagsList = newBagsList;
     }
