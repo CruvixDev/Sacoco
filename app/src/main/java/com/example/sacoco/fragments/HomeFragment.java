@@ -32,6 +32,7 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
     private RecyclerView bagsRecyclerView;
     private AddBagDialogFragment addBagDialogFragment;
     private final CompositeDisposable compositeDisposable;
+    private Toast currentToast;
 
     public HomeFragment() {
         super(R.layout.fragment_base_layout);
@@ -110,10 +111,22 @@ public class HomeFragment extends Fragment implements ViewHolderSelectedCallback
 
         Disposable disposable = bagClothViewModel.removeBag(weekNumber)
                 .subscribe(
-                        () -> Toast.makeText(this.getContext(),
-                                "Successfully remove the bag", Toast.LENGTH_SHORT).show(),
-                        throwable -> Toast.makeText(this.getContext(),
-                                "Cannot remove the bag", Toast.LENGTH_SHORT).show()
+                        () -> {
+                            if (this.currentToast != null) {
+                                this.currentToast.cancel();
+                            }
+                            this.currentToast = Toast.makeText(this.getContext(),
+                                "Successfully remove the bag", Toast.LENGTH_SHORT);
+                            this.currentToast.show();
+                        },
+                        throwable -> {
+                            if (this.currentToast != null) {
+                                this.currentToast.cancel();
+                            }
+                            this.currentToast = Toast.makeText(this.getContext(),
+                                "Cannot remove the bag", Toast.LENGTH_SHORT);
+                            this.currentToast.show();
+                        }
                 );
         this.compositeDisposable.add(disposable);
     }
