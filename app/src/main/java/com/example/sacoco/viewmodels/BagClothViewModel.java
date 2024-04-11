@@ -307,7 +307,7 @@ public class BagClothViewModel extends AndroidViewModel {
                         this.selectedBagLiveData.setValue(bagToRemoveClothes);
                     })
                     .doOnError(throwable -> Log.e(this.getClass().getName(),
-                            "Cannot remove clothed!"))
+                            "Cannot remove clothes!"))
                     .subscribeOn(Schedulers.io());
         }
         else {

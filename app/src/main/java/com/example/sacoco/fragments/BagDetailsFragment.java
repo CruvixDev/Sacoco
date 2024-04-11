@@ -3,6 +3,7 @@ package com.example.sacoco.fragments;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,21 +17,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sacoco.MainActivity;
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.ClothItemAdapter;
+import com.example.sacoco.cominterface.DialogInterface;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.dialogs.AddClothToBagDialogFragment;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
-public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCallback {
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+
+public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCallback, DialogInterface {
     private BagClothViewModel bagClothViewModel;
     private RecyclerView clothesInBagRecyclerView;
     private AddClothToBagDialogFragment addClothToBagDialogFragment;
     private ImageButton deleteClothButton;
+    private final ArrayList<UUID> selectedClothesUUIDList;
+    private final CompositeDisposable compositeDisposable;
 
     public BagDetailsFragment() {
         super(R.layout.fragment_bag_content_layout);
+        this.selectedClothesUUIDList = new ArrayList<>();
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -73,6 +84,17 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
         addBagButton.setOnClickListener(this.addClothToBagButtonListener);
 
         this.deleteClothButton = view.findViewById(R.id.deleteClothIntoBagButton);
+        this.deleteClothButton.setOnClickListener(v -> {
+            Disposable disposable =
+                    this.bagClothViewModel.removeClothesInBag(this.selectedClothesUUIDList)
+                    .subscribe(
+                            () -> Toast.makeText(this.getContext(), "Successfully remove " +
+                                    "clothes in bag!", Toast.LENGTH_SHORT).show(),
+                            throwable -> Toast.makeText(this.getContext(), "Cannot remove " +
+                                    "clothes in bag!", Toast.LENGTH_SHORT).show()
+                    );
+            this.compositeDisposable.add(disposable);
+        });
     }
 
     @Override
@@ -82,11 +104,14 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
         if (this.addClothToBagDialogFragment != null) {
             this.addClothToBagDialogFragment.onDestroy();
         }
+
+        this.compositeDisposable.dispose();
     }
 
     private final View.OnClickListener addClothToBagButtonListener = view -> {
         FragmentManager fragmentManager = this.requireActivity().getSupportFragmentManager();
         this.addClothToBagDialogFragment = new AddClothToBagDialogFragment();
+        this.addClothToBagDialogFragment.setDialogInterface(this);
 
         fragmentManager
                 .beginTransaction()
@@ -99,10 +124,36 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
     @Override
     public void onPositiveViewHolderSelected(int viewHolderSelectedIndex) {
         this.deleteClothButton.setVisibility(View.VISIBLE);
+
+        UUID selectedClothUUID = Objects.requireNonNull(
+                this.bagClothViewModel.
+                        getSelectedBagLiveData().
+                        getValue()).
+                        getClothesList().
+                        get(viewHolderSelectedIndex).
+                        getClothUUID();
+        this.selectedClothesUUIDList.add(selectedClothUUID);
     }
 
     @Override
     public void onNegativeViewHolderSelected(int viewHolderSelectedIndex) {
+        UUID deselectedClothUUID = Objects.requireNonNull(
+                this.bagClothViewModel.
+                        getSelectedBagLiveData().
+                        getValue()).
+                        getClothesList().
+                        get(viewHolderSelectedIndex).
+                        getClothUUID();
+        this.selectedClothesUUIDList.remove(deselectedClothUUID);
+
+        if (this.selectedClothesUUIDList.isEmpty()) {
+            this.deleteClothButton.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onDialogDismiss() {
         this.deleteClothButton.setVisibility(View.GONE);
+        this.selectedClothesUUIDList.clear();
     }
 }

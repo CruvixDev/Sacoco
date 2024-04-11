@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sacoco.R;
 import com.example.sacoco.adapter.ClothItemAdapter;
+import com.example.sacoco.cominterface.DialogInterface;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 
@@ -31,6 +32,7 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
     private BagClothViewModel bagClothViewModel;
     private final ArrayList<UUID> clothesToAddUUID;
     private final CompositeDisposable compositeDisposable;
+    private DialogInterface dialogInterface;
 
     public AddClothToBagDialogFragment() {
         super(R.layout.dialog_add_cloth_to_bag_layout);
@@ -88,6 +90,9 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
     public void onDestroy() {
         super.onDestroy();
         this.compositeDisposable.dispose();
+        if (this.dialogInterface != null) {
+            this.dialogInterface.onDialogDismiss();
+        }
     }
 
     @Override
@@ -104,5 +109,9 @@ public class AddClothToBagDialogFragment extends DialogFragment implements ViewH
                 get(viewHolderSelectedIndex).getClothUUID();
 
         this.clothesToAddUUID.remove(clothUUID);
+    }
+
+    public void setDialogInterface(DialogInterface dialogInterface) {
+        this.dialogInterface = dialogInterface;
     }
 }
