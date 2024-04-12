@@ -1,5 +1,6 @@
 package com.example.sacoco.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,14 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sacoco.R;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.models.Cloth;
+import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
+
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.ViewHolder> {
     private final ArrayList<Cloth> clothesInBagList;
     private ArrayList<Boolean> clothesPresenceStateList;
     private final ViewHolderSelectedCallback viewHolderSelectedCallback;
+    private final BagClothViewModel bagClothViewModel;
+    private final CompositeDisposable compositeDisposable;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ShapeableImageView clothImage;
@@ -60,10 +66,13 @@ public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.View
         }
     }
 
-    public ClothItemAdapter(ViewHolderSelectedCallback viewHolderSelectedCallback) {
+    public ClothItemAdapter(ViewHolderSelectedCallback viewHolderSelectedCallback,
+                            BagClothViewModel bagClothViewModel) {
         this.clothesInBagList = new ArrayList<>();
         this.clothesPresenceStateList = new ArrayList<>();
         this.viewHolderSelectedCallback = viewHolderSelectedCallback;
+        this.bagClothViewModel = bagClothViewModel;
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     @NonNull
@@ -89,8 +98,13 @@ public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.View
             }
         }
 
-        holder.getClothImage().setImageDrawable(AppCompatResources.getDrawable(
-                holder.itemView.getContext(), R.drawable.shirt_icon));
+        Disposable disposable = this.bagClothViewModel.getClothImageBitmap(cloth.getClothUUID()).
+                subscribe(
+                        bitmap -> holder.getClothImage().setImageBitmap(bitmap),
+                        throwable -> Log.e(this.getClass().getName(), "Cannot load image")
+                );
+        this.compositeDisposable.add(disposable);
+
         holder.getClothName().setText(cloth.getClothName());
         holder.getClothUUID().setText(cloth.getClothUUID().toString());
     }
@@ -98,6 +112,12 @@ public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.View
     @Override
     public int getItemCount() {
         return this.clothesInBagList.size();
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        this.compositeDisposable.dispose();
     }
 
     public void setClothesInBagList(ArrayList<Cloth> newClothesInBagList,

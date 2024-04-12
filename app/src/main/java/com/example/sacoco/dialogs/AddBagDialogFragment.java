@@ -47,7 +47,8 @@ public class AddBagDialogFragment extends DialogFragment implements ViewHolderSe
         bagClothViewModel = new ViewModelProvider(requireActivity()).get(BagClothViewModel.class);
 
         RecyclerView clothesInBagRecyclerView = view.findViewById(R.id.clothesListView);
-        clothesInBagRecyclerView.setAdapter(new ClothItemAdapter(this));
+        clothesInBagRecyclerView.setAdapter(new ClothItemAdapter(this,
+                this.bagClothViewModel));
         clothesInBagRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ClothItemAdapter clothItemAdapter = (ClothItemAdapter) clothesInBagRecyclerView.getAdapter();
