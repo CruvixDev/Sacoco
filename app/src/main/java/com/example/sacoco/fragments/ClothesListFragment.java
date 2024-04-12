@@ -30,6 +30,7 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
     private BagClothViewModel bagClothViewModel;
     private RecyclerView clothesRecyclerView;
     private final CompositeDisposable compositeDisposable;
+    private Toast currentToast;
 
     public ClothesListFragment() {
         super(R.layout.fragment_base_layout);
@@ -100,10 +101,22 @@ public class ClothesListFragment extends Fragment implements ViewHolderSelectedC
 
         Disposable disposable = bagClothViewModel.removeCloth(clothUUID)
                 .subscribe(
-                        () -> Toast.makeText(this.getContext(),
-                                "Suppression du vêtement réussi", Toast.LENGTH_SHORT).show(),
-                        throwable -> Toast.makeText(this.getContext(),
-                                "Impossible de supprimer le vêtement", Toast.LENGTH_SHORT).show()
+                        () -> {
+                            if (this.currentToast != null) {
+                                this.currentToast.cancel();
+                            }
+                            this.currentToast = Toast.makeText(this.getContext(),
+                                "Suppression du vêtement réussi", Toast.LENGTH_SHORT);
+                            this.currentToast.show();
+                        },
+                        throwable -> {
+                            if (this.currentToast != null) {
+                                this.currentToast.cancel();
+                            }
+                            this.currentToast = Toast.makeText(this.getContext(),
+                                    "Impossible de supprimer le vêtement", Toast.LENGTH_SHORT);
+                            this.currentToast.show();
+                        }
                 );
         this.compositeDisposable.add(disposable);
     }
