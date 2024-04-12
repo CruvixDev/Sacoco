@@ -88,10 +88,16 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
             Disposable disposable =
                     this.bagClothViewModel.removeClothesInBag(this.selectedClothesUUIDList)
                     .subscribe(
-                            () -> Toast.makeText(this.getContext(), "Successfully remove " +
-                                    "clothes in bag!", Toast.LENGTH_SHORT).show(),
-                            throwable -> Toast.makeText(this.getContext(), "Cannot remove " +
-                                    "clothes in bag!", Toast.LENGTH_SHORT).show()
+                            () -> {
+                                Toast.makeText(this.getContext(), "Successfully remove " +
+                                        "clothes in bag!", Toast.LENGTH_SHORT).show();
+                                this.selectedClothesUUIDList.clear();
+                            },
+                            throwable -> {
+                                Toast.makeText(this.getContext(), "Cannot remove " +
+                                        "clothes in bag!", Toast.LENGTH_SHORT).show();
+                                this.selectedClothesUUIDList.clear();
+                            }
                     );
             this.compositeDisposable.add(disposable);
         });
