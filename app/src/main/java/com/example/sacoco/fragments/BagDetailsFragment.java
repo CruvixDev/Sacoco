@@ -56,9 +56,10 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
         MainActivity mainActivity = (MainActivity) requireActivity();
         mainActivity.setActivityTitle(String.format(bagContentTitle, bagWeekNumber));
 
-        clothesInBagRecyclerView = view.findViewById(R.id.bagContentListView);
-        clothesInBagRecyclerView.setAdapter(new ClothItemAdapter(this));
-        clothesInBagRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        this.clothesInBagRecyclerView = view.findViewById(R.id.bagContentListView);
+        this.clothesInBagRecyclerView.setAdapter(new ClothItemAdapter(this,
+                this.bagClothViewModel));
+        this.clothesInBagRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         this.bagClothViewModel.getSelectedBagLiveData().observe(this.getViewLifecycleOwner(),
                 bag -> {
