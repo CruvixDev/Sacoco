@@ -151,7 +151,7 @@ public class BagClothViewModel extends AndroidViewModel {
         int MAX_STRING_LENGTH = 50;
 
         if (clothName.length() < MAX_STRING_LENGTH) {
-            if (this.clothInCreation != null) {
+            if (this.clothInCreation != null && this.clothImageTemp != null) {
                 String clothImagePath = this.getApplication().getFilesDir().getAbsolutePath() +
                         this.clothInCreation.getClothUUID();
 
@@ -195,13 +195,51 @@ public class BagClothViewModel extends AndroidViewModel {
     }
 
     /**
+     * Modify an existing cloth
+     *
+     * @param clothIdentifier the cloth identifier to update
+     * @return a completable observable to subscribe to check updating status
+     */
+    public Completable modifyCloth(UUID clothIdentifier, String clothName, ClothTypeEnum clothType) {
+        Cloth clothToUpdate = this.getClothByUUID(clothIdentifier);
+
+        if (clothToUpdate != null) {
+            clothToUpdate.setClothName(clothName);
+            clothToUpdate.setClothType(clothType);
+
+            return this.appRepository.updateCloth(clothToUpdate)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete(() -> {
+                        Disposable disposable =
+                                this.appRepository.saveClothBitmapImage(
+                                        this.getApplication(),
+                                        clothToUpdate,
+                                        this.clothImageTemp
+                                ).subscribe(
+                                        () -> Log.i(this.getClass().getName(),
+                                                "Image saved!"),
+                                        throwable -> Log.e(this.getClass().getName(),
+                                                "Failed to save image!")
+                                );
+                        this.compositeDisposable.add(disposable);
+                    })
+                    .doOnError(throwable -> Log.e(this.getClass().getName(), "Failed to " +
+                            "update cloth!"))
+                    .subscribeOn(Schedulers.io());
+        }
+        else {
+            return Completable.error(new IllegalStateException("Cannot update cloth!"));
+        }
+    }
+
+    /**
      * Remove a cloth into the list of clothes
      *
      * @param clothIdentifier the cloth UUID
      * @return a completable to subscribe to check the removing status
      */
     public Completable removeCloth(UUID clothIdentifier) {
-        Cloth clothToRemove = getClothByUUID(clothIdentifier);
+        Cloth clothToRemove = this.getClothByUUID(clothIdentifier);
 
         if (clothToRemove != null) {
             return this.appRepository.removeCloth(clothToRemove)

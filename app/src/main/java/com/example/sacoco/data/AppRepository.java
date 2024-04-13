@@ -148,6 +148,21 @@ public class AppRepository {
     }
 
     /**
+     * Update an existing cloth in the app's storage
+     *
+     * @param clothToUpdate the cloth to update on device
+     * @return a completable object to subscribe to observe updating status
+     */
+    public Completable updateCloth(Cloth clothToUpdate) {
+        if (this.databaseManagerInstance != null) {
+            return this.databaseManagerInstance.clothDAO().updateCloth(clothToUpdate);
+        }
+        else  {
+            return Completable.error(new IllegalStateException("The database instance is null"));
+        }
+    }
+
+    /**
      * Remove a cloth in app's storage
      *
      * @param clothToRemove the cloth to remove from device
@@ -315,7 +330,7 @@ public class AppRepository {
             return Glide.with(application)
                     .asBitmap()
                     .load(imageFile)
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .thumbnail(0.5f)
                     .submit()
                     .get();
