@@ -216,10 +216,16 @@ public class BagClothViewModel extends AndroidViewModel {
                                         clothToUpdate,
                                         this.clothImageTemp
                                 ).subscribe(
-                                        () -> Log.i(this.getClass().getName(),
-                                                "Image saved!"),
-                                        throwable -> Log.e(this.getClass().getName(),
-                                                "Failed to save image!")
+                                        () -> {
+                                            Log.i(this.getClass().getName(),
+                                                "Image saved!");
+                                            this.clearClothImageTemp();
+                                        },
+                                        throwable -> {
+                                            Log.e(this.getClass().getName(),
+                                                "Failed to save image!");
+                                            this.clearClothImageTemp();
+                                        }
                                 );
                         this.compositeDisposable.add(disposable);
                     })

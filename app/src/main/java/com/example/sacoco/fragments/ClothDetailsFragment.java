@@ -92,24 +92,33 @@ public class ClothDetailsFragment extends Fragment {
 
             Button saveModification = view.findViewById(R.id.saveModificationButton);
             saveModification.setOnClickListener(buttonView -> {
+                String currentClothName = this.bagClothViewModel.getSelectedClothLiveData().
+                        getValue().getClothName();
+                ClothTypeEnum currentClothType = this.bagClothViewModel.getSelectedClothLiveData().
+                        getValue().getClothType();
+
                 String newClothName = clothNameEditText.getEditText().getText().toString();
                 String newClothTypeString = autoCompleteTextView.getText().toString();
                 ClothTypeEnum newClothType = stringClothTypeEnumMap.get(newClothTypeString);
 
-                Disposable disposable = this.bagClothViewModel.modifyCloth(
-                        this.bagClothViewModel.getSelectedClothLiveData().getValue().getClothUUID(),
-                        newClothName,
-                        newClothType
-                ).subscribe(
-                        () -> {
-                            Toast.makeText(this.requireContext(), "Les modifications ont " +
-                                "été enregistrées !", Toast.LENGTH_SHORT).show();
-                            mainActivity.setActivityTitle(newClothName);
-                        },
-                        throwable -> Toast.makeText(this.requireContext(), "Impossible " +
-                                "d'enregistrer les modifications !", Toast.LENGTH_SHORT).show()
-                );
-                this.compositeDisposable.add(disposable);
+                if (!currentClothName.equals(newClothName) || !currentClothType.equals(newClothType)
+                        || this.bagClothViewModel.getClothImageTemp() != null) {
+
+                    Disposable disposable = this.bagClothViewModel.modifyCloth(
+                            this.bagClothViewModel.getSelectedClothLiveData().getValue().getClothUUID(),
+                            newClothName,
+                            newClothType
+                    ).subscribe(
+                            () -> {
+                                Toast.makeText(this.requireContext(), "Les modifications ont " +
+                                        "été enregistrées !", Toast.LENGTH_SHORT).show();
+                                mainActivity.setActivityTitle(newClothName);
+                            },
+                            throwable -> Toast.makeText(this.requireContext(), "Impossible " +
+                                    "d'enregistrer les modifications !", Toast.LENGTH_SHORT).show()
+                    );
+                    this.compositeDisposable.add(disposable);
+                }
             });
         }
         else {
