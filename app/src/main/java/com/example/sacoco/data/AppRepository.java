@@ -275,9 +275,11 @@ public class AppRepository {
                     + ".jpeg");
 
             try {
-                FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);
-                clothBitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
-                fileOutputStream.close();
+                if (clothBitmapImage != null) {
+                    FileOutputStream fileOutputStream = new FileOutputStream(clothImageFile);
+                    clothBitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+                    fileOutputStream.close();
+                }
             }
             catch (IOException e) {
                 Log.e(this.getClass().getName(), e.toString());

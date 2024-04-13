@@ -142,8 +142,6 @@ public class CameraFragmentTakeAndScan extends AbstractCameraFragment implements
 
     @Override
     public void onDialogDismiss() {
-        this.bagClothViewModel.clearClothInCreation();
-        this.bagClothViewModel.clearClothImageTemp();
         this.cameraFragmentButton.setEnabled(true);
         this.lastBarcodeStringResult = "";
 

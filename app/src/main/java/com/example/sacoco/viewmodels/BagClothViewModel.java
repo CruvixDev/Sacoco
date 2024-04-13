@@ -175,14 +175,24 @@ public class BagClothViewModel extends AndroidViewModel {
                                             this.clothInCreation,
                                             this.clothImageTemp
                                     ).subscribe(
-                                            () -> Log.i(this.getClass().getName(),
-                                                    "Image saved!"),
-                                            throwable -> Log.e(this.getClass().getName(),
-                                                    "Failed to save image!")
+                                            () -> {
+                                                Log.i(this.getClass().getName(),
+                                                    "Image saved!");
+                                                this.clearClothImageTemp();
+                                            },
+                                            throwable -> {
+                                                Log.e(this.getClass().getName(),
+                                                    "Failed to save image!");
+                                                this.clearClothImageTemp();
+                                            }
                                     );
                             this.compositeDisposable.add(disposable);
+                            this.clearClothInCreation();
                         })
-                        .doOnError(throwable -> Log.e(this.getClass().getName(), "Cannot add cloth"))
+                        .doOnError(throwable -> {
+                            Log.e(this.getClass().getName(), "Cannot add cloth");
+                            this.clearClothInCreation();
+                        })
                         .subscribeOn(Schedulers.io());
             }
             else {
@@ -394,7 +404,7 @@ public class BagClothViewModel extends AndroidViewModel {
         this.clothInCreation = new Cloth(clothUUID);
     }
 
-    public void clearClothInCreation() {
+    private void clearClothInCreation() {
         this.clothInCreation = null;
     }
 
@@ -407,7 +417,7 @@ public class BagClothViewModel extends AndroidViewModel {
         this.clothImageTemp = clothImageBitmap;
     }
 
-    public void clearClothImageTemp() {
+    private void clearClothImageTemp() {
         this.clothImageTemp = null;
     }
 
