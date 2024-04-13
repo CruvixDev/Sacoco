@@ -25,7 +25,7 @@ import java.util.UUID;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -397,10 +397,10 @@ public class BagClothViewModel extends AndroidViewModel {
      * @param clothUUID the cloth's UUID
      * @return the cloth's image bitmap to get
      */
-    public Observable<Bitmap> getClothImageBitmap(UUID clothUUID) {
+    public Single<Bitmap> getClothImageBitmap(UUID clothUUID) {
         Cloth cloth = getClothByUUID(clothUUID);
-
-        return this.appRepository.loadClothBitmapImage(this.getApplication(), cloth);
+        return this.appRepository.loadClothBitmapImage(this.getApplication(), cloth)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public boolean isBagsDataFetched() {

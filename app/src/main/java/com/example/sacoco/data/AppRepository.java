@@ -11,13 +11,13 @@ import androidx.datastore.rxjava3.RxDataStore;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.FutureTarget;
 import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
 import com.example.sacoco.models.BagClothCrossRef;
 import com.example.sacoco.models.Cloth;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -306,14 +305,21 @@ public class AppRepository {
      * @param cloth the cloth whose image we want to load
      * @return an observable on cloth's bitmap image
      */
-    public Observable<Bitmap> loadClothBitmapImage(Application application, Cloth cloth) {
-        return Observable.fromCallable(() -> {
-            FutureTarget<Bitmap> target = Glide.with(application)
+    public Single<Bitmap> loadClothBitmapImage(Application application, Cloth cloth) {
+        return Single.fromCallable(() -> {
+            File imageFile = new File(application.getFilesDir(), cloth.getClothUUID() + ".jpeg");
+            if (!imageFile.exists()) {
+                throw new FileNotFoundException("Image file not found");
+            }
+
+            return Glide.with(application)
                     .asBitmap()
-                    .load(new File(application.getFilesDir(), cloth.getClothUUID() + ".jpeg"))
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .submit();
-            return target.get();
-        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
+                    .load(imageFile)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .thumbnail(0.5f)
+                    .submit()
+                    .get();
+        }).subscribeOn(Schedulers.io());
     }
+
 }
