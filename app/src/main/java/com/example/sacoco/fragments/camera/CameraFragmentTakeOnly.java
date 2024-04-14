@@ -18,6 +18,7 @@ import com.example.sacoco.MainActivity;
 import com.example.sacoco.fragments.ClothDetailsFragment;
 
 public class CameraFragmentTakeOnly extends AbstractCameraFragment {
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
