@@ -66,6 +66,9 @@
     <!-- Camera fragment string literals -->
     <string name="fragment_camera_take_picture">Capturer</string>
 
+    <!-- Email fragment string literals -->
+    <string name="fragment_email_not_implemented">Non implémenté dans la version 1.0.0</string>
+
     <!-- Preferences string literals -->
     <string name="preferences_category_appearance">Apparence de l\'application</string>
     <string name="preferences_theme">Thème sombre / Thème clair</string>
