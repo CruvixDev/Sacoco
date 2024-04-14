@@ -126,10 +126,14 @@ public class BagClothViewModel extends AndroidViewModel {
         if (selectedBag != null && !this.scannedClothesList.isEmpty()) {
             selectedBag.setChecked(true);
 
-            for (Cloth cloth : this.scannedClothesList) {
-                if (selectedBag.isInBag(cloth)) {
+            for (Cloth cloth : selectedBag.getClothesList()) {
+                if (this.scannedClothesList.contains(cloth)) {
                     bagClothCrossRefList.add(new BagClothCrossRef(selectedBag.getWeekNumber(),
                             cloth.getClothUUID(), true));
+                }
+                else {
+                    bagClothCrossRefList.add(new BagClothCrossRef(selectedBag.getWeekNumber(),
+                            cloth.getClothUUID(), false));
                 }
             }
 
@@ -139,7 +143,8 @@ public class BagClothViewModel extends AndroidViewModel {
                             Cloth currentCloth;
                             for (BagClothCrossRef bagClothCrossRef : bagClothCrossRefList) {
                                 currentCloth = this.getClothByUUID(bagClothCrossRef.clothUUID);
-                                selectedBag.setClothPresence(currentCloth, true);
+                                selectedBag.setClothPresence(currentCloth,
+                                        bagClothCrossRef.isClothPresent);
                             }
 
                             this.selectedBagLiveData.setValue(selectedBag);

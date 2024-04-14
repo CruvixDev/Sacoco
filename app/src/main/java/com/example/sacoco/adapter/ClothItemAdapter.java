@@ -94,7 +94,7 @@ public class ClothItemAdapter extends RecyclerView.Adapter<ClothItemAdapter.View
             }
             else {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(),
-                        R.color.md_theme_light_onErrorContainer));
+                        R.color.cloth_not_present));
             }
         }
 
