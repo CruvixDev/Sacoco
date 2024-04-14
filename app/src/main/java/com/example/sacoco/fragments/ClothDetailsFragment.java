@@ -131,5 +131,6 @@ public class ClothDetailsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         this.compositeDisposable.dispose();
+        this.bagClothViewModel.clearClothImageTemp();
     }
 }

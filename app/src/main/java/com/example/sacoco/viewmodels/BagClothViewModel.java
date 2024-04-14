@@ -404,7 +404,7 @@ public class BagClothViewModel extends AndroidViewModel {
         this.clothInCreation = new Cloth(clothUUID);
     }
 
-    private void clearClothInCreation() {
+    public void clearClothInCreation() {
         this.clothInCreation = null;
     }
 
@@ -417,7 +417,7 @@ public class BagClothViewModel extends AndroidViewModel {
         this.clothImageTemp = clothImageBitmap;
     }
 
-    private void clearClothImageTemp() {
+    public void clearClothImageTemp() {
         this.clothImageTemp = null;
     }
 
