@@ -2,6 +2,7 @@ package com.example.sacoco.fragments;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.example.sacoco.adapter.ClothItemAdapter;
 import com.example.sacoco.cominterface.DialogInterface;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.dialogs.AddClothToBagDialogFragment;
+import com.example.sacoco.fragments.camera.CameraFragmentScanOnly;
 import com.example.sacoco.viewmodels.BagClothViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -102,6 +104,10 @@ public class BagDetailsFragment extends Fragment implements ViewHolderSelectedCa
                     );
             this.compositeDisposable.add(disposable);
         });
+
+        Button verifyButton = view.findViewById(R.id.checkBagButton);
+        verifyButton.setOnClickListener(buttonView -> mainActivity.loadFragment(
+                CameraFragmentScanOnly.class));
     }
 
     @Override

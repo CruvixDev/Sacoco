@@ -133,6 +133,18 @@ public class Bag {
         this.isChecked = checked;
     }
 
+    /**
+     * Modify the state
+     *
+     * @param cloth         the cloth to modify presence state
+     * @param clothPresence the cloth presence state
+     */
+    public void setClothPresence(Cloth cloth, boolean clothPresence) {
+        if (this.isInBag(cloth)) {
+            this.clothesMap.put(cloth, clothPresence);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

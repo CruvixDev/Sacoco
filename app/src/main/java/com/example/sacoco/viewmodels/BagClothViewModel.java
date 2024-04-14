@@ -16,6 +16,7 @@ import com.example.sacoco.data.AppRepository;
 import com.example.sacoco.data.DatabaseManager;
 import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
+import com.example.sacoco.models.BagClothCrossRef;
 import com.example.sacoco.models.Cloth;
 import com.example.sacoco.models.ClothTypeEnum;
 
@@ -39,6 +40,7 @@ public class BagClothViewModel extends AndroidViewModel {
     private final MutableLiveData<Cloth> selectedClothLiveData;
     private final MutableLiveData<ArrayList<Cloth>> clothesLiveData;
     private final MutableLiveData<ArrayList<Bag>> bagsLiveData;
+    private final ArrayList<Cloth> scannedClothesList;
     private final AppRepository appRepository;
     private final CompositeDisposable compositeDisposable;
     public static final ViewModelInitializer<BagClothViewModel> bagViewModelViewModelInitializer =
@@ -63,6 +65,7 @@ public class BagClothViewModel extends AndroidViewModel {
         this.bagsLiveData = new MutableLiveData<>();
         this.appRepository = appRepository;
         this.compositeDisposable = new CompositeDisposable();
+        this.scannedClothesList = new ArrayList<>();
 
         //Fetch Bags and Clothes into Room database
         getAllBags();
@@ -108,6 +111,52 @@ public class BagClothViewModel extends AndroidViewModel {
         }
         else {
             return Completable.error(new IllegalStateException("Invalid week number"));
+        }
+    }
+
+    /**
+     * Verify the difference between scanned clothes list and expected one of selected bag
+     *
+     * @return a completable to observe the verification status
+     */
+    public Completable verifyClothInBag() {
+        Bag selectedBag = this.selectedBagLiveData.getValue();
+        ArrayList<BagClothCrossRef> bagClothCrossRefList = new ArrayList<>();
+
+        if (selectedBag != null && !this.scannedClothesList.isEmpty()) {
+            selectedBag.setChecked(true);
+
+            for (Cloth cloth : this.scannedClothesList) {
+                if (selectedBag.isInBag(cloth)) {
+                    bagClothCrossRefList.add(new BagClothCrossRef(selectedBag.getWeekNumber(),
+                            cloth.getClothUUID(), true));
+                }
+            }
+
+            return this.appRepository.updateBag(selectedBag, bagClothCrossRefList).
+                    observeOn(AndroidSchedulers.mainThread())
+                    .doOnComplete(() -> {
+                            Cloth currentCloth;
+                            for (BagClothCrossRef bagClothCrossRef : bagClothCrossRefList) {
+                                currentCloth = this.getClothByUUID(bagClothCrossRef.clothUUID);
+                                selectedBag.setClothPresence(currentCloth, true);
+                            }
+
+                            this.selectedBagLiveData.setValue(selectedBag);
+                            this.scannedClothesList.clear();
+                        }
+                    ).
+                    doOnError(throwable -> {
+                            selectedBag.setChecked(false);
+                            this.scannedClothesList.clear();
+                            Log.e(this.getClass().getName(), "Cannot update bag!");
+                        }
+                    ).
+                    subscribeOn(Schedulers.io());
+        }
+        else {
+            return Completable.error(new IllegalStateException("No bag selected or no clothes " +
+                    "scanned!"));
         }
     }
 
@@ -455,6 +504,24 @@ public class BagClothViewModel extends AndroidViewModel {
         Cloth cloth = getClothByUUID(clothUUID);
         return this.appRepository.loadClothBitmapImage(this.getApplication(), cloth)
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * Add a new scanned cloth from camera scan only use cases
+     *
+     * @param clothIdentifier the cloth identifier scanned from a QR code
+     * @return true if the cloth identifier is successfully added or not in scanned clothes list,
+     * false otherwise
+     */
+    public boolean addScannedCloth(UUID clothIdentifier) {
+        Cloth scannedCloth = this.getClothByUUID(clothIdentifier);
+
+        if (scannedCloth != null && !this.scannedClothesList.contains(scannedCloth)) {
+            return this.scannedClothesList.add(scannedCloth);
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean isBagsDataFetched() {

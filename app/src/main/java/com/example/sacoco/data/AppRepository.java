@@ -71,6 +71,26 @@ public class AppRepository {
         }
     }
 
+    /**
+     * Update a bag into the app's storage
+     *
+     * @param bagToUpdate the bag to update
+     * @param bagClothCrossRefList the clothes list in the bag to update
+     * @return a completable object to subscribe to observe the updating status
+     */
+    public Completable updateBag(Bag bagToUpdate, ArrayList<BagClothCrossRef> bagClothCrossRefList) {
+        if (this.databaseManagerInstance != null) {
+            return Completable.mergeArray(
+                    this.databaseManagerInstance.bagClothCrossRefDAO().updateClothesInBag(
+                            bagClothCrossRefList),
+                    this.databaseManagerInstance.bagDAO().updateBag(bagToUpdate)
+            );
+        }
+        else {
+            return Completable.error(new IllegalStateException("The database instance is null"));
+        }
+    }
+
     public Completable deleteBag(Bag bagToRemove) {
         if (this.databaseManagerInstance != null) {
             return this.databaseManagerInstance.bagDAO().deleteBag(bagToRemove);

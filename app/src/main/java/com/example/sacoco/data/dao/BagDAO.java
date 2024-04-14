@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import com.example.sacoco.data.relations.BagWithClothesRelation;
 import com.example.sacoco.models.Bag;
@@ -18,6 +19,9 @@ import io.reactivex.rxjava3.core.Single;
 public interface BagDAO {
     @Insert
     Completable insertBag(Bag bagToInsert);
+
+    @Update
+    Completable updateBag(Bag bagToUpdate);
 
     @Delete
     Completable deleteBag(Bag bagToDelete);
