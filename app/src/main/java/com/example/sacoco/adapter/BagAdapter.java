@@ -8,12 +8,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sacoco.R;
 import com.example.sacoco.cominterface.ViewHolderSelectedCallback;
 import com.example.sacoco.models.Bag;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,12 +31,13 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView bagCardTitle;
         private final TextView bagCardDateText;
+        private final ShapeableImageView bagCheckedStateImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            bagCardTitle = itemView.findViewById(R.id.cardMainTitle);
-            bagCardDateText = itemView.findViewById(R.id.cardSubTitle);
+            this.bagCardTitle = itemView.findViewById(R.id.cardMainTitle);
+            this.bagCardDateText = itemView.findViewById(R.id.cardSubTitle);
             Button bagConsultButton = itemView.findViewById(R.id.consultButton);
             Button bagRemoveButton = itemView.findViewById(R.id.removeButton);
 
@@ -44,14 +47,20 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
             View.OnClickListener onRemoveBag = view -> viewHolderSelectedCallback.
                     onNegativeViewHolderSelected(getAdapterPosition());
             bagRemoveButton.setOnClickListener(onRemoveBag);
+
+            this.bagCheckedStateImage = itemView.findViewById(R.id.bagCheckedState);
         }
 
         public TextView getBagCardTitle() {
-            return bagCardTitle;
+            return this.bagCardTitle;
         }
 
         public TextView getBagCardDateText() {
-            return bagCardDateText;
+            return this.bagCardDateText;
+        }
+
+        public ShapeableImageView getBagCheckedStateImage() {
+            return this.bagCheckedStateImage;
         }
     }
 
@@ -89,6 +98,16 @@ public class BagAdapter extends RecyclerView.Adapter<BagAdapter.ViewHolder> {
         holder.getBagCardTitle().setText(context.getString(R.string.card_bag_name_title));
         holder.getBagCardDateText().setText(context.getString(R.string.card_base_text,
                 startDateString, endDateString));
+
+        holder.getBagCheckedStateImage().setVisibility(View.VISIBLE);
+        if (bag.isChecked()) {
+            holder.getBagCheckedStateImage().setImageDrawable(AppCompatResources.getDrawable(
+                    holder.itemView.getContext(), R.drawable.check));
+        }
+        else {
+            holder.getBagCheckedStateImage().setImageDrawable(AppCompatResources.getDrawable(
+                    holder.itemView.getContext(), R.drawable.close));
+        }
     }
 
     @Override
