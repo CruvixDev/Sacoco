@@ -1,6 +1,8 @@
 package com.example.sacoco.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
@@ -34,7 +36,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(appVersion ->
-                        Objects.requireNonNull(appVersionPreference).setSummary(appVersion));
+                        Objects.requireNonNull(appVersionPreference).setSummary(appVersion),
+                        throwable -> {
+                            Toast.makeText(this.requireContext(), "Impossible de lire la " +
+                                    "version de l'application !", Toast.LENGTH_SHORT).show();
+                            Log.e("App", throwable.toString());
+                        });
     }
 
     @Override
