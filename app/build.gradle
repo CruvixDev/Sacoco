@@ -3,6 +3,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\Julien\\sacoco.jks')
+            storePassword 'N^K[n4+z83vA2v'
+            keyPassword 'N^K[n4+z83vA2v'
+            keyAlias 'sacocoKey'
+        }
+    }
     compileSdk 34
 
     defaultConfig {
@@ -24,8 +32,9 @@ android {
     buildTypes {
         release {
             debuggable false
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             debuggable true
