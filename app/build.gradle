@@ -23,8 +23,12 @@ android {
 
     buildTypes {
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
         }
     }
 
@@ -41,14 +45,14 @@ android {
 
 dependencies {
 
-    def camerax_version = "1.4.0-alpha04"
+    def camerax_version = "1.4.0-alpha05"
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.fragment:fragment:1.6.2'
+    implementation 'androidx.fragment:fragment:1.7.0'
     implementation "androidx.room:room-runtime:2.6.1"
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
-    implementation "androidx.datastore:datastore-preferences-rxjava3:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:1.1.1"
+    implementation "androidx.datastore:datastore-preferences-rxjava3:1.1.1"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation "androidx.room:room-rxjava3:2.6.1"
     implementation 'androidx.preference:preference:1.2.1'
@@ -59,7 +63,7 @@ dependencies {
     implementation "androidx.camera:camera-view:${camerax_version}"
     implementation "androidx.camera:camera-extensions:${camerax_version}"
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0'
-    implementation 'androidx.camera:camera-mlkit-vision:1.4.0-alpha04'
+    implementation 'androidx.camera:camera-mlkit-vision:1.4.0-alpha05'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
 
     annotationProcessor "androidx.room:room-compiler:2.6.1"
